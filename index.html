@@ -1281,166 +1281,119 @@
 <!-- Cursor -->
 
 
-<!-- LOGIN OVERLAY -->
-<div id="loginOverlay">
-    <div class="login-box">
-        <div class="logo">LOS<span>PAPUS</span></div>
-        <p>grupo cerrado — si no eres papu, te vas 💀</p>
-        <div id="loginForm">
-            <input class="login-input" id="loginNick" type="text" placeholder="tu nick" maxlength="20" autocomplete="off">
-            <input class="login-input" id="loginPass" type="password" placeholder="contraseña" autocomplete="off">
-            <button class="login-btn" onclick="doLogin()">🔑 Entrar</button>
-            <div class="login-error" id="loginError"></div>
-            <div class="login-switch">¿no tienes cuenta? <span onclick="showRegister()">regístrate</span></div>
-        </div>
-        <div id="registerForm" style="display:none">
-            <input class="login-input" id="regNick" type="text" placeholder="elige tu nick" maxlength="20" autocomplete="off">
-            <input class="login-input" id="regPass" type="password" placeholder="elige contraseña" autocomplete="off">
-            <input class="login-input" id="regPass2" type="password" placeholder="repite contraseña" autocomplete="off">
-            <button class="login-btn" onclick="doRegister()">✅ Crear cuenta</button>
-            <div class="login-error" id="registerError"></div>
-            <div class="login-switch">¿ya tienes cuenta? <span onclick="showLogin()">inicia sesión</span></div>
-        </div>
+<!-- ===== LOGIN OVERLAY ===== -->
+<div id="loginOverlay" style="position:fixed;inset:0;z-index:99999;background:#060e1a;display:flex;align-items:center;justify-content:center;">
+  <div class="login-box">
+    <div class="logo">LOS<span>PAPUS</span></div>
+    <p>grupo cerrado — si no eres papu, te vas 💀</p>
+    <div id="authForm">
+      <input class="login-input" id="authNick" type="text" placeholder="tu nick" maxlength="16" autocomplete="off">
+      <input class="login-input" id="authPass" type="password" placeholder="contraseña" autocomplete="off">
+      <div id="authPass2Wrap" style="display:none">
+        <input class="login-input" id="authPass2" type="password" placeholder="repite contraseña" autocomplete="off">
+      </div>
+      <button class="login-btn" id="authSubmitBtn" onclick="authSubmit()">🔑 Entrar</button>
+      <div class="login-error" id="authError"></div>
+      <div class="login-switch" id="authSwitch">¿no tienes cuenta? <span onclick="authToggleMode()">regístrate</span></div>
     </div>
+  </div>
 </div>
 
-<!-- ANNOUNCEMENT BANNER -->
-<div class="announcement-banner" id="announcementBanner"></div>
+<!-- ===== ANNOUNCEMENT BANNER ===== -->
+<div id="announcementBanner" style="display:none;position:fixed;top:70px;left:50%;transform:translateX(-50%);background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.4);border-radius:12px;padding:12px 24px;color:#ffd700;font-size:14px;font-weight:600;z-index:9997;max-width:600px;text-align:center;font-family:'Poppins',sans-serif;box-shadow:0 8px 32px rgba(255,215,0,0.15);"></div>
 
-<!-- ADMIN PANEL -->
+<!-- ===== USER BADGE ===== -->
+<button id="userBadge" onclick="toggleAdminPanel()" style="display:none;position:fixed;bottom:80px;right:20px;z-index:9000;padding:10px 18px;border-radius:30px;background:rgba(6,14,26,0.95);border:1px solid rgba(0,212,255,0.3);color:#80b0cc;font-family:'Poppins',sans-serif;font-size:13px;cursor:pointer;transition:.2s;box-shadow:0 4px 20px rgba(0,0,0,0.4);"></button>
+
+<!-- ===== ADMIN PANEL ===== -->
 <div id="adminPanel">
-    <div class="admin-header">
-        <div class="admin-header-top">
-            <h2>👑 Panel Admin</h2>
-            <button class="admin-close" onclick="document.getElementById('adminPanel').classList.remove('open')">✕</button>
-        </div>
-        <div class="admin-tabs">
-            <button class="admin-tab active" onclick="adminTab('stats')">📊 Stats</button>
-            <button class="admin-tab" onclick="adminTab('users')">👥 Usuarios</button>
-            <button class="admin-tab" onclick="adminTab('announce')">📣 Anuncio</button>
-            <button class="admin-tab" onclick="adminTab('tablero')">💀 Tablero</button>
-            <button class="admin-tab" onclick="adminTab('sitio')">🌐 Sitio</button>
-            <button class="admin-tab" onclick="adminTab('log')">📋 Log</button>
-        </div>
+  <div class="admin-header">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <h2 style="font-size:16px;font-family:'Orbitron',sans-serif;color:#ffd700;margin:0;">👑 Panel Admin</h2>
+      <button onclick="toggleAdminPanel()" style="background:none;border:none;color:#80b0cc;font-size:20px;cursor:pointer;">✕</button>
     </div>
-    <div class="admin-body">
-
-        <!-- STATS PAGE -->
-        <div class="admin-page active" id="adminPage-stats">
-            <div class="astat-grid">
-                <div class="astat-card"><div class="val" id="adminTotalUsers">0</div><div class="lbl">usuarios</div></div>
-                <div class="astat-card"><div class="val" id="adminOnline">1</div><div class="lbl">online ahora</div></div>
-                <div class="astat-card"><div class="val" id="adminTotalDeaths">0</div><div class="lbl">muertes totales</div></div>
-                <div class="astat-card"><div class="val" id="adminTotalVotes">0</div><div class="lbl">votos totales</div></div>
-            </div>
-            <div class="admin-section">
-                <div class="admin-section-title">🏆 ranking de muertes</div>
-                <div id="adminDeathRanking"></div>
-            </div>
-            <div class="admin-section">
-                <div class="admin-section-title">☠ ranking de votos</div>
-                <div id="adminVoteRanking"></div>
-            </div>
-            <div class="admin-section">
-                <div class="admin-section-title">⚡ acciones rápidas</div>
-                <div class="abtn-row">
-                    <button class="abtn abtn-red" onclick="adminResetDeaths()">🗑 Reset muertes</button>
-                    <button class="abtn abtn-red" onclick="adminResetVotes()">🗑 Reset votos</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- USERS PAGE -->
-        <div class="admin-page" id="adminPage-users">
-            <div class="admin-section">
-                <div class="admin-section-title">🔍 buscar usuario</div>
-                <input class="admin-input" id="adminSearchUser" placeholder="nick..." oninput="filterAdminUsers()">
-            </div>
-            <div class="admin-section">
-                <div class="admin-section-title">👥 todos los usuarios</div>
-                <div id="adminUserList"></div>
-            </div>
-        </div>
-
-        <!-- ANNOUNCE PAGE -->
-        <div class="admin-page" id="adminPage-announce">
-            <div class="admin-section">
-                <div class="admin-section-title">📣 anuncio global</div>
-                <p style="font-size:12px;color:#80b0cc;margin-bottom:12px;">aparece en la parte superior del sitio para TODOS los que estén conectados</p>
-                <input class="admin-input" id="announceText" placeholder="escribe el anuncio...">
-                <select class="admin-select" id="announceType">
-                    <option value="info">💬 Info normal</option>
-                    <option value="warn">⚠️ Advertencia</option>
-                    <option value="hype">🔥 Hype</option>
-                    <option value="troll">💀 Troll</option>
-                </select>
-                <button class="abtn abtn-gold" onclick="sendAnnouncement()">📣 Enviar anuncio</button>
-                <button class="abtn abtn-red" onclick="clearAnnouncement()">❌ Quitar anuncio</button>
-            </div>
-            <div class="admin-section">
-                <div class="admin-section-title">⚡ anuncios rápidos</div>
-                <button class="abtn abtn-blue" onclick="quickAnnounce('🔥 Los Papus online — a jugar!')">🔥 A jugar</button>
-                <button class="abtn abtn-blue" onclick="quickAnnounce('💀 Jero está en modo tóxico, cuidado')">💀 Jero tóxico</button>
-                <button class="abtn abtn-blue" onclick="quickAnnounce('👑 Emilio al habla — atención todos')">👑 Yo hablo</button>
-                <button class="abtn abtn-blue" onclick="quickAnnounce('🚨 SITIO EN MANTENIMIENTO — vuelvo en un rato')">🚨 Mantenimiento</button>
-                <button class="abtn abtn-blue" onclick="quickAnnounce('🎮 Sesión de 99 Nights ahora — únanse')">🎮 99 Nights</button>
-            </div>
-        </div>
-
-        <!-- TABLERO PAGE -->
-        <div class="admin-page" id="adminPage-tablero">
-            <div class="admin-section">
-                <div class="admin-section-title">➕ agregar papu al tablero</div>
-                <input class="admin-input" id="newPapuName" placeholder="nombre del nuevo papu...">
-                <button class="abtn abtn-gold" onclick="addPapuToBoard()">➕ Agregar papu</button>
-            </div>
-            <div class="admin-section">
-                <div class="admin-section-title">✏️ editar muertes manualmente</div>
-                <select class="admin-select" id="editPapuSelect"></select>
-                <input class="admin-input" id="editPapuDeaths" type="number" placeholder="número de muertes..." min="0">
-                <button class="abtn abtn-gold" onclick="setPapuDeaths()">💾 Guardar</button>
-            </div>
-            <div class="admin-section">
-                <div class="admin-section-title">🗑️ peligroso</div>
-                <button class="abtn abtn-red" onclick="adminResetDeaths()">💀 Reset todas las muertes</button>
-            </div>
-        </div>
-
-        <!-- SITIO PAGE -->
-        <div class="admin-page" id="adminPage-sitio">
-            <div class="admin-section">
-                <div class="admin-section-title">🌐 configuración del sitio</div>
-                <p style="font-size:11px;color:#80b0cc;margin-bottom:10px;">modo mantenimiento — bloquea el acceso a todos excepto admin</p>
-                <button class="abtn abtn-red" id="maintenanceBtn" onclick="toggleMaintenance()">🚧 Activar mantenimiento</button>
-            </div>
-            <div class="admin-section">
-                <div class="admin-section-title">🚫 gestión de bans</div>
-                <input class="admin-input" id="banNickInput" placeholder="nick a banear...">
-                <input class="admin-input" id="banReasonInput" placeholder="razón del ban (opcional)...">
-                <div class="abtn-row">
-                    <button class="abtn abtn-red" onclick="banUser()">🚫 Banear</button>
-                    <button class="abtn abtn-green" onclick="unbanUser()">✅ Desbanear</button>
-                </div>
-                <div class="admin-section-title" style="margin-top:16px;">lista de baneados</div>
-                <div id="bannedList"></div>
-            </div>
-            <div class="admin-section">
-                <div class="admin-section-title">🗑️ zona peligrosa</div>
-                <button class="abtn abtn-red" onclick="adminResetVotes()">🗑 Reset votos globales</button>
-                <button class="abtn abtn-red" onclick="adminNukeUser()">💥 Eliminar usuario</button>
-            </div>
-        </div>
-
-        <!-- LOG PAGE -->
-        <div class="admin-page" id="adminPage-log">
-            <div class="admin-section">
-                <div class="admin-section-title">📋 log de actividad</div>
-                <div id="activityLog"></div>
-                <button class="abtn abtn-red" style="margin-top:8px;" onclick="clearLog()">🗑 Limpiar log</button>
-            </div>
-        </div>
-
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="adminTab(this,'stats')">📊 Stats</button>
+      <button class="admin-tab" onclick="adminTab(this,'users')">👥 Usuarios</button>
+      <button class="admin-tab" onclick="adminTab(this,'announce')">📣 Anuncio</button>
+      <button class="admin-tab" onclick="adminTab(this,'tablero')">💀 Tablero</button>
+      <button class="admin-tab" onclick="adminTab(this,'bans')">🚫 Bans</button>
+      <button class="admin-tab" onclick="adminTab(this,'log')">📋 Log</button>
     </div>
+  </div>
+  <div class="admin-body">
+
+    <div class="admin-page active" id="ap-stats">
+      <div class="astat-grid">
+        <div class="astat-card"><div class="val" id="as-users">-</div><div class="lbl">usuarios</div></div>
+        <div class="astat-card"><div class="val" id="as-online">-</div><div class="lbl">online</div></div>
+        <div class="astat-card"><div class="val" id="as-deaths">-</div><div class="lbl">muertes</div></div>
+        <div class="astat-card"><div class="val" id="as-votes">-</div><div class="lbl">votos</div></div>
+      </div>
+      <div class="admin-section-title">🏆 muertes</div>
+      <div id="as-death-rank"></div>
+      <div class="admin-section-title" style="margin-top:16px;">☠ votos</div>
+      <div id="as-vote-rank"></div>
+      <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button class="abtn abtn-red" onclick="adminResetDeaths()">🗑 Reset muertes</button>
+        <button class="abtn abtn-red" onclick="adminResetVotes()">🗑 Reset votos</button>
+      </div>
+    </div>
+
+    <div class="admin-page" id="ap-users">
+      <input class="admin-input" id="au-search" placeholder="buscar nick..." oninput="renderUsers()">
+      <div id="au-list"></div>
+    </div>
+
+    <div class="admin-page" id="ap-announce">
+      <p style="font-size:12px;color:#80b0cc;margin-bottom:12px;">aparece arriba del sitio para todos en tiempo real</p>
+      <input class="admin-input" id="an-text" placeholder="mensaje...">
+      <select class="admin-select" id="an-type">
+        <option value="#ffd700">💬 Normal</option>
+        <option value="#ff6b00">🔥 Hype</option>
+        <option value="#ff4466">⚠️ Urgente</option>
+        <option value="#00ff9d">✅ Info</option>
+      </select>
+      <button class="abtn abtn-gold" onclick="sendAnnouncement()">📣 Enviar</button>
+      <button class="abtn abtn-red" onclick="clearAnnouncement()">❌ Quitar</button>
+      <div class="admin-section-title" style="margin-top:16px;">⚡ rápidos</div>
+      <button class="abtn abtn-blue" onclick="quickMsg('🔥 Los Papus online — a jugar!')">🔥 A jugar</button>
+      <button class="abtn abtn-blue" onclick="quickMsg('💀 Jero en modo tóxico, cuidado')">💀 Jero tóxico</button>
+      <button class="abtn abtn-blue" onclick="quickMsg('👑 Emilio al habla — atención')">👑 Yo hablo</button>
+      <button class="abtn abtn-blue" onclick="quickMsg('🚨 Sitio en mantenimiento — vuelvo pronto')">🚨 Mantenimiento</button>
+    </div>
+
+    <div class="admin-page" id="ap-tablero">
+      <div class="admin-section-title">➕ agregar papu</div>
+      <input class="admin-input" id="at-name" placeholder="nombre del papu...">
+      <button class="abtn abtn-gold" onclick="addPapu()">➕ Agregar</button>
+      <div class="admin-section-title" style="margin-top:16px;">✏️ editar muertes</div>
+      <select class="admin-select" id="at-select"></select>
+      <input class="admin-input" id="at-deaths" type="number" placeholder="muertes..." min="0">
+      <button class="abtn abtn-gold" onclick="setPapuDeaths()">💾 Guardar</button>
+    </div>
+
+    <div class="admin-page" id="ap-bans">
+      <div class="admin-section-title">🚫 banear usuario</div>
+      <input class="admin-input" id="ab-nick" placeholder="nick...">
+      <input class="admin-input" id="ab-reason" placeholder="razón (opcional)...">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button class="abtn abtn-red" onclick="banUser()">🚫 Banear</button>
+        <button class="abtn abtn-green" onclick="unbanUser()">✅ Desbanear</button>
+      </div>
+      <div class="admin-section-title" style="margin-top:16px;">lista de baneados</div>
+      <div id="ab-list"></div>
+      <div class="admin-section-title" style="margin-top:16px;">💥 eliminar cuenta</div>
+      <input class="admin-input" id="ab-delete-nick" placeholder="nick a eliminar...">
+      <button class="abtn abtn-red" onclick="deleteUser()">💥 Eliminar</button>
+    </div>
+
+    <div class="admin-page" id="ap-log">
+      <div id="al-list"></div>
+      <button class="abtn abtn-red" style="margin-top:8px;" onclick="clearLog()">🗑 Limpiar</button>
+    </div>
+
+  </div>
 </div>
 
 <div id="aurora"></div>
@@ -5012,608 +4965,6 @@ function closeEaster() {
 }
 
 
-// =================== AUTH SYSTEM ===================
-const USERS_COL = 'users';
-let currentUser = null;
-
-// ── Helpers ──────────────────────────────────────────────────
-function hashPass(pass) {
-    // simple hash (not cryptographic but good enough for this use case)
-    let h = 0;
-    for (let i = 0; i < pass.length; i++) {
-        h = ((h << 5) - h) + pass.charCodeAt(i);
-        h |= 0;
-    }
-    return 'h' + Math.abs(h).toString(36) + pass.length;
-}
-
-function isAdmin(nick) {
-    return nick.toLowerCase() === 'emilio';
-}
-
-function setLoginError(id, msg) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = msg;
-}
-
-function showRegister() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'block';
-}
-function showLogin() {
-    document.getElementById('registerForm').style.display = 'none';
-    document.getElementById('loginForm').style.display = 'block';
-}
-
-// ── Enter key support ─────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-    ['loginPass','loginNick'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-    });
-    ['regPass2','regPass','regNick'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
-    });
-
-    // check if already logged in
-    const saved = localStorage.getItem('papus_session');
-    if (saved) {
-        try {
-            const u = JSON.parse(saved);
-            if (u.nick && u.hash) {
-                // verify against firebase
-                verifySession(u.nick, u.hash);
-            }
-        } catch(e) {}
-    }
-});
-
-async function verifySession(nick, hash) {
-    try {
-        const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
-        // we import db from window
-        const snap = await window._fbGetDoc(window._fbDoc(window._db, USERS_COL, nick.toLowerCase()));
-        if (snap.exists() && snap.data().hash === hash) {
-            loginSuccess(nick, snap.data());
-        } else {
-            localStorage.removeItem('papus_session');
-        }
-    } catch(e) {
-        // firebase not ready yet, retry once
-        setTimeout(() => verifySession(nick, hash), 1500);
-    }
-}
-
-async function doLogin() {
-    const nick = document.getElementById('loginNick').value.trim().toLowerCase();
-    const pass = document.getElementById('loginPass').value;
-    setLoginError('loginError', '');
-
-    if (!nick || !pass) { setLoginError('loginError', 'rellena todo bro 💀'); return; }
-    if (nick.length < 2)  { setLoginError('loginError', 'nick muy corto'); return; }
-
-    try {
-        const snap = await window._fbGetDoc(window._fbDoc(window._db, USERS_COL, nick));
-        if (!snap.exists()) { setLoginError('loginError', 'cuenta no encontrada — regístrate'); return; }
-        const data = snap.data();
-        if (data.hash !== hashPass(pass)) { setLoginError('loginError', 'contraseña incorrecta 💀'); return; }
-        // save session
-        localStorage.setItem('papus_session', JSON.stringify({ nick, hash: data.hash }));
-        loginSuccess(nick, data);
-    } catch(e) {
-        setLoginError('loginError', 'error de conexión, intenta de nuevo');
-    }
-}
-
-async function doRegister() {
-    const nick  = document.getElementById('regNick').value.trim().toLowerCase();
-    const pass  = document.getElementById('regPass').value;
-    const pass2 = document.getElementById('regPass2').value;
-    setLoginError('registerError', '');
-
-    if (!nick || !pass || !pass2)   { setLoginError('registerError', 'rellena todo 💀'); return; }
-    if (nick.length < 2)            { setLoginError('registerError', 'nick muy corto (mín 2 letras)'); return; }
-    if (nick.length > 16)           { setLoginError('registerError', 'nick muy largo (máx 16 letras)'); return; }
-    if (pass.length < 4)            { setLoginError('registerError', 'contraseña muy corta (mín 4 caracteres)'); return; }
-    if (pass !== pass2)             { setLoginError('registerError', 'las contraseñas no coinciden'); return; }
-    if (/[^a-z0-9_]/.test(nick))   { setLoginError('registerError', 'nick solo puede tener letras, números y _'); return; }
-
-    try {
-        // check if nick taken
-        const snap = await window._fbGetDoc(window._fbDoc(window._db, USERS_COL, nick));
-        if (snap.exists()) { setLoginError('registerError', 'ese nick ya está tomado 💀'); return; }
-
-        const hash = hashPass(pass);
-        const userData = {
-            nick, hash,
-            admin: isAdmin(nick),
-            createdAt: new Date().toISOString(),
-            lastLogin: new Date().toISOString(),
-        };
-        await window._fbSetDoc(window._fbDoc(window._db, USERS_COL, nick), userData);
-        localStorage.setItem('papus_session', JSON.stringify({ nick, hash }));
-        loginSuccess(nick, userData);
-    } catch(e) {
-        setLoginError('registerError', 'error al crear cuenta, intenta de nuevo');
-        console.error(e);
-    }
-}
-
-function loginSuccess(nick, data) {
-    currentUser = { nick, ...data };
-    // hide login overlay
-    const overlay = document.getElementById('loginOverlay');
-    if (overlay) { overlay.style.opacity='0'; overlay.style.transition='opacity .4s'; setTimeout(()=>overlay.remove(),400); }
-
-    // update last login
-    try {
-        window._fbUpdateDoc(window._fbDoc(window._db, USERS_COL, nick), { lastLogin: new Date().toISOString(), loginCount: (window._fbIncrement ? window._fbIncrement(1) : 1) });
-    } catch(e) {}
-
-    // show user badge in navbar
-    const badge = document.getElementById('userBadge');
-    if (badge) {
-        badge.style.display = 'block';
-        badge.textContent = isAdmin(nick) ? '👑 ' + nick : '👤 ' + nick;
-        if (isAdmin(nick)) badge.classList.add('admin-badge');
-    }
-
-    // if admin, load admin panel data
-    // check ban + maintenance
-    window._checkAccessRestrictions(nick);
-    if (isAdmin(nick)) loadAdminData();
-
-    showFBToast(`👋 bienvenido ${nick}${isAdmin(nick)?' 👑':''}!`, '#00ff9d');
-}
-
-function toggleAdmin() {
-    if (!currentUser || !isAdmin(currentUser.nick)) return;
-    document.getElementById('adminPanel').classList.toggle('open');
-    loadAdminData();
-}
-
-async function loadAdminData() {
-    if (!currentUser || !isAdmin(currentUser.nick)) return;
-    try {
-        // get all users
-        const { getFirestore, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
-        const snap = await window._fbGetDocs(window._fbCollection(window._db, USERS_COL));
-        const users = [];
-        snap.forEach(d => users.push(d.data()));
-
-        document.getElementById('adminTotalUsers').textContent = users.length;
-
-        // render user list
-        const list = document.getElementById('adminUserList');
-        if (list) {
-            list.innerHTML = '';
-            users.sort((a,b) => (b.lastLogin||'').localeCompare(a.lastLogin||'')).forEach(u => {
-                const row = document.createElement('div');
-                row.className = 'user-row';
-                const date = u.lastLogin ? new Date(u.lastLogin).toLocaleDateString('es') : '?';
-                row.innerHTML = `
-                    <div>
-                        <div class="uname">${u.nick}</div>
-                        <div class="udate">último acceso: ${date}</div>
-                    </div>
-                    <span class="ubadge ${u.admin?'admin':''}">${u.admin?'👑 admin':'papu'}</span>
-                `;
-                list.appendChild(row);
-            });
-        }
-
-        // get deaths total
-        const deathsSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'));
-        if (deathsSnap.exists()) {
-            const total = Object.values(deathsSnap.data()).reduce((a,b)=>a+b,0);
-            document.getElementById('adminTotalDeaths').textContent = total;
-        }
-
-        // get votes total
-        const votesSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'votes'));
-        if (votesSnap.exists()) {
-            const total = Object.values(votesSnap.data()).reduce((a,b)=>a+b,0);
-            document.getElementById('adminTotalVotes').textContent = total;
-        }
-
-        // online
-        const onlineSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'online'));
-        if (onlineSnap.exists()) {
-            document.getElementById('adminOnline').textContent = Math.max(1, onlineSnap.data().count||1);
-        }
-
-    } catch(e) { console.error('Admin load error:', e); }
-}
-
-function adminResetVotes() {
-    if (!currentUser || !isAdmin(currentUser.nick)) return;
-    window.resetVotesFB();
-}
-function adminResetDeaths() {
-    if (!currentUser || !isAdmin(currentUser.nick)) return;
-    window.resetDeathsFB();
-}
-async function adminDeleteUser() {
-    if (!currentUser || !isAdmin(currentUser.nick)) return;
-    const nick = prompt('Nick del usuario a eliminar:');
-    if (!nick || nick.toLowerCase() === 'emilio') { alert('No puedes eliminar esa cuenta 💀'); return; }
-    try {
-        const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
-        await window._fbDeleteDoc(window._fbDoc(window._db, USERS_COL, nick.toLowerCase()));
-        showFBToast(`❌ Usuario ${nick} eliminado`, '#ff4466');
-        loadAdminData();
-    } catch(e) { showFBToast('Error al eliminar', '#ff4466'); }
-}
-
-// logout con Ctrl+Shift+L
-document.addEventListener('keydown', e => {
-    if (e.ctrlKey && e.shiftKey && e.key === 'L') {
-        if (confirm('¿Cerrar sesión?')) {
-            localStorage.removeItem('papus_session');
-            location.reload();
-        }
-    }
-});
-
-
-// ── Hamburger menu ────────────────────────────────────────────
-function toggleMenu() {
-    const links = document.querySelector('.nav-links');
-    const burger = document.getElementById('hamburger');
-    const overlay = document.getElementById('navOverlay');
-    links.classList.toggle('open');
-    burger.classList.toggle('open');
-    overlay.classList.toggle('show');
-}
-function closeMenu() {
-    document.querySelector('.nav-links')?.classList.remove('open');
-    document.getElementById('hamburger')?.classList.remove('open');
-    document.getElementById('navOverlay')?.classList.remove('show');
-}
-// close menu on link click
-document.querySelectorAll('.nav-links a').forEach(a => {
-    a.addEventListener('click', closeMenu);
-});
-
-
-// =================== MEGA ADMIN PANEL ===================
-
-// ── Tab switching ─────────────────────────────────────────────
-function adminTab(tab) {
-    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
-    event.target.classList.add('active');
-    const page = document.getElementById('adminPage-' + tab);
-    if (page) page.classList.add('active');
-    if (tab === 'stats')   loadAdminStats();
-    if (tab === 'users')   loadAdminUsers();
-    if (tab === 'tablero') loadAdminTablero();
-    if (tab === 'sitio')   loadAdminSitio();
-    if (tab === 'log')     loadAdminLog();
-}
-
-// ── Activity logger ───────────────────────────────────────────
-async function logActivity(action, detail='') {
-    try {
-        const logs = JSON.parse(localStorage.getItem('papus_adminlog') || '[]');
-        logs.unshift({ action, detail, time: new Date().toISOString(), by: currentUser?.nick || '?' });
-        localStorage.setItem('papus_adminlog', JSON.stringify(logs.slice(0, 100)));
-        // also save to firebase
-        await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'lastAction'), {
-            action, detail, by: currentUser?.nick, time: new Date().toISOString()
-        });
-    } catch(e) {}
-}
-
-// ── Load stats ────────────────────────────────────────────────
-async function loadAdminStats() {
-    try {
-        // users
-        const usersSnap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
-        const users = []; usersSnap.forEach(d => users.push(d.data()));
-        document.getElementById('adminTotalUsers').textContent = users.length;
-
-        // deaths
-        const dSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'));
-        if (dSnap.exists()) {
-            const d = dSnap.data();
-            const total = Object.values(d).reduce((a,b)=>a+(b||0),0);
-            document.getElementById('adminTotalDeaths').textContent = total;
-            const ranking = document.getElementById('adminDeathRanking');
-            if (ranking) {
-                const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]);
-                ranking.innerHTML = sorted.map(([n,v],i) =>
-                    `<div class="user-row"><div class="uinfo"><div class="uname">${['🥇','🥈','🥉'][i]||'💀'} ${n}</div></div><span class="ubadge">${v} 💀</span></div>`
-                ).join('');
-            }
-        }
-
-        // votes
-        const vSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'votes'));
-        if (vSnap.exists()) {
-            const v = vSnap.data();
-            const total = Object.values(v).reduce((a,b)=>a+(b||0),0);
-            document.getElementById('adminTotalVotes').textContent = total;
-            const ranking = document.getElementById('adminVoteRanking');
-            if (ranking) {
-                const sorted = Object.entries(v).sort((a,b)=>b[1]-a[1]);
-                ranking.innerHTML = sorted.map(([n,v],i) =>
-                    `<div class="user-row"><div class="uinfo"><div class="uname">${['☠️','💀','🩸'][i]||'⚡'} ${n}</div></div><span class="ubadge">${v} votos</span></div>`
-                ).join('');
-            }
-        }
-
-        // online
-        const oSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'online'));
-        if (oSnap.exists()) document.getElementById('adminOnline').textContent = Math.max(1, oSnap.data().count||1);
-
-    } catch(e) { console.error(e); }
-}
-
-// ── Load users ────────────────────────────────────────────────
-let _allUsers = [];
-async function loadAdminUsers() {
-    try {
-        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
-        _allUsers = [];
-        snap.forEach(d => _allUsers.push(d.data()));
-        _allUsers.sort((a,b) => (b.lastLogin||'').localeCompare(a.lastLogin||''));
-        renderAdminUsers(_allUsers);
-    } catch(e) {}
-}
-
-function renderAdminUsers(users) {
-    const list = document.getElementById('adminUserList');
-    if (!list) return;
-    if (!users.length) { list.innerHTML = '<p style="color:#445566;font-size:12px;">no hay usuarios</p>'; return; }
-    list.innerHTML = users.map(u => {
-        const date = u.lastLogin ? new Date(u.lastLogin).toLocaleDateString('es') : '?';
-        const logins = u.loginCount || 1;
-        const banned = u.banned ? '<span class="ubadge banned">🚫 baneado</span>' : '';
-        const adminB = u.admin  ? '<span class="ubadge admin">👑 admin</span>' : '<span class="ubadge">papu</span>';
-        return `<div class="user-row">
-            <div class="uinfo">
-                <div class="uname">${u.nick} ${banned}</div>
-                <div class="umeta">último acceso: ${date} · ${logins} entradas</div>
-            </div>
-            <div class="uactions">
-                ${adminB}
-                ${!u.admin ? `<button class="abtn abtn-red" style="padding:4px 8px;font-size:10px;width:auto;margin:0;" onclick="adminNukeUserDirect('${u.nick}')">🗑</button>` : ''}
-            </div>
-        </div>`;
-    }).join('');
-}
-
-function filterAdminUsers() {
-    const q = (document.getElementById('adminSearchUser')?.value || '').toLowerCase();
-    renderAdminUsers(q ? _allUsers.filter(u => u.nick.includes(q)) : _allUsers);
-}
-
-// ── Nuke user ─────────────────────────────────────────────────
-async function adminNukeUserDirect(nick) {
-    if (!confirm(`¿Eliminar a ${nick}?`)) return;
-    try {
-        const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
-        await deleteDoc(window._fbDoc(window._db, 'users', nick));
-        logActivity('DELETE_USER', nick);
-        showFBToast(`🗑 ${nick} eliminado`, '#ff4466');
-        loadAdminUsers();
-    } catch(e) { showFBToast('Error al eliminar', '#ff4466'); }
-}
-function adminNukeUser() {
-    const nick = prompt('Nick a eliminar:');
-    if (nick) adminNukeUserDirect(nick.toLowerCase());
-}
-
-// ── Announcements ─────────────────────────────────────────────
-const ANNOUNCE_DOC = window._fbDoc ? window._fbDoc(window._db, 'lospapus', 'announcement') : null;
-
-async function sendAnnouncement() {
-    const text = document.getElementById('announceText')?.value?.trim();
-    const type = document.getElementById('announceType')?.value || 'info';
-    if (!text) { showFBToast('escribe algo primero 💀', '#ff4466'); return; }
-    const icons = { info:'💬', warn:'⚠️', hype:'🔥', troll:'💀' };
-    const colors = { info:'#00d4ff', warn:'#ffd700', hype:'#ff6b00', troll:'#ff4466' };
-    await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'announcement'), {
-        text: icons[type] + ' ' + text, color: colors[type], active: true, time: new Date().toISOString()
-    });
-    logActivity('ANNOUNCEMENT', text);
-    showFBToast('📣 Anuncio enviado!', '#ffd700');
-}
-function quickAnnounce(text) {
-    if (document.getElementById('announceText')) document.getElementById('announceText').value = text.replace(/^[^\s]+\s/,'');
-    sendAnnouncement();
-}
-async function clearAnnouncement() {
-    await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'announcement'), { active: false, text:'', color:'' });
-    showFBToast('❌ Anuncio quitado', '#80b0cc');
-}
-
-// ── Listen for announcements (all users) ─────────────────────
-function initAnnouncementListener() {
-    try {
-        window._fbOnSnapshot(window._fbDoc(window._db, 'lospapus', 'announcement'), snap => {
-            const banner = document.getElementById('announcementBanner');
-            if (!banner) return;
-            if (!snap.exists() || !snap.data().active) { banner.classList.remove('show'); return; }
-            const data = snap.data();
-            banner.textContent = data.text;
-            banner.style.color = data.color || '#ffd700';
-            banner.style.borderColor = (data.color || '#ffd700') + '66';
-            banner.classList.add('show');
-        });
-    } catch(e) {}
-}
-
-// ── Ban system ────────────────────────────────────────────────
-async function banUser() {
-    const nick = document.getElementById('banNickInput')?.value?.trim().toLowerCase();
-    const reason = document.getElementById('banReasonInput')?.value?.trim() || 'sin razón';
-    if (!nick) { showFBToast('escribe un nick 💀', '#ff4466'); return; }
-    if (nick === 'emilio') { showFBToast('no puedes banearte a ti mismo xd', '#ff4466'); return; }
-    try {
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'users', nick), { banned: true, banReason: reason });
-        logActivity('BAN', nick + ' — ' + reason);
-        showFBToast(`🚫 ${nick} baneado`, '#ff4466');
-        loadAdminSitio();
-    } catch(e) { showFBToast('usuario no encontrado', '#ff4466'); }
-}
-async function unbanUser() {
-    const nick = document.getElementById('banNickInput')?.value?.trim().toLowerCase();
-    if (!nick) { showFBToast('escribe el nick a desbanear', '#ff4466'); return; }
-    try {
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'users', nick), { banned: false, banReason: '' });
-        logActivity('UNBAN', nick);
-        showFBToast(`✅ ${nick} desbaneado`, '#00ff9d');
-        loadAdminSitio();
-    } catch(e) { showFBToast('error', '#ff4466'); }
-}
-
-async function loadAdminSitio() {
-    try {
-        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
-        const banned = [];
-        snap.forEach(d => { if (d.data().banned) banned.push(d.data()); });
-        const list = document.getElementById('bannedList');
-        if (list) {
-            list.innerHTML = banned.length
-                ? banned.map(u => `<div class="user-row"><div class="uinfo"><div class="uname">🚫 ${u.nick}</div><div class="umeta">${u.banReason||'sin razón'}</div></div></div>`).join('')
-                : '<p style="color:#445566;font-size:12px;">nadie baneado (por ahora 👀)</p>';
-        }
-        // maintenance
-        const mSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'settings'));
-        const maintenanceBtn = document.getElementById('maintenanceBtn');
-        if (maintenanceBtn && mSnap.exists()) {
-            const on = mSnap.data().maintenance;
-            maintenanceBtn.textContent = on ? '✅ Desactivar mantenimiento' : '🚧 Activar mantenimiento';
-            maintenanceBtn.className = on ? 'abtn abtn-green' : 'abtn abtn-red';
-        }
-    } catch(e) {}
-}
-
-async function toggleMaintenance() {
-    try {
-        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'settings'));
-        const current = snap.exists() ? (snap.data().maintenance || false) : false;
-        await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'settings'), { maintenance: !current });
-        logActivity('MAINTENANCE', !current ? 'ON' : 'OFF');
-        showFBToast(!current ? '🚧 Mantenimiento activado' : '✅ Mantenimiento desactivado', '#ffd700');
-        loadAdminSitio();
-    } catch(e) {}
-}
-
-// ── Tablero management ────────────────────────────────────────
-async function loadAdminTablero() {
-    try {
-        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'));
-        const select = document.getElementById('editPapuSelect');
-        if (select && snap.exists()) {
-            select.innerHTML = Object.keys(snap.data()).map(n => `<option value="${n}">${n}</option>`).join('');
-        }
-    } catch(e) {}
-}
-
-async function addPapuToBoard() {
-    const name = document.getElementById('newPapuName')?.value?.trim();
-    if (!name) { showFBToast('escribe un nombre 💀', '#ff4466'); return; }
-    try {
-        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'));
-        const data = snap.exists() ? snap.data() : {};
-        if (data[name] !== undefined) { showFBToast('ese papu ya existe', '#ff4466'); return; }
-        data[name] = 0;
-        await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'), data);
-        const vSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'votes'));
-        const vData = vSnap.exists() ? vSnap.data() : {};
-        vData[name] = 0;
-        await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'votes'), vData);
-        logActivity('ADD_PAPU', name);
-        showFBToast(`➕ ${name} agregado al tablero!`, '#00ff9d');
-        if (document.getElementById('newPapuName')) document.getElementById('newPapuName').value = '';
-        loadAdminTablero();
-    } catch(e) { showFBToast('error al agregar', '#ff4466'); }
-}
-
-async function setPapuDeaths() {
-    const name   = document.getElementById('editPapuSelect')?.value;
-    const deaths = parseInt(document.getElementById('editPapuDeaths')?.value);
-    if (!name || isNaN(deaths) || deaths < 0) { showFBToast('datos inválidos 💀', '#ff4466'); return; }
-    try {
-        await window._fbUpdateDoc(window._fbDoc(window._db, 'lospapus', 'deaths'), { [name]: deaths });
-        logActivity('SET_DEATHS', name + ' → ' + deaths);
-        showFBToast(`💾 ${name}: ${deaths} muertes`, '#00ff9d');
-    } catch(e) { showFBToast('error', '#ff4466'); }
-}
-
-// ── Activity log ──────────────────────────────────────────────
-function loadAdminLog() {
-    const logs = JSON.parse(localStorage.getItem('papus_adminlog') || '[]');
-    const container = document.getElementById('activityLog');
-    if (!container) return;
-    if (!logs.length) { container.innerHTML = '<p style="color:#445566;font-size:12px;">log vacío</p>'; return; }
-    container.innerHTML = logs.map(l => {
-        const time = new Date(l.time).toLocaleString('es');
-        return `<div class="log-entry">
-            <div class="log-action">${l.action}</div>
-            <div>${l.detail}</div>
-            <div class="log-time">${time} · por ${l.by}</div>
-        </div>`;
-    }).join('');
-}
-function clearLog() {
-    if (!confirm('¿Limpiar el log?')) return;
-    localStorage.removeItem('papus_adminlog');
-    loadAdminLog();
-}
-
-// ── Check ban on login ────────────────────────────────────────
-const _origLoginSuccess = window.loginSuccess;
-
-// ── Override loadAdminData (replace old one) ──────────────────
-window.loadAdminData = function() { loadAdminStats(); };
-
-// ── Check maintenance + ban on every page load ────────────────
-async function checkAccessRestrictions(nick) {
-    try {
-        // check ban
-        const uSnap = await window._fbGetDoc(window._fbDoc(window._db, 'users', nick));
-        if (uSnap.exists() && uSnap.data().banned && nick !== 'emilio') {
-            const reason = uSnap.data().banReason || 'contacta a emilio';
-            document.body.innerHTML = `<div class="banned-overlay">
-                <h1>🚫 BANEADO</h1>
-                <p>fuiste baneado del sitio</p>
-                <p style="color:#ff4466;">razón: ${reason}</p>
-                <p style="font-size:12px;color:#445566;">si crees que es un error, habla con emilio</p>
-            </div>`;
-            return false;
-        }
-        // check maintenance
-        const sSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'settings'));
-        if (sSnap.exists() && sSnap.data().maintenance && nick !== 'emilio') {
-            document.body.innerHTML = `<div class="banned-overlay">
-                <h1>🚧 MANTENIMIENTO</h1>
-                <p>el sitio está en mantenimiento</p>
-                <p style="font-size:12px;color:#445566;">vuelve en un rato</p>
-            </div>`;
-            return false;
-        }
-        return true;
-    } catch(e) { return true; }
-}
-
-// expose for loginSuccess patch
-window._checkAccessRestrictions = checkAccessRestrictions;
-
-// ── Init announcement listener ────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-    // wait for firebase to be ready
-    setTimeout(() => {
-        if (window._fbOnSnapshot && window._fbDoc && window._db) {
-            initAnnouncementListener();
-        }
-    }, 2000);
-});
-
 // =================== V12 FEATURES ===================
 
 // ── Lazy load particles after intro ──────────────────────────
@@ -5888,6 +5239,449 @@ if ('serviceWorker' in navigator) {
 console.log('%c💙 Los Papus v13 🔥 Firebase', 'color:#00d4ff;font-size:18px;font-weight:bold;font-family:monospace;');
 console.log('%c🔥 Datos en tiempo real con Firebase Firestore', 'color:#00ff9d;font-size:12px;font-family:monospace;');
 console.log('%cCtrl+T = temas | Ctrl+M = minimal | Ctrl+Shift+D = borrar datos', 'color:#585b70;font-size:11px;font-family:monospace;');
+
+// =================== AUTH SYSTEM (CLEAN) ===================
+(function() {
+'use strict';
+
+// ── Constants ─────────────────────────────────────────────────
+const ADMIN_NICK  = 'emilio';
+const SESSION_KEY = 'papus_session_v2';
+const LOG_KEY     = 'papus_adminlog_v2';
+
+// ── State ─────────────────────────────────────────────────────
+let db = null;
+let currentUser = null;
+let authMode = 'login'; // 'login' | 'register'
+let allUsers = [];
+
+// ── Wait for Firebase db ──────────────────────────────────────
+function waitForDB(cb, attempts=0) {
+    if (window._db) { db = window._db; cb(); return; }
+    if (attempts > 40) { showAuthError('Error de conexión con Firebase'); return; }
+    setTimeout(() => waitForDB(cb, attempts+1), 200);
+}
+
+// ── Simple hash ───────────────────────────────────────────────
+function hashPass(p) {
+    let h = 5381;
+    for (let i=0; i<p.length; i++) h = ((h<<5)+h) ^ p.charCodeAt(i);
+    return 'p' + (h>>>0).toString(36) + p.length.toString(36);
+}
+
+function isAdmin(nick) { return (nick||'').toLowerCase() === ADMIN_NICK; }
+
+// ── UI helpers ────────────────────────────────────────────────
+function showAuthError(msg) {
+    const el = document.getElementById('authError');
+    if (el) el.textContent = msg;
+}
+function clearAuthError() {
+    const el = document.getElementById('authError');
+    if (el) el.textContent = '';
+}
+
+window.authToggleMode = function() {
+    authMode = authMode === 'login' ? 'register' : 'login';
+    const isReg = authMode === 'register';
+    document.getElementById('authPass2Wrap').style.display = isReg ? 'block' : 'none';
+    document.getElementById('authSubmitBtn').textContent = isReg ? '✅ Crear cuenta' : '🔑 Entrar';
+    document.getElementById('authSwitch').innerHTML = isReg
+        ? '¿ya tienes cuenta? <span onclick="authToggleMode()">inicia sesión</span>'
+        : '¿no tienes cuenta? <span onclick="authToggleMode()">regístrate</span>';
+    clearAuthError();
+};
+
+// ── Enter key ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    ['authNick','authPass','authPass2'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('keydown', e => { if (e.key==='Enter') window.authSubmit(); });
+    });
+
+    // check saved session
+    const saved = localStorage.getItem(SESSION_KEY);
+    if (saved) {
+        try {
+            const s = JSON.parse(saved);
+            if (s.nick && s.hash) {
+                waitForDB(() => verifySession(s.nick, s.hash));
+                return;
+            }
+        } catch(e) {}
+    }
+    // no session — init firebase and show login
+    waitForDB(() => {});
+});
+
+// ── Verify saved session ──────────────────────────────────────
+async function verifySession(nick, hash) {
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(db, 'users', nick));
+        if (!snap.exists()) { localStorage.removeItem(SESSION_KEY); return; }
+        const data = snap.data();
+        if (data.hash !== hash) { localStorage.removeItem(SESSION_KEY); return; }
+        if (data.banned) { showBanned(data.banReason || 'contacta a emilio'); return; }
+        loginSuccess(nick, data);
+    } catch(e) {
+        // firebase error — retry once
+        setTimeout(() => verifySession(nick, hash), 1500);
+    }
+}
+
+// ── Submit handler ────────────────────────────────────────────
+window.authSubmit = function() {
+    if (authMode === 'login') doLogin();
+    else doRegister();
+};
+
+async function doLogin() {
+    const nick = (document.getElementById('authNick')?.value||'').trim().toLowerCase();
+    const pass =  document.getElementById('authPass')?.value||'';
+    clearAuthError();
+    if (!nick || !pass) { showAuthError('rellena todo 💀'); return; }
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(db, 'users', nick));
+        if (!snap.exists())            { showAuthError('cuenta no encontrada — regístrate'); return; }
+        const data = snap.data();
+        if (data.hash !== hashPass(pass)) { showAuthError('contraseña incorrecta 💀'); return; }
+        if (data.banned)                   { showBanned(data.banReason||'contacta a emilio'); return; }
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: data.hash }));
+        loginSuccess(nick, data);
+    } catch(e) { showAuthError('error de conexión, intenta de nuevo'); }
+}
+
+async function doRegister() {
+    const nick  = (document.getElementById('authNick')?.value||'').trim().toLowerCase();
+    const pass  =  document.getElementById('authPass')?.value||'';
+    const pass2 =  document.getElementById('authPass2')?.value||'';
+    clearAuthError();
+    if (!nick||!pass||!pass2)          { showAuthError('rellena todo 💀'); return; }
+    if (nick.length < 2)               { showAuthError('nick muy corto (mín 2)'); return; }
+    if (nick.length > 16)              { showAuthError('nick muy largo (máx 16)'); return; }
+    if (!/^[a-z0-9_]+$/.test(nick))   { showAuthError('solo letras, números y _'); return; }
+    if (pass.length < 4)               { showAuthError('contraseña muy corta (mín 4)'); return; }
+    if (pass !== pass2)                { showAuthError('las contraseñas no coinciden'); return; }
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(db, 'users', nick));
+        if (snap.exists()) { showAuthError('ese nick ya está tomado 💀'); return; }
+        const hash = hashPass(pass);
+        const userData = { nick, hash, admin: isAdmin(nick), banned: false, banReason:'',
+                           loginCount: 1, createdAt: new Date().toISOString(), lastLogin: new Date().toISOString() };
+        await window._fbSetDoc(window._fbDoc(db, 'users', nick), userData);
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash }));
+        loginSuccess(nick, userData);
+    } catch(e) { showAuthError('error al crear cuenta'); console.error(e); }
+}
+
+function loginSuccess(nick, data) {
+    currentUser = { nick, ...data };
+    window.currentUser = currentUser;
+
+    // update lastLogin + loginCount async (don't block)
+    window._fbUpdateDoc(window._fbDoc(db, 'users', nick), {
+        lastLogin: new Date().toISOString(),
+        loginCount: window._fbIncrement ? window._fbIncrement(1) : (data.loginCount||0)+1
+    }).catch(()=>{});
+
+    // hide login overlay
+    const overlay = document.getElementById('loginOverlay');
+    if (overlay) {
+        overlay.style.transition = 'opacity .4s';
+        overlay.style.opacity = '0';
+        setTimeout(() => overlay.remove(), 400);
+    }
+
+    // show user badge
+    const badge = document.getElementById('userBadge');
+    if (badge) {
+        badge.style.display = 'block';
+        badge.textContent = isAdmin(nick) ? '👑 ' + nick : '👤 ' + nick;
+        badge.style.color  = isAdmin(nick) ? '#ffd700' : '#80b0cc';
+        badge.style.borderColor = isAdmin(nick) ? 'rgba(255,215,0,0.4)' : 'rgba(0,212,255,0.3)';
+    }
+
+    if (isAdmin(nick)) {
+        initAdminPanel();
+    }
+
+    // init announcement listener for everyone
+    initAnnouncementListener();
+
+    showFBToast(`👋 bienvenido ${nick}${isAdmin(nick)?' 👑':''}!`, '#00ff9d');
+}
+
+// ── Ban/maintenance screens ───────────────────────────────────
+function showBanned(reason) {
+    const overlay = document.getElementById('loginOverlay');
+    if (overlay) overlay.remove();
+    const el = document.createElement('div');
+    el.className = 'banned-overlay';
+    el.innerHTML = `<h1>🚫 BANEADO</h1><p>fuiste baneado del sitio</p><p style="color:#ff4466">razón: ${reason}</p><p style="font-size:12px;color:#445566">habla con emilio si crees que es un error</p>`;
+    document.body.appendChild(el);
+}
+
+// ── Ctrl+Shift+L = logout ─────────────────────────────────────
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+        if (confirm('¿Cerrar sesión?')) {
+            localStorage.removeItem(SESSION_KEY);
+            location.reload();
+        }
+    }
+});
+
+// ── Announcement listener ─────────────────────────────────────
+function initAnnouncementListener() {
+    if (!window._fbOnSnapshot) return;
+    window._fbOnSnapshot(window._fbDoc(db, 'lospapus', 'announcement'), snap => {
+        const banner = document.getElementById('announcementBanner');
+        if (!banner) return;
+        if (!snap.exists() || !snap.data().active) { banner.style.display='none'; return; }
+        const d = snap.data();
+        banner.textContent = d.text;
+        banner.style.color = d.color||'#ffd700';
+        banner.style.borderColor = (d.color||'#ffd700')+'66';
+        banner.style.display = 'block';
+    });
+}
+
+// =================== ADMIN PANEL (CLEAN) ===================
+
+window.toggleAdminPanel = function() {
+    if (!currentUser || !isAdmin(currentUser.nick)) return;
+    document.getElementById('adminPanel').classList.toggle('open');
+    loadAdminPage('stats');
+};
+
+window.adminTab = function(btn, page) {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const el = document.getElementById('ap-' + page);
+    if (el) el.classList.add('active');
+    loadAdminPage(page);
+};
+
+function loadAdminPage(page) {
+    if (page==='stats')   loadStats();
+    if (page==='users')   loadUsers();
+    if (page==='tablero') loadTablero();
+    if (page==='bans')    loadBans();
+    if (page==='log')     loadLog();
+}
+
+function initAdminPanel() {
+    loadStats();
+}
+
+// ── Stats ─────────────────────────────────────────────────────
+async function loadStats() {
+    try {
+        const [uSnap, dSnap, vSnap, oSnap] = await Promise.all([
+            window._fbGetDocs(window._fbCollection(db, 'users')),
+            window._fbGetDoc(window._fbDoc(db, 'lospapus', 'deaths')),
+            window._fbGetDoc(window._fbDoc(db, 'lospapus', 'votes')),
+            window._fbGetDoc(window._fbDoc(db, 'lospapus', 'online')),
+        ]);
+        const users = []; uSnap.forEach(d => users.push(d.data()));
+        allUsers = users;
+        setText('as-users', users.length);
+        setText('as-online', Math.max(1, oSnap.exists() ? oSnap.data().count||1 : 1));
+
+        if (dSnap.exists()) {
+            const d = dSnap.data();
+            setText('as-deaths', Object.values(d).reduce((a,b)=>a+(b||0),0));
+            const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]);
+            document.getElementById('as-death-rank').innerHTML = sorted.map(([n,v],i)=>
+                `<div class="user-row"><span>${['🥇','🥈','🥉'][i]||'💀'} ${n}</span><span class="ubadge">${v} 💀</span></div>`).join('');
+        }
+        if (vSnap.exists()) {
+            const v = vSnap.data();
+            setText('as-votes', Object.values(v).reduce((a,b)=>a+(b||0),0));
+            const sorted = Object.entries(v).sort((a,b)=>b[1]-a[1]);
+            document.getElementById('as-vote-rank').innerHTML = sorted.map(([n,v],i)=>
+                `<div class="user-row"><span>${['☠️','💀','🩸'][i]||'⚡'} ${n}</span><span class="ubadge">${v} votos</span></div>`).join('');
+        }
+    } catch(e) { console.error('loadStats:', e); }
+}
+
+// ── Users ─────────────────────────────────────────────────────
+async function loadUsers() {
+    try {
+        const snap = await window._fbGetDocs(window._fbCollection(db, 'users'));
+        allUsers = [];
+        snap.forEach(d => allUsers.push(d.data()));
+        allUsers.sort((a,b)=>(b.lastLogin||'').localeCompare(a.lastLogin||''));
+        renderUsers();
+    } catch(e) { console.error('loadUsers:', e); }
+}
+
+window.renderUsers = function() {
+    const q = (document.getElementById('au-search')?.value||'').toLowerCase();
+    const list = allUsers.filter(u => !q || u.nick.includes(q));
+    const el = document.getElementById('au-list');
+    if (!el) return;
+    if (!list.length) { el.innerHTML = '<p style="color:#445566;font-size:12px">no hay usuarios</p>'; return; }
+    el.innerHTML = list.map(u => {
+        const date = u.lastLogin ? new Date(u.lastLogin).toLocaleDateString('es') : '?';
+        const badge = u.admin ? '<span class="ubadge admin">👑 admin</span>' : u.banned ? '<span class="ubadge banned">🚫 ban</span>' : '<span class="ubadge">papu</span>';
+        return `<div class="user-row">
+            <div><div style="font-weight:600;color:#fff;font-size:13px">${u.nick} ${badge}</div>
+            <div style="font-size:10px;color:#445566">${date} · ${u.loginCount||1} entradas</div></div>
+            ${!u.admin ? `<button class="abtn abtn-red" style="padding:4px 8px;font-size:10px;width:auto;margin:0" onclick="deleteUserDirect('${u.nick}')">🗑</button>` : ''}
+        </div>`;
+    }).join('');
+};
+
+// ── Tablero ───────────────────────────────────────────────────
+async function loadTablero() {
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(db, 'lospapus', 'deaths'));
+        const sel = document.getElementById('at-select');
+        if (sel && snap.exists()) {
+            sel.innerHTML = Object.keys(snap.data()).map(n=>`<option value="${n}">${n}</option>`).join('');
+        }
+    } catch(e) {}
+}
+
+window.addPapu = async function() {
+    const name = (document.getElementById('at-name')?.value||'').trim();
+    if (!name) { showFBToast('escribe un nombre 💀','#ff4466'); return; }
+    try {
+        const [dSnap, vSnap] = await Promise.all([
+            window._fbGetDoc(window._fbDoc(db,'lospapus','deaths')),
+            window._fbGetDoc(window._fbDoc(db,'lospapus','votes')),
+        ]);
+        const deaths = dSnap.exists() ? dSnap.data() : {};
+        const votes  = vSnap.exists() ? vSnap.data() : {};
+        if (deaths[name] !== undefined) { showFBToast('ese papu ya existe','#ff4466'); return; }
+        deaths[name] = 0; votes[name] = 0;
+        await Promise.all([
+            window._fbSetDoc(window._fbDoc(db,'lospapus','deaths'), deaths),
+            window._fbSetDoc(window._fbDoc(db,'lospapus','votes'),  votes),
+        ]);
+        addLog('ADD_PAPU', name);
+        showFBToast(`➕ ${name} agregado!`, '#00ff9d');
+        document.getElementById('at-name').value = '';
+        loadTablero();
+    } catch(e) { showFBToast('error','#ff4466'); }
+};
+
+window.setPapuDeaths = async function() {
+    const name   = document.getElementById('at-select')?.value;
+    const deaths = parseInt(document.getElementById('at-deaths')?.value);
+    if (!name || isNaN(deaths) || deaths<0) { showFBToast('datos inválidos','#ff4466'); return; }
+    try {
+        await window._fbUpdateDoc(window._fbDoc(db,'lospapus','deaths'), {[name]: deaths});
+        addLog('SET_DEATHS', `${name} → ${deaths}`);
+        showFBToast(`💾 ${name}: ${deaths} muertes`,'#00ff9d');
+    } catch(e) { showFBToast('error','#ff4466'); }
+};
+
+// ── Bans ──────────────────────────────────────────────────────
+async function loadBans() {
+    try {
+        const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+        const banned = [];
+        snap.forEach(d => { if (d.data().banned) banned.push(d.data()); });
+        const el = document.getElementById('ab-list');
+        if (el) el.innerHTML = banned.length
+            ? banned.map(u=>`<div class="user-row"><div><div style="font-weight:600;color:#ff4466">${u.nick}</div><div style="font-size:10px;color:#445566">${u.banReason||'sin razón'}</div></div></div>`).join('')
+            : '<p style="color:#445566;font-size:12px">nadie baneado (por ahora 👀)</p>';
+    } catch(e) {}
+}
+
+window.banUser = async function() {
+    const nick   = (document.getElementById('ab-nick')?.value||'').trim().toLowerCase();
+    const reason = (document.getElementById('ab-reason')?.value||'').trim()||'sin razón';
+    if (!nick) { showFBToast('escribe un nick','#ff4466'); return; }
+    if (isAdmin(nick)) { showFBToast('no puedes banear al admin 💀','#ff4466'); return; }
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(db,'users',nick));
+        if (!snap.exists()) { showFBToast('usuario no encontrado','#ff4466'); return; }
+        await window._fbUpdateDoc(window._fbDoc(db,'users',nick), {banned:true, banReason:reason});
+        addLog('BAN', `${nick} — ${reason}`);
+        showFBToast(`🚫 ${nick} baneado`,'#ff4466');
+        loadBans();
+    } catch(e) { showFBToast('error','#ff4466'); }
+};
+
+window.unbanUser = async function() {
+    const nick = (document.getElementById('ab-nick')?.value||'').trim().toLowerCase();
+    if (!nick) { showFBToast('escribe un nick','#ff4466'); return; }
+    try {
+        await window._fbUpdateDoc(window._fbDoc(db,'users',nick), {banned:false, banReason:''});
+        addLog('UNBAN', nick);
+        showFBToast(`✅ ${nick} desbaneado`,'#00ff9d');
+        loadBans();
+    } catch(e) { showFBToast('error — usuario no existe?','#ff4466'); }
+};
+
+window.deleteUserDirect = async function(nick) {
+    if (!confirm(`¿Eliminar a ${nick}? Esto no se puede deshacer.`)) return;
+    try {
+        const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+        await deleteDoc(window._fbDoc(db,'users',nick));
+        addLog('DELETE_USER', nick);
+        showFBToast(`🗑 ${nick} eliminado`,'#ff4466');
+        loadUsers();
+    } catch(e) { showFBToast('error','#ff4466'); }
+};
+
+window.deleteUser = function() {
+    const nick = (document.getElementById('ab-delete-nick')?.value||'').trim().toLowerCase();
+    if (nick) window.deleteUserDirect(nick);
+};
+
+// ── Announcements ─────────────────────────────────────────────
+window.sendAnnouncement = async function() {
+    const text  = (document.getElementById('an-text')?.value||'').trim();
+    const color = document.getElementById('an-type')?.value||'#ffd700';
+    if (!text) { showFBToast('escribe algo primero','#ff4466'); return; }
+    await window._fbSetDoc(window._fbDoc(db,'lospapus','announcement'),
+        {text, color, active:true, time:new Date().toISOString()});
+    addLog('ANNOUNCE', text);
+    showFBToast('📣 Anuncio enviado!','#ffd700');
+};
+window.clearAnnouncement = async function() {
+    await window._fbSetDoc(window._fbDoc(db,'lospapus','announcement'), {active:false,text:'',color:''});
+    showFBToast('❌ Anuncio quitado','#80b0cc');
+};
+window.quickMsg = function(text) {
+    const el = document.getElementById('an-text');
+    if (el) el.value = text;
+    window.sendAnnouncement();
+};
+
+// ── Admin reset wrappers ──────────────────────────────────────
+window.adminResetDeaths = function() { if(confirm('¿Reset todas las muertes?')) { window.resetDeathsFB(); addLog('RESET_DEATHS',''); } };
+window.adminResetVotes  = function() { if(confirm('¿Reset todos los votos?'))   { window.resetVotesFB();  addLog('RESET_VOTES','');  } };
+
+// ── Activity log ──────────────────────────────────────────────
+function addLog(action, detail) {
+    const logs = JSON.parse(localStorage.getItem(LOG_KEY)||'[]');
+    logs.unshift({action, detail, by: currentUser?.nick||'?', time: new Date().toISOString()});
+    localStorage.setItem(LOG_KEY, JSON.stringify(logs.slice(0,100)));
+}
+function loadLog() {
+    const logs = JSON.parse(localStorage.getItem(LOG_KEY)||'[]');
+    const el = document.getElementById('al-list');
+    if (!el) return;
+    if (!logs.length) { el.innerHTML='<p style="color:#445566;font-size:12px">log vacío</p>'; return; }
+    el.innerHTML = logs.map(l=>`
+        <div style="padding:8px 12px;background:rgba(0,0,0,.3);border-radius:6px;margin-bottom:6px;border-left:2px solid rgba(255,215,0,.3);font-size:11px;color:#cdd3de">
+            <div style="color:#ffd700;font-weight:600">${l.action}</div>
+            <div>${l.detail}</div>
+            <div style="color:#445566;font-size:10px">${new Date(l.time).toLocaleString('es')} · ${l.by}</div>
+        </div>`).join('');
+}
+window.clearLog = function() { if(confirm('¿Limpiar log?')) { localStorage.removeItem(LOG_KEY); loadLog(); } };
+
+// ── Helpers ───────────────────────────────────────────────────
+function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
+
+})(); // end IIFE
 
 </script>
 </body>
