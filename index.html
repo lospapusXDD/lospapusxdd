@@ -1486,12 +1486,17 @@
       <button class="admin-tab" onclick="adminTab(this,'users')">👥 Usuarios</button>
       <button class="admin-tab" onclick="adminTab(this,'announce')">📣 Anuncio</button>
       <button class="admin-tab" onclick="adminTab(this,'tablero')">💀 Tablero</button>
+      <button class="admin-tab" onclick="adminTab(this,'ranking')">☠ Ranking</button>
       <button class="admin-tab" onclick="adminTab(this,'bans')">🚫 Bans</button>
+      <button class="admin-tab" onclick="adminTab(this,'sitio')">🌐 Sitio</button>
+      <button class="admin-tab" onclick="adminTab(this,'datos')">💾 Datos</button>
+      <button class="admin-tab" onclick="adminTab(this,'fun')">🎭 Fun</button>
       <button class="admin-tab" onclick="adminTab(this,'log')">📋 Log</button>
     </div>
   </div>
   <div class="admin-body">
 
+    <!-- ══ STATS ══════════════════════════════════════════════ -->
     <div class="admin-page active" id="ap-stats">
       <div class="astat-grid">
         <div class="astat-card"><div class="val" id="as-users">-</div><div class="lbl">usuarios</div></div>
@@ -1499,21 +1504,54 @@
         <div class="astat-card"><div class="val" id="as-deaths">-</div><div class="lbl">muertes</div></div>
         <div class="astat-card"><div class="val" id="as-votes">-</div><div class="lbl">votos</div></div>
       </div>
+      <div class="astat-grid" style="margin-top:8px;">
+        <div class="astat-card"><div class="val" id="as-banned" style="color:#ff4466">-</div><div class="lbl">baneados</div></div>
+        <div class="astat-card"><div class="val" id="as-newusers" style="color:#00ff9d">-</div><div class="lbl">nuevos 7d</div></div>
+        <div class="astat-card"><div class="val" id="as-active" style="color:#00d4ff">-</div><div class="lbl">activos hoy</div></div>
+        <div class="astat-card"><div class="val" id="as-ghosts" style="color:#556677">-</div><div class="lbl">fantasmas</div></div>
+      </div>
       <div class="admin-section-title">🏆 muertes</div>
       <div id="as-death-rank"></div>
       <div class="admin-section-title" style="margin-top:16px;">☠ votos</div>
       <div id="as-vote-rank"></div>
+      <div class="admin-section-title" style="margin-top:16px;">⭐ papu del día</div>
+      <div id="as-potd" style="font-size:14px;color:#ffd700;padding:8px 0;"></div>
       <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <button class="abtn abtn-red" onclick="adminResetDeaths()">🗑 Reset muertes</button>
         <button class="abtn abtn-red" onclick="adminResetVotes()">🗑 Reset votos</button>
       </div>
     </div>
 
+    <!-- ══ USUARIOS ═══════════════════════════════════════════ -->
     <div class="admin-page" id="ap-users">
+      <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('all')">👥 Todos</button>
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('today')">🟢 Hoy</button>
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('week')">📅 Semana</button>
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('ghost')">👻 Fantasmas</button>
+      </div>
       <input class="admin-input" id="au-search" placeholder="buscar nick..." oninput="renderUsers()">
       <div id="au-list"></div>
+      <!-- Modal perfil usuario -->
+      <div id="au-profile" style="display:none;background:rgba(0,0,0,.6);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:14px;margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <span id="aup-nick" style="font-weight:700;font-size:15px;color:#fff;"></span>
+          <button onclick="document.getElementById('au-profile').style.display='none'" style="background:none;border:none;color:#80b0cc;cursor:pointer;font-size:16px;">✕</button>
+        </div>
+        <div id="aup-info" style="font-size:12px;color:#80b0cc;line-height:1.8;"></div>
+        <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+          <button class="abtn abtn-gold" style="font-size:11px;padding:6px;" onclick="promoteUser()">👑 Hacer admin</button>
+          <button class="abtn abtn-blue" style="font-size:11px;padding:6px;" onclick="demoteUser()">👤 Quitar admin</button>
+          <button class="abtn abtn-blue" style="font-size:11px;padding:6px;" onclick="resetUserPass()">🔑 Reset pass</button>
+          <button class="abtn abtn-red" style="font-size:11px;padding:6px;" onclick="deleteSelectedUser()">💥 Eliminar</button>
+        </div>
+        <div class="admin-section-title" style="margin-top:10px;">📝 nota privada</div>
+        <input class="admin-input" id="aup-note" placeholder="nota solo visible para ti...">
+        <button class="abtn abtn-gold" onclick="saveUserNote()">💾 Guardar nota</button>
+      </div>
     </div>
 
+    <!-- ══ ANUNCIO ════════════════════════════════════════════ -->
     <div class="admin-page" id="ap-announce">
       <p style="font-size:12px;color:#80b0cc;margin-bottom:12px;">aparece arriba del sitio para todos en tiempo real</p>
       <input class="admin-input" id="an-text" placeholder="mensaje...">
@@ -1522,6 +1560,8 @@
         <option value="#ff6b00">🔥 Hype</option>
         <option value="#ff4466">⚠️ Urgente</option>
         <option value="#00ff9d">✅ Info</option>
+        <option value="#c084fc">🎉 Fiesta</option>
+        <option value="#00d4ff">📢 Info cyan</option>
       </select>
       <button class="abtn abtn-gold" onclick="sendAnnouncement()">📣 Enviar</button>
       <button class="abtn abtn-red" onclick="clearAnnouncement()">❌ Quitar</button>
@@ -1530,18 +1570,43 @@
       <button class="abtn abtn-blue" onclick="quickMsg('💀 Jero en modo tóxico, cuidado')">💀 Jero tóxico</button>
       <button class="abtn abtn-blue" onclick="quickMsg('👑 Emilio al habla — atención')">👑 Yo hablo</button>
       <button class="abtn abtn-blue" onclick="quickMsg('🚨 Sitio en mantenimiento — vuelvo pronto')">🚨 Mantenimiento</button>
+      <button class="abtn abtn-blue" onclick="quickMsg('🎉 Feliz cumpleaños papus!')">🎉 Cumpleaños</button>
+      <button class="abtn abtn-blue" onclick="quickMsg('📢 Nuevo script agregado — vayan a verlo')">📢 Nuevo script</button>
     </div>
 
+    <!-- ══ TABLERO ════════════════════════════════════════════ -->
     <div class="admin-page" id="ap-tablero">
       <div class="admin-section-title">➕ agregar papu</div>
       <input class="admin-input" id="at-name" placeholder="nombre del papu...">
       <button class="abtn abtn-gold" onclick="addPapu()">➕ Agregar</button>
       <div class="admin-section-title" style="margin-top:16px;">✏️ editar muertes</div>
       <select class="admin-select" id="at-select"></select>
-      <input class="admin-input" id="at-deaths" type="number" placeholder="muertes..." min="0">
-      <button class="abtn abtn-gold" onclick="setPapuDeaths()">💾 Guardar</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;">
+        <button class="abtn abtn-blue" style="font-size:11px;padding:7px;" onclick="quickDeath(-1)">➖ 1</button>
+        <button class="abtn abtn-blue" style="font-size:11px;padding:7px;" onclick="quickDeath(1)">➕ 1</button>
+        <button class="abtn abtn-blue" style="font-size:11px;padding:7px;" onclick="quickDeath(10)">➕ 10</button>
+      </div>
+      <input class="admin-input" id="at-deaths" type="number" placeholder="setear muertes exactas..." min="0">
+      <button class="abtn abtn-gold" onclick="setPapuDeaths()">💾 Setear exacto</button>
+      <button class="abtn abtn-red" style="margin-top:6px;" onclick="resetOnePapuDeaths()">🗑 Reset este papu</button>
+      <div class="admin-section-title" style="margin-top:16px;">💥 eliminar papu</div>
+      <select class="admin-select" id="at-del-select"></select>
+      <button class="abtn abtn-red" onclick="deletePapu()">💥 Eliminar del tablero</button>
     </div>
 
+    <!-- ══ RANKING ════════════════════════════════════════════ -->
+    <div class="admin-page" id="ap-ranking">
+      <div class="admin-section-title">☠ editar votos</div>
+      <select class="admin-select" id="ar-select"></select>
+      <input class="admin-input" id="ar-votes" type="number" placeholder="votos exactos..." min="0">
+      <button class="abtn abtn-gold" onclick="setPapuVotes()">💾 Setear votos</button>
+      <button class="abtn abtn-red" style="margin-top:6px;" onclick="resetOnePapuVotes()">🗑 Reset este papu</button>
+      <div class="admin-section-title" style="margin-top:16px;">📊 ranking actual</div>
+      <div id="ar-list"></div>
+      <button class="abtn abtn-red" style="margin-top:12px;" onclick="adminResetVotes()">🗑 Reset TODOS los votos</button>
+    </div>
+
+    <!-- ══ BANS ═══════════════════════════════════════════════ -->
     <div class="admin-page" id="ap-bans">
       <div class="admin-section-title">🚫 banear usuario</div>
       <input class="admin-input" id="ab-nick" placeholder="nick...">
@@ -1557,9 +1622,65 @@
       <button class="abtn abtn-red" onclick="deleteUser()">💥 Eliminar</button>
     </div>
 
+    <!-- ══ SITIO ═══════════════════════════════════════════════ -->
+    <div class="admin-page" id="ap-sitio">
+      <div class="admin-section-title">🌐 estado del sitio</div>
+      <div id="asi-status" style="font-size:12px;color:#80b0cc;line-height:2;margin-bottom:12px;"></div>
+      <div class="admin-section-title">🔧 mantenimiento</div>
+      <p style="font-size:12px;color:#80b0cc;margin-bottom:8px;">bloquea el sitio para todos menos el admin</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button class="abtn abtn-red" onclick="setMaintenance(true)">🔧 Activar</button>
+        <button class="abtn abtn-green" onclick="setMaintenance(false)">✅ Desactivar</button>
+      </div>
+      <div class="admin-section-title" style="margin-top:16px;">🔄 acciones</div>
+      <button class="abtn abtn-blue" onclick="location.reload()">🔄 Recargar sitio</button>
+      <button class="abtn abtn-blue" onclick="showVersion()">📋 Ver versión</button>
+    </div>
+
+    <!-- ══ DATOS ═══════════════════════════════════════════════ -->
+    <div class="admin-page" id="ap-datos">
+      <div class="admin-section-title">📦 exportar</div>
+      <button class="abtn abtn-blue" onclick="exportAll()">📦 Export todo (JSON)</button>
+      <button class="abtn abtn-blue" onclick="exportUsers()">👥 Export usuarios</button>
+      <button class="abtn abtn-blue" onclick="exportDeaths()">💀 Export muertes</button>
+      <button class="abtn abtn-gold" onclick="backupAll()">💾 Backup completo</button>
+      <div class="admin-section-title" style="margin-top:16px;">📊 resumen</div>
+      <div id="ad-summary" style="font-size:12px;color:#80b0cc;line-height:2;"></div>
+    </div>
+
+    <!-- ══ FUN ═════════════════════════════════════════════════ -->
+    <div class="admin-page" id="ap-fun">
+      <div class="admin-section-title">🎭 fun tools</div>
+      <div id="af-potd" style="background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.2);border-radius:10px;padding:12px;margin-bottom:10px;font-size:13px;"></div>
+      <button class="abtn abtn-gold" onclick="showPapuOfDay()">⭐ Papu del día</button>
+      <button class="abtn abtn-blue" onclick="showWhoIsToxic()">☠ Índice tóxico</button>
+      <button class="abtn abtn-blue" onclick="showToxicQuote()">💬 Frase tóxica</button>
+      <div class="admin-section-title" style="margin-top:16px;">🔥 roast</div>
+      <select class="admin-select" id="af-roast-select">
+        <option value="jero">Jero</option>
+        <option value="gabriel">Gabriel</option>
+        <option value="sami">Sami</option>
+        <option value="emilio">Emilio (yo)</option>
+        <option value="luciana">Luciana</option>
+        <option value="akiro">Akiro</option>
+        <option value="daniel">Daniel</option>
+        <option value="isabella">Isabella</option>
+        <option value="samuel">Samuel</option>
+      </select>
+      <button class="abtn abtn-red" onclick="showRoast()">🔥 Roastear</button>
+      <div id="af-roast-result" style="margin-top:10px;font-size:13px;color:#ff9d6b;font-style:italic;display:none;padding:10px;background:rgba(255,68,0,.08);border-radius:8px;border:1px solid rgba(255,68,0,.2);"></div>
+      <div class="admin-section-title" style="margin-top:16px;">☠ índice tóxico</div>
+      <div id="af-toxic-index" style="font-size:12px;"></div>
+    </div>
+
+    <!-- ══ LOG ════════════════════════════════════════════════ -->
     <div class="admin-page" id="ap-log">
+      <input class="admin-input" id="al-filter" placeholder="filtrar log..." oninput="renderLog()">
       <div id="al-list"></div>
-      <button class="abtn abtn-red" style="margin-top:8px;" onclick="clearLog()">🗑 Limpiar</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+        <button class="abtn abtn-blue" onclick="exportLog()">📦 Exportar log</button>
+        <button class="abtn abtn-red" onclick="clearLog()">🗑 Limpiar</button>
+      </div>
     </div>
 
   </div>
@@ -4318,6 +4439,9 @@ CMD.help = function(){
   print(` <span class="a6">pacman</span> -Syu | -S pkg | -R pkg | -Ss query | -Q | -Qi pkg`);
   print(``);
   print(`<span class="a3 ab">Dev Tools:</span>`);
+  print(`<span class="a3 ab">Staff / Admin:</span>`);
+  print(` <span class="a6">papus</span> &lt;cmd&gt;   panel de staff (alias: staff, admin) — papus help para ver todo`);
+  print(``);
   print(` <span class="a6">git</span> init|clone|status|log|diff|add|commit|push|pull|branch|merge|rebase`);
   print(` <span class="a6">python3</span>     <span class="a6">node</span>       <span class="a6">vim</span>         <span class="a6">nano</span>        <span class="a6">emacs</span>      <span class="a6">make</span>`);
   print(` <span class="a6">gcc</span>         <span class="a6">gdb</span>        <span class="a6">strace</span>      <span class="a6">ldd</span>         <span class="a6">strings</span>    <span class="a6">xxd</span>`);
@@ -4358,6 +4482,941 @@ function autocomplete(partial, fullInput){
     else ti.value+=' ';
   } else if(matches.length>1){ tabN++; if(tabN>=2){ print(matches.join('  ')); tabN=0; } }
 }
+
+
+// =================== STAFF / ADMIN COMMANDS ===================
+// Requiere login como emilio para comandos sensibles
+// Uso: papus <comando> [args]
+// ─────────────────────────────────────────────────────────────
+
+function isStaff() {
+  const u = window.currentUser;
+  return u && u.nick && u.nick.toLowerCase() === 'emilio';
+}
+function staffOnly(cb) {
+  if (!isStaff()) { print('<span class="a1">acceso denegado — solo para emilio 👑</span>'); return; }
+  cb();
+}
+function noDb(cb) {
+  if (!window._db) { print('<span class="a1">firebase no conectado todavía</span>'); return; }
+  cb();
+}
+function fmtUser(u) {
+  const ban  = u.banned ? '<span class="a1">[BANNED]</span> ' : '';
+  const adm  = u.admin  ? '<span class="a3">[ADMIN]</span> '  : '';
+  const last = u.lastLogin ? new Date(u.lastLogin).toLocaleString('es') : 'nunca';
+  return `${ban}${adm}<span class="a2b">${u.nick}</span>  logins:<span class="a3">${u.loginCount||1}</span>  último:<span class="adim">${last}</span>`;
+}
+function randHex(n=8){ let s=''; for(let i=0;i<n;i++) s+='0123456789abcdef'[Math.floor(Math.random()*16)]; return s; }
+
+// ─── Main dispatcher ─────────────────────────────────────────
+CMD.papus = async function(args) {
+  const sub = args[0] || 'help';
+  const rest = args.slice(1);
+
+  // ══ HELP ══════════════════════════════════════════════════
+  if (sub === 'help' || sub === '-h' || sub === '--help') {
+    print(`<span class="a3 ab">╔══════════════════════════════════════════════════════╗</span>`);
+    print(`<span class="a3 ab">║          LOS PAPUS — STAFF COMMAND CENTER            ║</span>`);
+    print(`<span class="a3 ab">╚══════════════════════════════════════════════════════╝</span>`);
+    print(`<span class="adim">uso: papus &lt;comando&gt; [args...]   |   alias: staff, admin</span>`);
+    print(``);
+    print(`<span class="a2b ab">👥 USUARIOS</span>`);
+    print(` <span class="a6">users</span>               listar todos los usuarios`);
+    print(` <span class="a6">users --banned</span>      solo usuarios baneados`);
+    print(` <span class="a6">users --admins</span>      solo admins`);
+    print(` <span class="a6">users --sort logins</span> ordenar por logins`);
+    print(` <span class="a6">users --sort date</span>   ordenar por último acceso`);
+    print(` <span class="a6">user &lt;nick&gt;</span>         ver perfil completo de un usuario`);
+    print(` <span class="a6">whois &lt;nick&gt;</span>        info rápida de usuario`);
+    print(` <span class="a6">ban &lt;nick&gt; [razón]</span>  banear usuario`);
+    print(` <span class="a6">unban &lt;nick&gt;</span>        desbanear usuario`);
+    print(` <span class="a6">deluser &lt;nick&gt;</span>      eliminar cuenta permanentemente`);
+    print(` <span class="a6">promote &lt;nick&gt;</span>      dar admin a usuario`);
+    print(` <span class="a6">demote &lt;nick&gt;</span>       quitarle admin a usuario`);
+    print(` <span class="a6">resetpass &lt;nick&gt;</span>    forzar reset de contraseña`);
+    print(` <span class="a6">note &lt;nick&gt; &lt;txt&gt;</span>   agregar nota privada a usuario`);
+    print(` <span class="a6">notes &lt;nick&gt;</span>        ver notas de usuario`);
+    print(` <span class="a6">delnote &lt;nick&gt;</span>      borrar notas de usuario`);
+    print(` <span class="a6">usercount</span>           total de cuentas registradas`);
+    print(` <span class="a6">activetoday</span>         usuarios que entraron hoy`);
+    print(` <span class="a6">activethisweek</span>      usuarios activos esta semana`);
+    print(` <span class="a6">ghost</span>               usuarios sin actividad +30 días`);
+    print(` <span class="a6">newusers</span>            cuentas creadas en los últimos 7 días`);
+    print(``);
+    print(`<span class="a2b ab">💀 MUERTES</span>`);
+    print(` <span class="a6">deaths</span>              ver tablero de muertes`);
+    print(` <span class="a6">deaths --sort</span>       ordenar de mayor a menor`);
+    print(` <span class="a6">setdeaths &lt;n&gt; &lt;val&gt;</span> setear muertes de un papu`);
+    print(` <span class="a6">adddeaths &lt;n&gt; &lt;val&gt;</span> sumar muertes a un papu`);
+    print(` <span class="a6">subdeaths &lt;n&gt; &lt;val&gt;</span> restar muertes a un papu`);
+    print(` <span class="a6">resetdeaths</span>         resetear TODAS las muertes a 0`);
+    print(` <span class="a6">resetdeaths &lt;nick&gt;</span>  resetear muertes de un papu`);
+    print(` <span class="a6">topkiller</span>           papu con más muertes`);
+    print(` <span class="a6">deaths --history</span>    historial de cambios`);
+    print(``);
+    print(`<span class="a2b ab">☠ RANKING / VOTOS</span>`);
+    print(` <span class="a6">votes</span>               ver ranking de toxicidad`);
+    print(` <span class="a6">setvotes &lt;n&gt; &lt;val&gt;</span>  setear votos de un papu`);
+    print(` <span class="a6">resetvotes</span>          resetear TODOS los votos`);
+    print(` <span class="a6">resetvotes &lt;nick&gt;</span>   resetear votos de un papu`);
+    print(` <span class="a6">toptoxico</span>           papu más votado`);
+    print(``);
+    print(`<span class="a2b ab">📣 ANUNCIOS</span>`);
+    print(` <span class="a6">announce &lt;msg&gt;</span>      publicar anuncio global`);
+    print(` <span class="a6">announce --hype &lt;msg&gt;</span>   anuncio naranja (hype)`);
+    print(` <span class="a6">announce --urgent &lt;msg&gt;</span> anuncio rojo (urgente)`);
+    print(` <span class="a6">announce --info &lt;msg&gt;</span>   anuncio verde (info)`);
+    print(` <span class="a6">clearannounce</span>       quitar anuncio activo`);
+    print(` <span class="a6">announce --status</span>   ver si hay anuncio activo`);
+    print(``);
+    print(`<span class="a2b ab">🌐 SITIO</span>`);
+    print(` <span class="a6">status</span>              estado general del sitio`);
+    print(` <span class="a6">online</span>              usuarios online ahora`);
+    print(` <span class="a6">maintenance on</span>      activar modo mantenimiento`);
+    print(` <span class="a6">maintenance off</span>     desactivar modo mantenimiento`);
+    print(` <span class="a6">reload</span>              forzar recarga de la página`);
+    print(` <span class="a6">version</span>             ver versión del sitio`);
+    print(` <span class="a6">uptime</span>              tiempo que lleva el sitio online`);
+    print(` <span class="a6">changelog</span>           ver cambios recientes`);
+    print(``);
+    print(`<span class="a2b ab">📊 STATS</span>`);
+    print(` <span class="a6">stats</span>               estadísticas generales`);
+    print(` <span class="a6">stats --users</span>       stats de usuarios`);
+    print(` <span class="a6">stats --deaths</span>      stats de muertes`);
+    print(` <span class="a6">stats --votes</span>       stats de votos`);
+    print(` <span class="a6">stats --firebase</span>    uso de firebase`);
+    print(` <span class="a6">report</span>              reporte completo exportable`);
+    print(``);
+    print(`<span class="a2b ab">📋 LOG</span>`);
+    print(` <span class="a6">log</span>                 ver log de acciones admin`);
+    print(` <span class="a6">log --last &lt;n&gt;</span>      ver últimas N entradas`);
+    print(` <span class="a6">log --filter &lt;txt&gt;</span>  filtrar log por texto`);
+    print(` <span class="a6">clearlog</span>            limpiar log`);
+    print(``);
+    print(`<span class="a2b ab">🔧 DATOS</span>`);
+    print(` <span class="a6">export</span>              exportar todos los datos a JSON`);
+    print(` <span class="a6">export --users</span>      exportar solo usuarios`);
+    print(` <span class="a6">export --deaths</span>     exportar solo muertes`);
+    print(` <span class="a6">backup</span>              crear backup completo`);
+    print(` <span class="a6">addpapu &lt;nombre&gt;</span>    agregar papu al tablero`);
+    print(` <span class="a6">delpapu &lt;nombre&gt;</span>    eliminar papu del tablero`);
+    print(``);
+    print(`<span class="a2b ab">🎭 FUN / EASTER EGGS</span>`);
+    print(` <span class="a6">jero</span>                invocar el modo tóxico`);
+    print(` <span class="a6">samuel</span>              estado de samuel`);
+    print(` <span class="a6">papuoftheday</span>       papu destacado del día`);
+    print(` <span class="a6">roast &lt;nick&gt;</span>        generar roast para un papu`);
+    print(` <span class="a6">muertepoema</span>         poema sobre las muertes`);
+    print(` <span class="a6">toxicquote</span>          frase tóxica aleatoria`);
+    print(` <span class="a6">whoistoxic</span>          calcular quién es más tóxico`);
+    print(` <span class="a6">rip &lt;nick&gt;</span>          RIP dedicado a un papu`);
+    print(` <span class="a6">gg</span>                  mensaje de gg`);
+    print(` <span class="a6">ratio &lt;nick&gt;</span>        calcular ratio tóxico`);
+    print(``);
+    return;
+  }
+
+  // ══ USUARIOS ══════════════════════════════════════════════
+  if (sub === 'users') {
+    staffOnly(() => noDb(async () => {
+      const snap = await window._fbGetDocs(window._fbCollection(window._db,'users'));
+      let users = [];
+      snap.forEach(d => users.push(d.data()));
+      if (rest.includes('--banned'))      users = users.filter(u => u.banned);
+      if (rest.includes('--admins'))      users = users.filter(u => u.admin);
+      if (rest.includes('--sort') && rest[rest.indexOf('--sort')+1]==='logins')
+        users.sort((a,b)=>(b.loginCount||0)-(a.loginCount||0));
+      else if (rest.includes('--sort') && rest[rest.indexOf('--sort')+1]==='date')
+        users.sort((a,b)=>(b.lastLogin||'').localeCompare(a.lastLogin||''));
+      else users.sort((a,b)=>a.nick.localeCompare(b.nick));
+      print(`<span class="a3 ab">usuarios registrados: ${users.length}</span>`);
+      print(`${'─'.repeat(60)}`);
+      users.forEach((u,i) => print(` ${String(i+1).padStart(2,'0')}. ${fmtUser(u)}`));
+    }));
+    return;
+  }
+
+  if (sub === 'user' || sub === 'whois') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      if (!nick) { print('<span class="a1">uso: papus user &lt;nick&gt;</span>'); return; }
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'users',nick.toLowerCase()));
+      if (!snap.exists()) { print(`<span class="a1">usuario '${nick}' no encontrado</span>`); return; }
+      const u = snap.data();
+      print(`<span class="a3 ab">╔═ PERFIL: ${u.nick.toUpperCase()} ═════════════════════</span>`);
+      print(` <span class="a6">nick:       </span>${u.nick}`);
+      print(` <span class="a6">admin:      </span>${u.admin ? '<span class="a3">SÍ 👑</span>' : 'no'}`);
+      print(` <span class="a6">banned:     </span>${u.banned ? `<span class="a1">SÍ 🚫 — ${u.banReason||'sin razón'}</span>` : 'no'}`);
+      print(` <span class="a6">logins:     </span>${u.loginCount||1}`);
+      print(` <span class="a6">creado:     </span>${u.createdAt ? new Date(u.createdAt).toLocaleString('es') : 'desconocido'}`);
+      print(` <span class="a6">último acc: </span>${u.lastLogin ? new Date(u.lastLogin).toLocaleString('es') : 'nunca'}`);
+      if (u.note) print(` <span class="a6">nota admin: </span><span class="adim">${u.note}</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'usercount') {
+    staffOnly(() => noDb(async () => {
+      const snap = await window._fbGetDocs(window._fbCollection(window._db,'users'));
+      let total=0, banned=0, admins=0;
+      snap.forEach(d => { total++; if(d.data().banned) banned++; if(d.data().admin) admins++; });
+      print(`<span class="a3 ab">total usuarios: ${total}</span>`);
+      print(` admins: <span class="a3">${admins}</span>   baneados: <span class="a1">${banned}</span>   normales: <span class="a6">${total-banned-admins}</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'activetoday') {
+    staffOnly(() => noDb(async () => {
+      const snap = await window._fbGetDocs(window._fbCollection(window._db,'users'));
+      const today = new Date().toDateString();
+      const active = [];
+      snap.forEach(d => {
+        const u = d.data();
+        if (u.lastLogin && new Date(u.lastLogin).toDateString() === today) active.push(u);
+      });
+      print(`<span class="a3 ab">activos hoy: ${active.length}</span>`);
+      active.forEach(u => print(` • ${fmtUser(u)}`));
+    }));
+    return;
+  }
+
+  if (sub === 'activethisweek') {
+    staffOnly(() => noDb(async () => {
+      const snap = await window._fbGetDocs(window._fbCollection(window._db,'users'));
+      const week = Date.now() - 7*24*3600*1000;
+      const active = [];
+      snap.forEach(d => {
+        const u = d.data();
+        if (u.lastLogin && new Date(u.lastLogin).getTime() > week) active.push(u);
+      });
+      print(`<span class="a3 ab">activos esta semana: ${active.length}</span>`);
+      active.sort((a,b)=>(b.lastLogin||'').localeCompare(a.lastLogin||''));
+      active.forEach(u => print(` • ${fmtUser(u)}`));
+    }));
+    return;
+  }
+
+  if (sub === 'ghost') {
+    staffOnly(() => noDb(async () => {
+      const snap = await window._fbGetDocs(window._fbCollection(window._db,'users'));
+      const cutoff = Date.now() - 30*24*3600*1000;
+      const ghosts = [];
+      snap.forEach(d => {
+        const u = d.data();
+        if (!u.lastLogin || new Date(u.lastLogin).getTime() < cutoff) ghosts.push(u);
+      });
+      print(`<span class="a1 ab">👻 fantasmas (+30 días sin entrar): ${ghosts.length}</span>`);
+      ghosts.forEach(u => print(` • ${fmtUser(u)}`));
+    }));
+    return;
+  }
+
+  if (sub === 'newusers') {
+    staffOnly(() => noDb(async () => {
+      const snap = await window._fbGetDocs(window._fbCollection(window._db,'users'));
+      const week = Date.now() - 7*24*3600*1000;
+      const nuevo = [];
+      snap.forEach(d => {
+        const u = d.data();
+        if (u.createdAt && new Date(u.createdAt).getTime() > week) nuevo.push(u);
+      });
+      print(`<span class="a3 ab">🆕 cuentas nuevas (últimos 7 días): ${nuevo.length}</span>`);
+      nuevo.sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+      nuevo.forEach(u => print(` • ${fmtUser(u)}`));
+    }));
+    return;
+  }
+
+  if (sub === 'ban') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      const reason = rest.slice(1).join(' ') || 'sin razón';
+      if (!nick) { print('<span class="a1">uso: papus ban &lt;nick&gt; [razón]</span>'); return; }
+      if (nick.toLowerCase() === 'emilio') { print('<span class="a1">no puedes banearte a ti mismo 💀</span>'); return; }
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'users',nick.toLowerCase()));
+      if (!snap.exists()) { print(`<span class="a1">'${nick}' no encontrado</span>`); return; }
+      await window._fbUpdateDoc(window._fbDoc(window._db,'users',nick.toLowerCase()),{banned:true,banReason:reason});
+      print(`<span class="a1">🚫 ${nick} baneado — razón: ${reason}</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'unban') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      if (!nick) { print('<span class="a1">uso: papus unban &lt;nick&gt;</span>'); return; }
+      await window._fbUpdateDoc(window._fbDoc(window._db,'users',nick.toLowerCase()),{banned:false,banReason:''});
+      print(`<span class="a3">✅ ${nick} desbaneado</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'deluser') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      if (!nick) { print('<span class="a1">uso: papus deluser &lt;nick&gt;</span>'); return; }
+      if (nick.toLowerCase() === 'emilio') { print('<span class="a1">no puedes borrarte a ti mismo</span>'); return; }
+      try {
+        const {deleteDoc} = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+        await deleteDoc(window._fbDoc(window._db,'users',nick.toLowerCase()));
+        print(`<span class="a1">💥 cuenta '${nick}' eliminada permanentemente</span>`);
+      } catch(e) { print(`<span class="a1">error: ${e.message}</span>`); }
+    }));
+    return;
+  }
+
+  if (sub === 'promote') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      if (!nick) { print('<span class="a1">uso: papus promote &lt;nick&gt;</span>'); return; }
+      await window._fbUpdateDoc(window._fbDoc(window._db,'users',nick.toLowerCase()),{admin:true});
+      print(`<span class="a3">👑 ${nick} ahora es admin</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'demote') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      if (!nick) { print('<span class="a1">uso: papus demote &lt;nick&gt;</span>'); return; }
+      if (nick.toLowerCase() === 'emilio') { print('<span class="a1">no puedes demotearte a ti mismo</span>'); return; }
+      await window._fbUpdateDoc(window._fbDoc(window._db,'users',nick.toLowerCase()),{admin:false});
+      print(`<span class="adim">👤 ${nick} ya no es admin</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'resetpass') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      if (!nick) { print('<span class="a1">uso: papus resetpass &lt;nick&gt;</span>'); return; }
+      const tmpPass = randHex(4);
+      function hashPass(p){let h=5381;for(let i=0;i<p.length;i++)h=((h<<5)+h)^p.charCodeAt(i);return 'p'+(h>>>0).toString(36)+p.length.toString(36);}
+      await window._fbUpdateDoc(window._fbDoc(window._db,'users',nick.toLowerCase()),{hash:hashPass(tmpPass)});
+      print(`<span class="a3 ab">✅ contraseña de ${nick} reseteada</span>`);
+      print(`<span class="a3">nueva contraseña temporal: <span class="ab">${tmpPass}</span></span>`);
+      print(`<span class="adim">díselo por WhatsApp para que pueda entrar y cambiarla</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'note') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      const nota = rest.slice(1).join(' ');
+      if (!nick || !nota) { print('<span class="a1">uso: papus note &lt;nick&gt; &lt;texto&gt;</span>'); return; }
+      await window._fbUpdateDoc(window._fbDoc(window._db,'users',nick.toLowerCase()),{note:nota});
+      print(`<span class="a3">📝 nota guardada en ${nick}</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'notes') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      if (!nick) { print('<span class="a1">uso: papus notes &lt;nick&gt;</span>'); return; }
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'users',nick.toLowerCase()));
+      if (!snap.exists()) { print(`<span class="a1">'${nick}' no encontrado</span>`); return; }
+      const nota = snap.data().note;
+      if (!nota) print(`<span class="adim">sin notas para ${nick}</span>`);
+      else print(`<span class="a3">📝 nota de ${nick}:</span> ${nota}`);
+    }));
+    return;
+  }
+
+  if (sub === 'delnote') {
+    staffOnly(() => noDb(async () => {
+      const nick = rest[0];
+      if (!nick) { print('<span class="a1">uso: papus delnote &lt;nick&gt;</span>'); return; }
+      await window._fbUpdateDoc(window._fbDoc(window._db,'users',nick.toLowerCase()),{note:''});
+      print(`<span class="adim">nota de ${nick} eliminada</span>`);
+    }));
+    return;
+  }
+
+  // ══ MUERTES ═══════════════════════════════════════════════
+  if (sub === 'deaths') {
+    noDb(async () => {
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths'));
+      if (!snap.exists()) { print('<span class="a1">no hay datos de muertes</span>'); return; }
+      let entries = Object.entries(snap.data());
+      if (rest.includes('--sort')) entries.sort((a,b)=>b[1]-a[1]);
+      const total = entries.reduce((a,b)=>a+b[1],0);
+      print(`<span class="a1 ab">💀 TABLERO DE MUERTES (total: ${total})</span>`);
+      print(`${'─'.repeat(40)}`);
+      entries.forEach(([name,val],i) => {
+        const bar = '█'.repeat(Math.min(20,Math.floor(val/Math.max(...entries.map(e=>e[1]))*20)));
+        print(` ${['🥇','🥈','🥉'][i]||'💀'} <span class="a2b">${name.padEnd(12)}</span> <span class="a1">${String(val).padStart(4)}</span>  <span class="adim">${bar}</span>`);
+      });
+    });
+    return;
+  }
+
+  if (sub === 'setdeaths') {
+    staffOnly(() => noDb(async () => {
+      const name = rest[0], val = parseInt(rest[1]);
+      if (!name || isNaN(val) || val<0) { print('<span class="a1">uso: papus setdeaths &lt;nombre&gt; &lt;valor&gt;</span>'); return; }
+      await window._fbUpdateDoc(window._fbDoc(window._db,'lospapus','deaths'),{[name]:val});
+      print(`<span class="a3">💾 ${name}: ${val} muertes</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'adddeaths') {
+    staffOnly(() => noDb(async () => {
+      const name = rest[0], val = parseInt(rest[1]);
+      if (!name || isNaN(val)) { print('<span class="a1">uso: papus adddeaths &lt;nombre&gt; &lt;valor&gt;</span>'); return; }
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths'));
+      const cur = snap.exists() ? (snap.data()[name]||0) : 0;
+      await window._fbUpdateDoc(window._fbDoc(window._db,'lospapus','deaths'),{[name]:cur+val});
+      print(`<span class="a3">➕ ${name}: ${cur} → ${cur+val} muertes</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'subdeaths') {
+    staffOnly(() => noDb(async () => {
+      const name = rest[0], val = parseInt(rest[1]);
+      if (!name || isNaN(val)) { print('<span class="a1">uso: papus subdeaths &lt;nombre&gt; &lt;valor&gt;</span>'); return; }
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths'));
+      const cur = snap.exists() ? (snap.data()[name]||0) : 0;
+      const nw = Math.max(0, cur-val);
+      await window._fbUpdateDoc(window._fbDoc(window._db,'lospapus','deaths'),{[name]:nw});
+      print(`<span class="adim">➖ ${name}: ${cur} → ${nw} muertes</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'resetdeaths') {
+    staffOnly(() => noDb(async () => {
+      const name = rest[0];
+      if (name) {
+        await window._fbUpdateDoc(window._fbDoc(window._db,'lospapus','deaths'),{[name]:0});
+        print(`<span class="a1">🗑 muertes de ${name} reseteadas</span>`);
+      } else {
+        if (!confirm('¿Reset TODAS las muertes?')) { print('<span class="adim">cancelado</span>'); return; }
+        window.resetDeathsFB && window.resetDeathsFB();
+        print(`<span class="a1">🗑 todas las muertes reseteadas</span>`);
+      }
+    }));
+    return;
+  }
+
+  if (sub === 'topkiller') {
+    noDb(async () => {
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths'));
+      if (!snap.exists()) return;
+      const entries = Object.entries(snap.data()).sort((a,b)=>b[1]-a[1]);
+      const [name, val] = entries[0];
+      print(`<span class="a1 ab">💀 TOP KILLER: ${name.toUpperCase()} con ${val} muertes</span>`);
+      print(`<span class="adim">ese man no sabe jugar 💀</span>`);
+    });
+    return;
+  }
+
+  // ══ VOTOS ═════════════════════════════════════════════════
+  if (sub === 'votes') {
+    noDb(async () => {
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes'));
+      if (!snap.exists()) { print('<span class="a1">sin datos de votos</span>'); return; }
+      const entries = Object.entries(snap.data()).sort((a,b)=>b[1]-a[1]);
+      const total = entries.reduce((a,b)=>a+b[1],0);
+      print(`<span class="a5 ab">☠ RANKING TOXICIDAD (total votos: ${total})</span>`);
+      print(`${'─'.repeat(40)}`);
+      entries.forEach(([name,val],i) => {
+        print(` ${['☠️','💀','🩸'][i]||'⚡'} <span class="a2b">${name.padEnd(12)}</span> <span class="a5">${String(val).padStart(4)} votos</span>`);
+      });
+    });
+    return;
+  }
+
+  if (sub === 'setvotes') {
+    staffOnly(() => noDb(async () => {
+      const name = rest[0], val = parseInt(rest[1]);
+      if (!name || isNaN(val) || val<0) { print('<span class="a1">uso: papus setvotes &lt;nombre&gt; &lt;valor&gt;</span>'); return; }
+      await window._fbUpdateDoc(window._fbDoc(window._db,'lospapus','votes'),{[name]:val});
+      print(`<span class="a3">💾 ${name}: ${val} votos</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'resetvotes') {
+    staffOnly(() => noDb(async () => {
+      const name = rest[0];
+      if (name) {
+        await window._fbUpdateDoc(window._fbDoc(window._db,'lospapus','votes'),{[name]:0});
+        print(`<span class="a1">🗑 votos de ${name} reseteados</span>`);
+      } else {
+        if (!confirm('¿Reset TODOS los votos?')) { print('<span class="adim">cancelado</span>'); return; }
+        window.resetVotesFB && window.resetVotesFB();
+        print(`<span class="a1">🗑 todos los votos reseteados</span>`);
+      }
+    }));
+    return;
+  }
+
+  if (sub === 'toptoxico') {
+    noDb(async () => {
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes'));
+      if (!snap.exists()) return;
+      const entries = Object.entries(snap.data()).sort((a,b)=>b[1]-a[1]);
+      const [name, val] = entries[0];
+      print(`<span class="a5 ab">☠ MÁS TÓXICO: ${name.toUpperCase()} con ${val} votos</span>`);
+      print(`<span class="adim">qué sorpresa (no)</span>`);
+    });
+    return;
+  }
+
+  // ══ ANUNCIOS ══════════════════════════════════════════════
+  if (sub === 'announce') {
+    staffOnly(() => noDb(async () => {
+      if (rest.includes('--status')) {
+        const snap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','announcement'));
+        if (!snap.exists() || !snap.data().active) print('<span class="adim">no hay anuncio activo</span>');
+        else print(`<span class="a3 ab">anuncio activo:</span> "${snap.data().text}"`);
+        return;
+      }
+      let color = '#ffd700', msgParts = [...rest];
+      if (rest[0]==='--hype')   { color='#ff6b00'; msgParts=rest.slice(1); }
+      if (rest[0]==='--urgent') { color='#ff4466'; msgParts=rest.slice(1); }
+      if (rest[0]==='--info')   { color='#00ff9d'; msgParts=rest.slice(1); }
+      const msg = msgParts.join(' ');
+      if (!msg) { print('<span class="a1">uso: papus announce [--hype|--urgent|--info] &lt;mensaje&gt;</span>'); return; }
+      await window._fbSetDoc(window._fbDoc(window._db,'lospapus','announcement'),
+        {text:msg, color, active:true, time:new Date().toISOString()});
+      print(`<span class="a3">📣 anuncio publicado: "${msg}"</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'clearannounce') {
+    staffOnly(() => noDb(async () => {
+      await window._fbSetDoc(window._fbDoc(window._db,'lospapus','announcement'),{active:false,text:'',color:''});
+      print('<span class="adim">❌ anuncio quitado</span>');
+    }));
+    return;
+  }
+
+  // ══ SITIO ═════════════════════════════════════════════════
+  if (sub === 'status') {
+    noDb(async () => {
+      const [oSnap, mSnap, aSnap] = await Promise.all([
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','online')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','settings')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','announcement')),
+      ]);
+      print(`<span class="a3 ab">╔═ ESTADO DEL SITIO ═══════════════════╗</span>`);
+      print(` <span class="a6">online:        </span><span class="a3">${oSnap.exists()?oSnap.data().count||1:1} usuarios</span>`);
+      print(` <span class="a6">mantenimiento: </span>${mSnap.exists()&&mSnap.data().on ? '<span class="a1">ACTIVO 🔧</span>' : '<span class="a3">apagado ✅</span>'}`);
+      print(` <span class="a6">anuncio:       </span>${aSnap.exists()&&aSnap.data().active ? `<span class="a3">activo: "${aSnap.data().text}"</span>` : '<span class="adim">ninguno</span>'}`);
+      print(` <span class="a6">firebase:      </span><span class="a3">conectado ✅</span>`);
+      print(` <span class="a6">versión:       </span>v13 (clean auth)`);
+    });
+    return;
+  }
+
+  if (sub === 'online') {
+    noDb(async () => {
+      const snap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','online'));
+      const n = snap.exists() ? snap.data().count||1 : 1;
+      print(`<span class="a3">🟢 ${n} usuario${n!==1?'s':''} online ahora mismo</span>`);
+    });
+    return;
+  }
+
+  if (sub === 'maintenance') {
+    staffOnly(() => noDb(async () => {
+      const mode = rest[0];
+      if (mode !== 'on' && mode !== 'off') { print('<span class="a1">uso: papus maintenance on|off</span>'); return; }
+      await window._fbSetDoc(window._fbDoc(window._db,'lospapus','settings'),{on: mode==='on'});
+      if (mode === 'on') print('<span class="a1">🔧 modo mantenimiento ACTIVADO — solo admin puede entrar</span>');
+      else print('<span class="a3">✅ modo mantenimiento desactivado</span>');
+    }));
+    return;
+  }
+
+  if (sub === 'reload') {
+    staffOnly(() => {
+      print('<span class="a3">🔄 recargando página...</span>');
+      setTimeout(() => location.reload(), 800);
+    });
+    return;
+  }
+
+  if (sub === 'version') {
+    print(`<span class="a3 ab">Los Papus Web</span>`);
+    print(` versión:   <span class="a6">v13 (clean auth + admin)</span>`);
+    print(` firebase:  <span class="a6">lospapusxdd-e5b96</span>`);
+    print(` url:       <span class="a6">lospapusxdd.github.io/lospapusxdd</span>`);
+    print(` admin:     <span class="a3">emilio 👑</span>`);
+    return;
+  }
+
+  if (sub === 'changelog') {
+    print(`<span class="a3 ab">📋 CHANGELOG</span>`);
+    print(` <span class="a6">v13</span>  auth + admin panel reescritos limpio`);
+    print(` <span class="a6">v13</span>  galaxy background en login`);
+    print(` <span class="a6">v13</span>  daniel e isabella agregados`);
+    print(` <span class="a6">v13</span>  juan alejandro eliminado 💀`);
+    print(` <span class="a6">v12</span>  pwa, service worker, offline`);
+    print(` <span class="a6">v11</span>  performance fixes, aurora blur`);
+    print(` <span class="a6">v10</span>  terminal linux 170 comandos`);
+    print(` <span class="a6">v9</span>   themes, dark modes`);
+    print(` <span class="a6">v8</span>   firebase muertes + votos realtime`);
+    return;
+  }
+
+  // ══ STATS ═════════════════════════════════════════════════
+  if (sub === 'stats') {
+    noDb(async () => {
+      const [uSnap, dSnap, vSnap, oSnap] = await Promise.all([
+        window._fbGetDocs(window._fbCollection(window._db,'users')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','online')),
+      ]);
+      let users=[], deaths={}, votes={};
+      uSnap.forEach(d=>users.push(d.data()));
+      if(dSnap.exists()) deaths=dSnap.data();
+      if(vSnap.exists()) votes=vSnap.data();
+      const totalDeaths = Object.values(deaths).reduce((a,b)=>a+b,0);
+      const totalVotes  = Object.values(votes).reduce((a,b)=>a+b,0);
+      const banned = users.filter(u=>u.banned).length;
+      print(`<span class="a3 ab">╔═ ESTADÍSTICAS LOS PAPUS ═══════════╗</span>`);
+      print(` <span class="a6">usuarios:</span>    ${users.length} total  <span class="a1">${banned} baneados</span>`);
+      print(` <span class="a6">online:</span>      ${oSnap.exists()?oSnap.data().count||1:1}`);
+      print(` <span class="a6">muertes:</span>     ${totalDeaths} en total`);
+      print(` <span class="a6">votos tox:</span>   ${totalVotes} en total`);
+      if(rest.includes('--deaths')||rest.includes('--votes')||rest.includes('--users')) {
+        if(rest.includes('--deaths')){
+          print(``); print(`<span class="a1 ab">💀 muertes por papu:</span>`);
+          Object.entries(deaths).sort((a,b)=>b[1]-a[1]).forEach(([n,v])=>print(` ${n.padEnd(12)} ${v}`));
+        }
+        if(rest.includes('--votes')){
+          print(``); print(`<span class="a5 ab">☠ votos por papu:</span>`);
+          Object.entries(votes).sort((a,b)=>b[1]-a[1]).forEach(([n,v])=>print(` ${n.padEnd(12)} ${v}`));
+        }
+        if(rest.includes('--users')){
+          print(``); print(`<span class="a2b ab">👥 usuarios:</span>`);
+          users.sort((a,b)=>(b.loginCount||0)-(a.loginCount||0)).forEach(u=>print(` ${fmtUser(u)}`));
+        }
+      }
+    });
+    return;
+  }
+
+  if (sub === 'report') {
+    staffOnly(() => noDb(async () => {
+      const [uSnap, dSnap, vSnap] = await Promise.all([
+        window._fbGetDocs(window._fbCollection(window._db,'users')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes')),
+      ]);
+      const users=[]; uSnap.forEach(d=>users.push(d.data()));
+      const report = {
+        generatedAt: new Date().toISOString(),
+        users: users.map(u=>({nick:u.nick,logins:u.loginCount,banned:u.banned,createdAt:u.createdAt})),
+        deaths: dSnap.exists()?dSnap.data():{},
+        votes: vSnap.exists()?vSnap.data():{},
+      };
+      const blob = new Blob([JSON.stringify(report,null,2)],{type:'application/json'});
+      const a = document.createElement('a'); a.href=URL.createObjectURL(blob);
+      a.download=`papus-report-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      print(`<span class="a3">📊 reporte generado y descargado ✅</span>`);
+    }));
+    return;
+  }
+
+  // ══ LOG ═══════════════════════════════════════════════════
+  if (sub === 'log') {
+    staffOnly(() => {
+      let logs = JSON.parse(localStorage.getItem('papus_adminlog_v2')||'[]');
+      if (rest.includes('--filter')) {
+        const q = rest[rest.indexOf('--filter')+1]||'';
+        logs = logs.filter(l => l.action.includes(q.toUpperCase())||l.detail.includes(q));
+      }
+      const n = rest.includes('--last') ? parseInt(rest[rest.indexOf('--last')+1])||10 : logs.length;
+      const show = logs.slice(0, n);
+      print(`<span class="a3 ab">📋 LOG ADMIN (${show.length}/${logs.length} entradas)</span>`);
+      print(`${'─'.repeat(50)}`);
+      if (!show.length) { print('<span class="adim">log vacío</span>'); return; }
+      show.forEach(l => {
+        const t = new Date(l.time).toLocaleString('es');
+        print(` <span class="a3">${l.action.padEnd(15)}</span> <span class="a6">${l.detail}</span> <span class="adim">${t}</span>`);
+      });
+    });
+    return;
+  }
+
+  if (sub === 'clearlog') {
+    staffOnly(() => {
+      if (!confirm('¿Limpiar todo el log?')) { print('<span class="adim">cancelado</span>'); return; }
+      localStorage.removeItem('papus_adminlog_v2');
+      print('<span class="adim">🗑 log limpiado</span>');
+    });
+    return;
+  }
+
+  // ══ EXPORT / BACKUP ═══════════════════════════════════════
+  if (sub === 'export') {
+    staffOnly(() => noDb(async () => {
+      const onlyUsers  = rest.includes('--users');
+      const onlyDeaths = rest.includes('--deaths');
+      let data = {};
+      if (!onlyDeaths) {
+        const uSnap = await window._fbGetDocs(window._fbCollection(window._db,'users'));
+        const users=[]; uSnap.forEach(d=>users.push(d.data())); data.users=users;
+      }
+      if (!onlyUsers) {
+        const dSnap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths'));
+        const vSnap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes'));
+        if (dSnap.exists()) data.deaths = dSnap.data();
+        if (vSnap.exists()) data.votes  = vSnap.data();
+      }
+      data.exportedAt = new Date().toISOString();
+      const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+      a.download=`papus-export-${Date.now()}.json`; a.click();
+      print(`<span class="a3">📦 export descargado ✅</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'backup') {
+    staffOnly(() => noDb(async () => {
+      print('<span class="adim">creando backup completo...</span>');
+      const [uSnap, dSnap, vSnap, oSnap, aSnap] = await Promise.all([
+        window._fbGetDocs(window._fbCollection(window._db,'users')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','online')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','announcement')),
+      ]);
+      const users=[]; uSnap.forEach(d=>users.push(d.data()));
+      const backup = {
+        meta: { version:'v13', date: new Date().toISOString(), admin:'emilio' },
+        users,
+        deaths: dSnap.exists()?dSnap.data():{},
+        votes:  vSnap.exists()?vSnap.data():{},
+        online: oSnap.exists()?oSnap.data():{},
+        announcement: aSnap.exists()?aSnap.data():{},
+        adminLog: JSON.parse(localStorage.getItem('papus_adminlog_v2')||'[]'),
+      };
+      const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+      a.download=`papus-backup-${new Date().toISOString().split('T')[0]}.json`; a.click();
+      print(`<span class="a3 ab">💾 backup completo descargado ✅</span>`);
+      print(`<span class="adim">usuarios: ${users.length} | muertes: ${Object.keys(backup.deaths).length} entradas</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'addpapu') {
+    staffOnly(() => noDb(async () => {
+      const name = rest.join(' ');
+      if (!name) { print('<span class="a1">uso: papus addpapu &lt;nombre&gt;</span>'); return; }
+      const [dSnap,vSnap] = await Promise.all([
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes')),
+      ]);
+      const deaths = dSnap.exists()?dSnap.data():{};
+      const votes  = vSnap.exists()?vSnap.data():{};
+      if (deaths[name]!==undefined) { print(`<span class="a1">'${name}' ya existe en el tablero</span>`); return; }
+      deaths[name]=0; votes[name]=0;
+      await Promise.all([
+        window._fbSetDoc(window._fbDoc(window._db,'lospapus','deaths'),deaths),
+        window._fbSetDoc(window._fbDoc(window._db,'lospapus','votes'),votes),
+      ]);
+      print(`<span class="a3">➕ ${name} agregado al tablero con 0 muertes y 0 votos</span>`);
+    }));
+    return;
+  }
+
+  if (sub === 'delpapu') {
+    staffOnly(() => noDb(async () => {
+      const name = rest.join(' ');
+      if (!name) { print('<span class="a1">uso: papus delpapu &lt;nombre&gt;</span>'); return; }
+      if (!confirm(`¿Eliminar a ${name} del tablero? Se pierden sus muertes y votos.`)) { print('<span class="adim">cancelado</span>'); return; }
+      const [dSnap,vSnap] = await Promise.all([
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes')),
+      ]);
+      const deaths = dSnap.exists()?dSnap.data():{};
+      const votes  = vSnap.exists()?vSnap.data():{};
+      delete deaths[name]; delete votes[name];
+      await Promise.all([
+        window._fbSetDoc(window._fbDoc(window._db,'lospapus','deaths'),deaths),
+        window._fbSetDoc(window._fbDoc(window._db,'lospapus','votes'),votes),
+      ]);
+      print(`<span class="a1">🗑 ${name} eliminado del tablero</span>`);
+    }));
+    return;
+  }
+
+  // ══ FUN COMMANDS ══════════════════════════════════════════
+  if (sub === 'jero') {
+    const frases = [
+      'ESO ES HACKER, REPORTADO',
+      'LAGUEADO ME MATASTE',
+      'ERES UN SCRIPT KIDDIE',
+      'ESO NO VALE, ESTABA LAGGING',
+      'REMATCH O ERES UN COBARDE',
+      'ME ROBASTE EL KILL',
+      'ESO NO FUE SKILL FUE SUERTE',
+    ];
+    print(`<span class="a1 ab">💀 MODO JERO ACTIVADO</span>`);
+    print(`<span class="a1">"${frases[Math.floor(Math.random()*frases.length)]}"</span>`);
+    print(`<span class="adim">— Jero, probablemente ahora mismo</span>`);
+    return;
+  }
+
+  if (sub === 'samuel') {
+    const inicio = new Date('2024-09-01');
+    const ahora  = new Date();
+    const dias   = Math.floor((ahora-inicio)/(1000*60*60*24));
+    print(`<span class="a1 ab">👻 ESTADO DE SAMUEL</span>`);
+    print(` desaparecido hace: <span class="a1 ab">${dias} días</span>`);
+    print(` última vez visto:  <span class="adim">septiembre 2024</span>`);
+    print(` estado:            <span class="a1">FANTASMA CONFIRMADO</span>`);
+    print(` probabilidad vuelva: <span class="a1">0.0001%</span>`);
+    return;
+  }
+
+  if (sub === 'papuoftheday') {
+    const papus = ['Jero','Gabriel','Sami','Emilio','Luciana','Akiro','Daniel','Isabella'];
+    const seed  = new Date().toDateString();
+    let hash = 0; for (let i=0;i<seed.length;i++) hash=(hash*31+seed.charCodeAt(i))>>>0;
+    const p = papus[hash % papus.length];
+    const razones = [
+      'por existir',
+      'por ser el más tóxico del día',
+      'por aparecer hoy (mérito)',
+      'por sobrevivir la sesión',
+      'por morir menos de 10 veces',
+      'por no disconnectar mid-game',
+    ];
+    print(`<span class="a3 ab">⭐ PAPU DEL DÍA: ${p.toUpperCase()}</span>`);
+    print(`<span class="adim">razón: ${razones[hash % razones.length]}</span>`);
+    return;
+  }
+
+  if (sub === 'roast') {
+    const nick = rest[0];
+    const roasts = {
+      jero:      ['Jero pierde y bloquea. Jero gana y dice que la otra persona hackeaba. Jero es un clásico.', 'El único que reporta a gente por ser mejor que él 💀'],
+      gabriel:   ['Gabriel spamea combos sin pensar y le funciona. Eso es lo más frustrante.', 'El combo humano. Sin estrategia, solo spam y caos.'],
+      sami:      ['Sami es tan amable que hasta cuando le hackean dice "no pasa nada" 😭', 'El único del grupo que no se ha peleado con nadie. Sospechoso.'],
+      emilio:    ['Sin Emilio el grupo murió 3 veces. Con Emilio el grupo también muere pero más lento.', 'Hace el sitio web en vez de jugar. El más productivo. El más raro.'],
+      luciana:   ['No la hagas enojar o te deja de hablar por semanas. Pregunta a Emilio.', 'Graciosa hasta que le pegan en el juego. Ahí cambia TODO.'],
+      akiro:     ['Nuevo y ya cae mejor que algunos que llevan meses. Eso duele (a Jero).', 'El único del grupo sin antecedentes tóxicos. Por ahora.'],
+      daniel:    ['No tiene Roblox pero está en el grupo. El lore de Daniel es un misterio.', 'La frase de Daniel es "vrg" — hombre de pocas palabras y menos partidas.'],
+      isabella:  ['Isa-theo habla cuando quiere, que es nunca. El ghost oficial del grupo (junto a Samuel).', 'Aparece, dice algo random, desaparece. Ciclo de vida: 72hs.'],
+      samuel:    ['Samuel lleva meses sin aparecer. Pero él sigue en nuestros corazones (y en la página).', 'El OG fantasma. Isabella aprendió de él.'],
+    };
+    if (!nick) { print('<span class="a1">uso: papus roast &lt;nick&gt;</span>'); return; }
+    const key = nick.toLowerCase();
+    const list = roasts[key] || [`${nick} es tan irrelevante que ni tengo roast para él 💀`];
+    print(`<span class="a1 ab">🔥 ROAST: ${nick.toUpperCase()}</span>`);
+    print(`<span class="adim">"${list[Math.floor(Math.random()*list.length)]}"</span>`);
+    return;
+  }
+
+  if (sub === 'muertepoema') {
+    print(`<span class="a1 ab">💀 ODA A LAS MUERTES</span>`);
+    print(`<span class="adim">Caíste una vez, caíste dos,</span>`);
+    print(`<span class="adim">el respawn fue tu único dios.</span>`);
+    print(`<span class="adim">No fue lag, no fue bug ni hack,</span>`);
+    print(`<span class="adim">simplemente te falta skill, bro. Fact.</span>`);
+    return;
+  }
+
+  if (sub === 'toxicquote') {
+    const quotes = [
+      'el que hackea es el que no sabe jugar — jero, 2024',
+      'rematch rematch rematch — todos, siempre',
+      'eso no vale, estaba comiendo — excusa clásica',
+      'mi internet estaba mal — el favorito de todos',
+      'fácil para ti con ese script — acusación sin pruebas',
+      'reportado, bloqueado, eliminado — jero speed run',
+      'la próxima te gano — spoiler: no',
+      'vrg — daniel siendo daniel',
+    ];
+    print(`<span class="a5">"${quotes[Math.floor(Math.random()*quotes.length)]}"</span>`);
+    return;
+  }
+
+  if (sub === 'whoistoxic') {
+    noDb(async () => {
+      const [dSnap, vSnap] = await Promise.all([
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes')),
+      ]);
+      const deaths = dSnap.exists()?dSnap.data():{};
+      const votes  = vSnap.exists()?vSnap.data():{};
+      const papus  = [...new Set([...Object.keys(deaths),...Object.keys(votes)])];
+      const scores = papus.map(p => ({
+        name: p,
+        score: (votes[p]||0)*2 + (deaths[p]||0)*0.5,
+        deaths: deaths[p]||0,
+        votes: votes[p]||0,
+      })).sort((a,b)=>b.score-a.score);
+      print(`<span class="a5 ab">☠ ÍNDICE DE TOXICIDAD (votos×2 + muertes×0.5)</span>`);
+      print(`${'─'.repeat(50)}`);
+      scores.forEach((s,i) => {
+        print(` ${['☠️','💀','🩸','⚡','👾'][i]||'•'} <span class="a2b">${s.name.padEnd(12)}</span> score:<span class="a5">${s.score.toFixed(1).padStart(6)}</span>  votos:<span class="a5">${s.votes}</span>  muertes:<span class="a1">${s.deaths}</span>`);
+      });
+    });
+    return;
+  }
+
+  if (sub === 'rip') {
+    const nick = rest[0] || 'papu desconocido';
+    print(`<span class="a1 ab">⚰️ R.I.P. ${nick.toUpperCase()}</span>`);
+    print(`<span class="adim">cayó en batalla, como tantos antes.</span>`);
+    print(`<span class="adim">sus muertes en el tablero lo recordarán.</span>`);
+    print(`<span class="adim">que descanse... hasta el próximo respawn.</span>`);
+    return;
+  }
+
+  if (sub === 'gg') {
+    const ggs = ['gg wp no re', 'gg fácil', 'gg (mínimo esfuerzo)', 'gg rip bozo', 'gg ez clap'];
+    print(`<span class="a3 ab">${ggs[Math.floor(Math.random()*ggs.length)]}</span>`);
+    return;
+  }
+
+  if (sub === 'ratio') {
+    const nick = rest[0];
+    if (!nick) { print('<span class="a1">uso: papus ratio &lt;nick&gt;</span>'); return; }
+    noDb(async () => {
+      const [dSnap,vSnap] = await Promise.all([
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes')),
+      ]);
+      const d = dSnap.exists()?(dSnap.data()[nick]||0):0;
+      const v = vSnap.exists()?(vSnap.data()[nick]||0):0;
+      const ratio = d > 0 ? (v/d).toFixed(2) : '∞';
+      print(`<span class="a5 ab">📊 RATIO DE ${nick.toUpperCase()}</span>`);
+      print(` votos tóxicos: <span class="a5">${v}</span>`);
+      print(` muertes:       <span class="a1">${d}</span>`);
+      print(` ratio v/m:     <span class="a3 ab">${ratio}</span>`);
+      if (ratio > 2) print(`<span class="a5">conclusión: extremadamente tóxico y tampoco sabe jugar</span>`);
+      else if (ratio > 1) print(`<span class="adim">conclusión: tóxico pero al menos vive un poco</span>`);
+      else print(`<span class="a3">conclusión: muere mucho pero la gente lo tolera</span>`);
+    });
+    return;
+  }
+
+  // ══ COMANDO NO ENCONTRADO ══════════════════════════════════
+  print(`<span class="a1">papus: '${H(sub)}' no es un comando válido</span>`);
+  print(`<span class="adim">usa 'papus help' para ver todos los comandos</span>`);
+};
+
+// Aliases
+CMD.staff = CMD.papus;
+CMD.admin = CMD.papus;
 
 // ── Run command ───────────────────────────────────────────────
 function run(raw){
@@ -5681,6 +6740,7 @@ function loginSuccess(nick, data) {
     window.currentUser = currentUser;
 
     // update lastLogin + loginCount async (don't block)
+    saveDeviceInfo && saveDeviceInfo(nick);
     window._fbUpdateDoc(window._fbDoc(db, 'users', nick), {
         lastLogin: new Date().toISOString(),
         loginCount: window._fbIncrement ? window._fbIncrement(1) : (data.loginCount||0)+1
@@ -5982,6 +7042,433 @@ window.clearLog = function() { if(confirm('¿Limpiar log?')) { localStorage.remo
 
 // ── Helpers ───────────────────────────────────────────────────
 function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
+
+
+// ── New admin functions ───────────────────────────────────────
+
+let _selectedUser = null;
+
+// ── Stats extras ──────────────────────────────────────────────
+async function loadStatsExtra() {
+    try {
+        const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+        const today = new Date().toDateString();
+        const week  = Date.now()-7*24*3600*1000;
+        const month30 = Date.now()-30*24*3600*1000;
+        let banned=0, newU=0, activeToday=0, ghosts=0;
+        snap.forEach(d=>{
+            const u=d.data();
+            if(u.banned) banned++;
+            if(u.createdAt && new Date(u.createdAt).getTime()>week) newU++;
+            if(u.lastLogin && new Date(u.lastLogin).toDateString()===today) activeToday++;
+            if(!u.lastLogin || new Date(u.lastLogin).getTime()<month30) ghosts++;
+        });
+        setText('as-banned', banned);
+        setText('as-newusers', newU);
+        setText('as-active', activeToday);
+        setText('as-ghosts', ghosts);
+    } catch(e){}
+    // papu of the day
+    const papus=['Jero','Gabriel','Sami','Emilio','Luciana','Akiro','Daniel','Isabella'];
+    const seed=new Date().toDateString();
+    let hash=0; for(let i=0;i<seed.length;i++) hash=(hash*31+seed.charCodeAt(i))>>>0;
+    const p=papus[hash%papus.length];
+    const el=document.getElementById('as-potd');
+    if(el) el.textContent=`⭐ ${p} — por existir hoy`;
+}
+
+// ── User filters ──────────────────────────────────────────────
+let _userFilter = 'all';
+window.filterUsers = function(f){ _userFilter=f; loadUsers(); };
+
+// override renderUsers to support filter + profile view
+window.renderUsers = function() {
+    const q=(document.getElementById('au-search')?.value||'').toLowerCase();
+    const today=new Date().toDateString();
+    const week=Date.now()-7*24*3600*1000;
+    const month30=Date.now()-30*24*3600*1000;
+    let list=[...allUsers];
+    if(_userFilter==='today') list=list.filter(u=>u.lastLogin&&new Date(u.lastLogin).toDateString()===today);
+    if(_userFilter==='week')  list=list.filter(u=>u.lastLogin&&new Date(u.lastLogin).getTime()>week);
+    if(_userFilter==='ghost') list=list.filter(u=>!u.lastLogin||new Date(u.lastLogin).getTime()<month30);
+    if(q) list=list.filter(u=>u.nick.includes(q));
+    const el=document.getElementById('au-list');
+    if(!el) return;
+    if(!list.length){el.innerHTML='<p style="color:#445566;font-size:12px">sin usuarios</p>';return;}
+    el.innerHTML=list.map(u=>{
+        const date=u.lastLogin?new Date(u.lastLogin).toLocaleDateString('es'):'?';
+        const ban=u.banned?'<span class="ubadge banned">🚫</span>':'';
+        const adm=u.admin?'<span class="ubadge admin">👑</span>':'';
+        const dev=u.device?`<span style="font-size:9px;color:#334455;display:block">${u.device.slice(0,40)}</span>`:'';
+        return `<div class="user-row" style="cursor:pointer" onclick="openUserProfile('${u.nick}')">
+            <div><div style="font-weight:600;color:#fff;font-size:13px">${u.nick} ${adm}${ban}</div>
+            <div style="font-size:10px;color:#445566">${date} · ${u.loginCount||1} logins</div>
+            ${dev}</div>
+            <span style="color:#445566;font-size:18px;">›</span>
+        </div>`;
+    }).join('');
+};
+
+window.openUserProfile = function(nick) {
+    const u = allUsers.find(x=>x.nick===nick);
+    if(!u) return;
+    _selectedUser = u;
+    const panel = document.getElementById('au-profile');
+    const info  = document.getElementById('aup-info');
+    const noteEl = document.getElementById('aup-note');
+    if(!panel||!info) return;
+    document.getElementById('aup-nick').textContent = u.nick + (u.admin?' 👑':'') + (u.banned?' 🚫':'');
+    info.innerHTML = `
+        <b>Admin:</b> ${u.admin?'Sí':'No'}<br>
+        <b>Baneado:</b> ${u.banned?`Sí — ${u.banReason||'sin razón'}`:'No'}<br>
+        <b>Logins:</b> ${u.loginCount||1}<br>
+        <b>Creado:</b> ${u.createdAt?new Date(u.createdAt).toLocaleString('es'):'?'}<br>
+        <b>Último acceso:</b> ${u.lastLogin?new Date(u.lastLogin).toLocaleString('es'):'?'}<br>
+        ${u.device?`<b>Dispositivo:</b> ${u.device}<br>`:''}
+        ${u.timezone?`<b>Zona horaria:</b> ${u.timezone}<br>`:''}
+        ${u.lang?`<b>Idioma:</b> ${u.lang}<br>`:''}
+    `;
+    if(noteEl) noteEl.value = u.note||'';
+    panel.style.display='block';
+};
+
+window.promoteUser = async function() {
+    if(!_selectedUser) return;
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{admin:true});
+    addLog('PROMOTE',_selectedUser.nick);
+    showFBToast(`👑 ${_selectedUser.nick} ahora es admin`,'#ffd700');
+    loadUsers();
+    document.getElementById('au-profile').style.display='none';
+};
+
+window.demoteUser = async function() {
+    if(!_selectedUser||_selectedUser.nick==='emilio') return;
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{admin:false});
+    addLog('DEMOTE',_selectedUser.nick);
+    showFBToast(`👤 ${_selectedUser.nick} ya no es admin`,'#80b0cc');
+    loadUsers();
+    document.getElementById('au-profile').style.display='none';
+};
+
+window.resetUserPass = async function() {
+    if(!_selectedUser) return;
+    function hashPass(p){let h=5381;for(let i=0;i<p.length;i++)h=((h<<5)+h)^p.charCodeAt(i);return 'p'+(h>>>0).toString(36)+p.length.toString(36);}
+    const tmp = Math.random().toString(36).slice(2,6);
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{hash:hashPass(tmp)});
+    addLog('RESET_PASS',_selectedUser.nick);
+    showFBToast(`🔑 pass de ${_selectedUser.nick}: ${tmp}`,'#ffd700');
+    prompt(`Nueva contraseña temporal de ${_selectedUser.nick}:`, tmp);
+};
+
+window.deleteSelectedUser = async function() {
+    if(!_selectedUser) return;
+    window.deleteUserDirect(_selectedUser.nick);
+    document.getElementById('au-profile').style.display='none';
+};
+
+window.saveUserNote = async function() {
+    if(!_selectedUser) return;
+    const note = document.getElementById('aup-note')?.value||'';
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{note});
+    addLog('NOTE',`${_selectedUser.nick}: ${note.slice(0,30)}`);
+    showFBToast('📝 nota guardada','#00ff9d');
+};
+
+// ── Tablero extras ────────────────────────────────────────────
+window.quickDeath = async function(delta) {
+    const name = document.getElementById('at-select')?.value;
+    if(!name) return;
+    const snap = await window._fbGetDoc(window._fbDoc(db,'lospapus','deaths'));
+    const cur = snap.exists()?(snap.data()[name]||0):0;
+    const nw  = Math.max(0, cur+delta);
+    await window._fbUpdateDoc(window._fbDoc(db,'lospapus','deaths'),{[name]:nw});
+    addLog('QUICK_DEATH',`${name}: ${cur}→${nw}`);
+    showFBToast(`${delta>0?'➕':'➖'} ${name}: ${nw} 💀`,'#ff4466');
+    loadTablero();
+};
+
+window.resetOnePapuDeaths = async function() {
+    const name = document.getElementById('at-select')?.value;
+    if(!name||!confirm(`¿Reset muertes de ${name}?`)) return;
+    await window._fbUpdateDoc(window._fbDoc(db,'lospapus','deaths'),{[name]:0});
+    addLog('RESET_ONE_DEATHS',name);
+    showFBToast(`🗑 ${name}: 0 muertes`,'#ff4466');
+    loadTablero();
+};
+
+window.deletePapu = async function() {
+    const name = document.getElementById('at-del-select')?.value;
+    if(!name||!confirm(`¿Eliminar a ${name} del tablero?`)) return;
+    const [dSnap,vSnap] = await Promise.all([
+        window._fbGetDoc(window._fbDoc(db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','votes')),
+    ]);
+    const deaths=dSnap.exists()?dSnap.data():{};
+    const votes=vSnap.exists()?vSnap.data():{};
+    delete deaths[name]; delete votes[name];
+    await Promise.all([
+        window._fbSetDoc(window._fbDoc(db,'lospapus','deaths'),deaths),
+        window._fbSetDoc(window._fbDoc(db,'lospapus','votes'),votes),
+    ]);
+    addLog('DEL_PAPU',name);
+    showFBToast(`🗑 ${name} eliminado del tablero`,'#ff4466');
+    loadTablero();
+};
+
+// override loadTablero to also fill del-select
+const _origLoadTablero = window.loadTablero || (async()=>{});
+window.loadTablero = async function() {
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(db,'lospapus','deaths'));
+        const selMain = document.getElementById('at-select');
+        const selDel  = document.getElementById('at-del-select');
+        if(snap.exists()){
+            const opts = Object.keys(snap.data()).map(n=>`<option value="${n}">${n}</option>`).join('');
+            if(selMain) selMain.innerHTML = opts;
+            if(selDel)  selDel.innerHTML  = opts;
+        }
+    } catch(e){}
+};
+
+// ── Ranking tab ───────────────────────────────────────────────
+async function loadRanking() {
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(db,'lospapus','votes'));
+        const sel = document.getElementById('ar-select');
+        const list = document.getElementById('ar-list');
+        if(!snap.exists()) return;
+        const data = snap.data();
+        const sorted = Object.entries(data).sort((a,b)=>b[1]-a[1]);
+        if(sel) sel.innerHTML = Object.keys(data).map(n=>`<option value="${n}">${n}</option>`).join('');
+        if(list) list.innerHTML = sorted.map(([n,v],i)=>
+            `<div class="user-row"><span>${['☠️','💀','🩸','⚡','👾'][i]||'•'} ${n}</span><span class="ubadge">${v} votos</span></div>`
+        ).join('');
+    } catch(e){}
+}
+
+window.setPapuVotes = async function() {
+    const name = document.getElementById('ar-select')?.value;
+    const val  = parseInt(document.getElementById('ar-votes')?.value);
+    if(!name||isNaN(val)||val<0){showFBToast('datos inválidos','#ff4466');return;}
+    await window._fbUpdateDoc(window._fbDoc(db,'lospapus','votes'),{[name]:val});
+    addLog('SET_VOTES',`${name}→${val}`);
+    showFBToast(`💾 ${name}: ${val} votos`,'#00ff9d');
+    loadRanking();
+};
+
+window.resetOnePapuVotes = async function() {
+    const name = document.getElementById('ar-select')?.value;
+    if(!name||!confirm(`¿Reset votos de ${name}?`)) return;
+    await window._fbUpdateDoc(window._fbDoc(db,'lospapus','votes'),{[name]:0});
+    addLog('RESET_ONE_VOTES',name);
+    showFBToast(`🗑 ${name}: 0 votos`,'#ff4466');
+    loadRanking();
+};
+
+// ── Sitio tab ─────────────────────────────────────────────────
+async function loadSitio() {
+    try {
+        const [oSnap,mSnap,aSnap] = await Promise.all([
+            window._fbGetDoc(window._fbDoc(db,'lospapus','online')),
+            window._fbGetDoc(window._fbDoc(db,'lospapus','settings')),
+            window._fbGetDoc(window._fbDoc(db,'lospapus','announcement')),
+        ]);
+        const el = document.getElementById('asi-status');
+        if(!el) return;
+        const online = oSnap.exists()?oSnap.data().count||1:1;
+        const maint  = mSnap.exists()&&mSnap.data().on;
+        const ann    = aSnap.exists()&&aSnap.data().active?`"${aSnap.data().text}"`:'ninguno';
+        el.innerHTML = `
+            🟢 <b>Online:</b> ${online} usuarios<br>
+            🔧 <b>Mantenimiento:</b> ${maint?'<span style="color:#ff4466">ACTIVO</span>':'<span style="color:#00ff9d">apagado</span>'}<br>
+            📣 <b>Anuncio activo:</b> ${ann}<br>
+            📦 <b>Firebase:</b> <span style="color:#00ff9d">conectado</span><br>
+            🏷 <b>Versión:</b> v13 (clean auth)
+        `;
+    } catch(e){}
+}
+
+window.setMaintenance = async function(on) {
+    await window._fbSetDoc(window._fbDoc(db,'lospapus','settings'),{on});
+    addLog('MAINTENANCE', on?'ON':'OFF');
+    showFBToast(on?'🔧 Mantenimiento ACTIVADO':'✅ Mantenimiento desactivado', on?'#ff4466':'#00ff9d');
+    loadSitio();
+};
+
+window.showVersion = function() {
+    showFBToast('Los Papus v13 — lospapusxdd.github.io','#00d4ff');
+};
+
+// ── Datos tab ─────────────────────────────────────────────────
+async function loadDatos() {
+    try {
+        const [uSnap,dSnap,vSnap] = await Promise.all([
+            window._fbGetDocs(window._fbCollection(db,'users')),
+            window._fbGetDoc(window._fbDoc(db,'lospapus','deaths')),
+            window._fbGetDoc(window._fbDoc(db,'lospapus','votes')),
+        ]);
+        let users=0; uSnap.forEach(()=>users++);
+        const deaths = dSnap.exists()?Object.values(dSnap.data()).reduce((a,b)=>a+b,0):0;
+        const votes  = vSnap.exists()?Object.values(vSnap.data()).reduce((a,b)=>a+b,0):0;
+        const el = document.getElementById('ad-summary');
+        if(el) el.innerHTML=`👥 <b>Usuarios:</b> ${users}<br>💀 <b>Total muertes:</b> ${deaths}<br>☠ <b>Total votos:</b> ${votes}<br>📅 <b>Fecha:</b> ${new Date().toLocaleString('es')}`;
+    } catch(e){}
+}
+
+window.exportAll = async function() {
+    const [uSnap,dSnap,vSnap]=await Promise.all([
+        window._fbGetDocs(window._fbCollection(db,'users')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','votes')),
+    ]);
+    const users=[]; uSnap.forEach(d=>users.push(d.data()));
+    const data={exportedAt:new Date().toISOString(),users,
+        deaths:dSnap.exists()?dSnap.data():{},
+        votes:vSnap.exists()?vSnap.data():{},
+    };
+    dlJSON(data,'papus-export');
+    addLog('EXPORT','todo');
+};
+
+window.exportUsers = async function() {
+    const snap=await window._fbGetDocs(window._fbCollection(db,'users'));
+    const users=[]; snap.forEach(d=>users.push(d.data()));
+    dlJSON({users,exportedAt:new Date().toISOString()},'papus-usuarios');
+    addLog('EXPORT','usuarios');
+};
+
+window.exportDeaths = async function() {
+    const [dSnap,vSnap]=await Promise.all([
+        window._fbGetDoc(window._fbDoc(db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','votes')),
+    ]);
+    dlJSON({deaths:dSnap.exists()?dSnap.data():{},votes:vSnap.exists()?vSnap.data():{},exportedAt:new Date().toISOString()},'papus-muertes');
+    addLog('EXPORT','muertes+votos');
+};
+
+window.backupAll = async function() {
+    const [uSnap,dSnap,vSnap,oSnap,aSnap,mSnap]=await Promise.all([
+        window._fbGetDocs(window._fbCollection(db,'users')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','votes')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','online')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','announcement')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','settings')),
+    ]);
+    const users=[]; uSnap.forEach(d=>users.push(d.data()));
+    dlJSON({
+        meta:{version:'v13',date:new Date().toISOString(),admin:'emilio'},
+        users,
+        deaths:dSnap.exists()?dSnap.data():{},
+        votes:vSnap.exists()?vSnap.data():{},
+        online:oSnap.exists()?oSnap.data():{},
+        announcement:aSnap.exists()?aSnap.data():{},
+        settings:mSnap.exists()?mSnap.data():{},
+        adminLog:JSON.parse(localStorage.getItem('papus_adminlog_v2')||'[]'),
+    },'papus-backup-'+new Date().toISOString().split('T')[0]);
+    addLog('BACKUP','completo');
+    showFBToast('💾 Backup descargado!','#00ff9d');
+};
+
+function dlJSON(data, name) {
+    const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(b);
+    a.download=name+'.json'; a.click();
+}
+
+// ── Fun tab ───────────────────────────────────────────────────
+window.showPapuOfDay = function() {
+    const papus=['Jero','Gabriel','Sami','Emilio','Luciana','Akiro','Daniel','Isabella'];
+    const seed=new Date().toDateString();
+    let hash=0; for(let i=0;i<seed.length;i++) hash=(hash*31+seed.charCodeAt(i))>>>0;
+    const p=papus[hash%papus.length];
+    const razones=['por existir','por ser el más tóxico del día','por sobrevivir la sesión','por morir menos de 10 veces','por no disconnectar mid-game','por aparecer hoy (mérito)'];
+    const el=document.getElementById('af-potd');
+    if(el) el.innerHTML=`<span style="color:#ffd700;font-weight:700">⭐ ${p}</span><br><span style="color:#80b0cc;font-size:12px">${razones[hash%razones.length]}</span>`;
+    showFBToast(`⭐ Papu del día: ${p}`,'#ffd700');
+};
+
+window.showRoast = function() {
+    const nick = document.getElementById('af-roast-select')?.value||'jero';
+    const roasts = {
+        jero:['Pierde y bloquea. Gana y dice que el otro hackeaba. Clásico Jero.','El único que reporta gente por ser mejor que él 💀'],
+        gabriel:['Spamea combos sin pensar y le funciona. Lo más frustrante.','El combo humano. Sin estrategia, solo spam y caos.'],
+        sami:['Tan amable que hasta cuando le hackean dice "no pasa nada" 😭','El único del grupo sin enemigos. Sospechoso.'],
+        emilio:['Sin ti el grupo murió 3 veces. Contigo también muere pero más lento.','Hace el sitio web en vez de jugar. El más productivo. El más raro.'],
+        luciana:['No la hagas enojar o te deja de hablar por semanas.','Graciosa hasta que le pegan en el juego. Ahí cambia todo.'],
+        akiro:['Nuevo y ya cae mejor que algunos que llevan meses. Eso duele (a Jero).','El único sin antecedentes tóxicos. Por ahora.'],
+        daniel:['No tiene Roblox pero está en el grupo. El lore es un misterio.','Su frase es "vrg". Hombre de pocas palabras y menos partidas.'],
+        isabella:['Habla cuando quiere, que es nunca. Ghost oficial junto a Samuel.','Aparece, dice algo random, desaparece. Ciclo: 72hs.'],
+        samuel:['Meses sin aparecer. Pero sigue en nuestros corazones (y en la página).','El OG fantasma. Isabella aprendió de él.'],
+    };
+    const list=roasts[nick]||[`${nick} es tan irrelevante que ni tengo roast 💀`];
+    const txt=list[Math.floor(Math.random()*list.length)];
+    const el=document.getElementById('af-roast-result');
+    if(el){el.textContent=`"${txt}"`;el.style.display='block';}
+};
+
+window.showToxicQuote = function() {
+    const quotes=['el que hackea es el que no sabe jugar — jero','rematch rematch rematch — todos, siempre','eso no vale, estaba comiendo — excusa clásica','mi internet estaba mal — el favorito','reportado, bloqueado, eliminado — jero speedrun','la próxima te gano — spoiler: no','vrg — daniel siendo daniel'];
+    showFBToast(quotes[Math.floor(Math.random()*quotes.length)],'#c084fc');
+};
+
+window.showWhoIsToxic = async function() {
+    const [dSnap,vSnap]=await Promise.all([
+        window._fbGetDoc(window._fbDoc(db,'lospapus','deaths')),
+        window._fbGetDoc(window._fbDoc(db,'lospapus','votes')),
+    ]);
+    const deaths=dSnap.exists()?dSnap.data():{};
+    const votes=vSnap.exists()?vSnap.data():{};
+    const papus=[...new Set([...Object.keys(deaths),...Object.keys(votes)])];
+    const scores=papus.map(p=>({name:p,score:(votes[p]||0)*2+(deaths[p]||0)*0.5})).sort((a,b)=>b.score-a.score);
+    const el=document.getElementById('af-toxic-index');
+    if(el) el.innerHTML=scores.map((s,i)=>`<div class="user-row"><span>${['☠️','💀','🩸','⚡','👾'][i]||'•'} ${s.name}</span><span class="ubadge" style="color:#c084fc">${s.score.toFixed(1)}</span></div>`).join('');
+};
+
+// ── Log extras ────────────────────────────────────────────────
+window.renderLog = function() {
+    const q=(document.getElementById('al-filter')?.value||'').toLowerCase();
+    let logs=JSON.parse(localStorage.getItem('papus_adminlog_v2')||'[]');
+    if(q) logs=logs.filter(l=>l.action.toLowerCase().includes(q)||l.detail.toLowerCase().includes(q));
+    const el=document.getElementById('al-list');
+    if(!el) return;
+    if(!logs.length){el.innerHTML='<p style="color:#445566;font-size:12px">log vacío</p>';return;}
+    el.innerHTML=logs.map(l=>`
+        <div style="padding:7px 10px;background:rgba(0,0,0,.3);border-radius:6px;margin-bottom:5px;border-left:2px solid rgba(255,215,0,.3);font-size:11px;">
+            <div style="color:#ffd700;font-weight:600">${l.action} <span style="color:#445566;font-weight:400">${new Date(l.time).toLocaleString('es')}</span></div>
+            <div style="color:#cdd3de">${l.detail}</div>
+        </div>`).join('');
+};
+
+window.exportLog = function() {
+    const logs=JSON.parse(localStorage.getItem('papus_adminlog_v2')||'[]');
+    dlJSON(logs,'papus-log-'+new Date().toISOString().split('T')[0]);
+    showFBToast('📦 Log exportado','#00ff9d');
+};
+
+// ── Override loadAdminPage to include new tabs ────────────────
+function loadAdminPage(page) {
+    if(page==='stats')   { loadStats(); loadStatsExtra(); }
+    if(page==='users')   loadUsers();
+    if(page==='tablero') loadTablero();
+    if(page==='ranking') loadRanking();
+    if(page==='sitio')   loadSitio();
+    if(page==='datos')   loadDatos();
+    if(page==='fun')     { showPapuOfDay(); showWhoIsToxic(); }
+    if(page==='log')     renderLog();
+}
+
+// ── Save device info on login ─────────────────────────────────
+function saveDeviceInfo(nick) {
+    if(!window._fbUpdateDoc||!window._db) return;
+    const info = {
+        device: navigator.userAgent.slice(0,80),
+        lang: navigator.language,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        screen: `${screen.width}x${screen.height}`,
+    };
+    window._fbUpdateDoc(window._fbDoc(window._db,'users',nick), info).catch(()=>{});
+}
 
 })(); // end IIFE
 
