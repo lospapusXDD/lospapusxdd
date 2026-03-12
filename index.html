@@ -2187,50 +2187,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 1400);
 })();
 
-// =================== CURSOR ===================
-const cursor = document.getElementById('cursor');
-const cursorDot = document.getElementById('cursor-dot');
-let cx = 0, cy = 0;
-document.addEventListener('mousemove', e => {
-    cx = e.clientX; cy = e.clientY;
-    cursorDot.style.left = cx + 'px';
-    cursorDot.style.top  = cy + 'px';
-    cursor.style.left = cx + 'px';
-    cursor.style.top  = cy + 'px';
-});
-document.querySelectorAll('a,button,.card,.copy-btn,.vote-btn,.death-btn').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-});
-
-// =================== CURSOR SPARKS (throttled via RAF) ===================
-const sparkColors = ['#00d4ff','#00ffaa','#ffffff','#ffd700','#ff4466'];
-let lastMouseX = 0, lastMouseY = 0, sparkRAF = false;
-document.addEventListener('mousemove', e => {
-    lastMouseX = e.clientX; lastMouseY = e.clientY;
-    if (sparkRAF) return;
-    sparkRAF = true;
-    requestAnimationFrame(() => {
-        sparkRAF = false;
-        if (Math.random() > 0.35) return;
-    const spark = document.createElement('div');
-    spark.className = 'spark';
-    const size = 3 + Math.random() * 5;
-    const angle = Math.random() * 2 * Math.PI;
-    const dist  = 20 + Math.random() * 35;
-    spark.style.cssText = `
-        left:${e.clientX}px; top:${e.clientY}px;
-        width:${size}px; height:${size}px;
-        background:${sparkColors[Math.floor(Math.random()*sparkColors.length)]};
-        box-shadow: 0 0 ${size*2}px currentColor;
-        --tx:${Math.cos(angle)*dist}px;
-        --ty:${Math.sin(angle)*dist}px;
-    `;
-    document.body.appendChild(spark);
-    setTimeout(() => spark.remove(), 620);
-    }); // end RAF
-});
-
 // =================== MATRIX BACKGROUND ===================
 (function() {
     const c   = document.getElementById('matrix-bg');
