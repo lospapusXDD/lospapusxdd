@@ -795,6 +795,116 @@
 
 
 
+
+        /* ===== LOGIN ===== */
+        #loginOverlay {
+            position: fixed; inset: 0; z-index: 99999;
+            background: #060e1a;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Poppins', sans-serif;
+        }
+        .login-box {
+            background: rgba(17,34,64,0.95);
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 20px; padding: 48px 40px;
+            width: 100%; max-width: 420px;
+            box-shadow: 0 0 60px rgba(0,212,255,0.1);
+            text-align: center;
+        }
+        .login-box .logo { font-size: 28px; font-weight: 900; font-family: 'Orbitron', sans-serif; margin-bottom: 8px; }
+        .login-box .logo span { color: var(--primary); }
+        .login-box p  { color: #80b0cc; font-size: 13px; margin-bottom: 32px; }
+        .login-input  {
+            width: 100%; padding: 14px 18px; margin-bottom: 14px;
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 10px; color: #fff; font-size: 14px;
+            font-family: 'Poppins', sans-serif; outline: none;
+            transition: border-color .3s;
+            box-sizing: border-box;
+        }
+        .login-input:focus { border-color: var(--primary); }
+        .login-btn {
+            width: 100%; padding: 14px; margin-top: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none; border-radius: 10px; color: #fff;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: opacity .2s, transform .2s;
+        }
+        .login-btn:hover { opacity: .85; transform: translateY(-1px); }
+        .login-error {
+            color: #ff4466; font-size: 13px; margin-top: 12px;
+            min-height: 20px;
+        }
+        .login-switch {
+            color: #80b0cc; font-size: 13px; margin-top: 20px;
+        }
+        .login-switch span {
+            color: var(--primary); cursor: pointer; font-weight: 600;
+        }
+        .login-switch span:hover { text-decoration: underline; }
+
+        /* ===== ADMIN PANEL ===== */
+        #adminPanel {
+            position: fixed; top: 0; right: -420px; width: 400px; height: 100vh;
+            background: rgba(6,14,26,0.98); border-left: 1px solid rgba(0,212,255,0.3);
+            z-index: 9998; overflow-y: auto; padding: 24px;
+            transition: right .3s ease; font-family: 'Poppins', sans-serif;
+        }
+        #adminPanel.open { right: 0; }
+        .admin-title {
+            font-size: 18px; font-weight: 700; color: var(--primary);
+            font-family: 'Orbitron', sans-serif; margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .admin-close {
+            cursor: pointer; color: #80b0cc; font-size: 20px;
+            background: none; border: none; color: #80b0cc;
+        }
+        .admin-section { margin-bottom: 24px; }
+        .admin-section h3 {
+            font-size: 12px; color: #80b0cc; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 12px;
+            border-bottom: 1px solid rgba(0,212,255,0.1); padding-bottom: 8px;
+        }
+        .user-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 14px; background: rgba(0,0,0,0.3);
+            border-radius: 8px; margin-bottom: 8px;
+            border: 1px solid rgba(0,212,255,0.1);
+        }
+        .user-row .uname { font-weight: 600; color: #fff; font-size: 14px; }
+        .user-row .udate { font-size: 11px; color: #445566; }
+        .user-row .ubadge {
+            font-size: 10px; padding: 2px 8px; border-radius: 20px;
+            background: rgba(0,212,255,0.15); color: var(--primary);
+        }
+        .user-row .ubadge.admin { background: rgba(255,180,0,0.15); color: #ffd700; }
+        .admin-stat {
+            display: flex; justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.05);
+            font-size: 13px; color: #cdd3de;
+        }
+        .admin-stat span:last-child { color: var(--primary); font-weight: 600; }
+        .admin-btn {
+            width: 100%; padding: 10px; margin-top: 8px;
+            background: rgba(255,68,102,0.15); border: 1px solid rgba(255,68,102,0.3);
+            border-radius: 8px; color: #ff4466; font-size: 13px;
+            cursor: pointer; font-family: 'Poppins', sans-serif;
+            transition: background .2s;
+        }
+        .admin-btn:hover { background: rgba(255,68,102,0.25); }
+
+        /* ===== USER BADGE IN NAVBAR ===== */
+        #userBadge {
+            font-size: 12px; color: #80b0cc; cursor: pointer;
+            background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.15);
+            padding: 4px 12px; border-radius: 20px; transition: .2s;
+            display: none;
+        }
+        #userBadge:hover { background: rgba(0,212,255,0.15); color: var(--primary); }
+        #userBadge.admin-badge { color: #ffd700; border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.08); }
+
         /* ===== REDUCED MOTION ===== */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -1039,6 +1149,54 @@
 <!-- Cursor -->
 <div id="cursor"></div>
 <div id="cursor-dot"></div>
+
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay">
+    <div class="login-box">
+        <div class="logo">LOS<span>PAPUS</span></div>
+        <p>grupo cerrado — si no eres papu, te vas 💀</p>
+        <div id="loginForm">
+            <input class="login-input" id="loginNick" type="text" placeholder="tu nick" maxlength="20" autocomplete="off">
+            <input class="login-input" id="loginPass" type="password" placeholder="contraseña" autocomplete="off">
+            <button class="login-btn" onclick="doLogin()">🔑 Entrar</button>
+            <div class="login-error" id="loginError"></div>
+            <div class="login-switch">¿no tienes cuenta? <span onclick="showRegister()">regístrate</span></div>
+        </div>
+        <div id="registerForm" style="display:none">
+            <input class="login-input" id="regNick" type="text" placeholder="elige tu nick" maxlength="20" autocomplete="off">
+            <input class="login-input" id="regPass" type="password" placeholder="elige contraseña" autocomplete="off">
+            <input class="login-input" id="regPass2" type="password" placeholder="repite contraseña" autocomplete="off">
+            <button class="login-btn" onclick="doRegister()">✅ Crear cuenta</button>
+            <div class="login-error" id="registerError"></div>
+            <div class="login-switch">¿ya tienes cuenta? <span onclick="showLogin()">inicia sesión</span></div>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+    <div class="admin-title">
+        👑 Panel Admin
+        <button class="admin-close" onclick="document.getElementById('adminPanel').classList.remove('open')">✕</button>
+    </div>
+    <div class="admin-section">
+        <h3>📊 Estadísticas</h3>
+        <div class="admin-stat"><span>Usuarios registrados</span><span id="adminTotalUsers">0</span></div>
+        <div class="admin-stat"><span>Online ahora</span><span id="adminOnline">0</span></div>
+        <div class="admin-stat"><span>Total muertes</span><span id="adminTotalDeaths">0</span></div>
+        <div class="admin-stat"><span>Total votos</span><span id="adminTotalVotes">0</span></div>
+    </div>
+    <div class="admin-section">
+        <h3>👥 Cuentas registradas</h3>
+        <div id="adminUserList"></div>
+    </div>
+    <div class="admin-section">
+        <h3>🗑️ Acciones</h3>
+        <button class="admin-btn" onclick="adminResetVotes()">🗑️ Resetear todos los votos</button>
+        <button class="admin-btn" onclick="adminResetDeaths()">🗑️ Resetear todas las muertes</button>
+        <button class="admin-btn" onclick="adminDeleteUser()">❌ Eliminar usuario</button>
+    </div>
+</div>
 
 <div id="aurora"></div>
 <canvas id="stars-canvas"></canvas>
@@ -1425,7 +1583,7 @@
 
 <!-- JS LIBS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script id="particlesScript" data-src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
 <!-- Firebase SDK -->
 <script type="module">
@@ -1444,6 +1602,19 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
+
+// expose to window so auth module can use them
+window._db           = db;
+window._fbDoc        = doc;
+window._fbGetDoc     = getDoc;
+window._fbSetDoc     = setDoc;
+window._fbUpdateDoc  = updateDoc;
+window._fbCollection = collection;
+window._fbGetDocs    = getDocs;
+window._fbDeleteDoc  = async (ref) => {
+    const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+    return deleteDoc(ref);
+};
 
 const DEATHS_DOC = doc(db, 'lospapus', 'deaths');
 const VOTES_DOC  = doc(db, 'lospapus', 'votes');
@@ -4636,18 +4807,253 @@ function closeEaster() {
     document.getElementById('easter-overlay').classList.remove('show');
 }
 
+
+// =================== AUTH SYSTEM ===================
+const USERS_COL = 'users';
+let currentUser = null;
+
+// ── Helpers ──────────────────────────────────────────────────
+function hashPass(pass) {
+    // simple hash (not cryptographic but good enough for this use case)
+    let h = 0;
+    for (let i = 0; i < pass.length; i++) {
+        h = ((h << 5) - h) + pass.charCodeAt(i);
+        h |= 0;
+    }
+    return 'h' + Math.abs(h).toString(36) + pass.length;
+}
+
+function isAdmin(nick) {
+    return nick.toLowerCase() === 'emilio';
+}
+
+function setLoginError(id, msg) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg;
+}
+
+function showRegister() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+}
+function showLogin() {
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+}
+
+// ── Enter key support ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    ['loginPass','loginNick'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+    });
+    ['regPass2','regPass','regNick'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') doRegister(); });
+    });
+
+    // check if already logged in
+    const saved = localStorage.getItem('papus_session');
+    if (saved) {
+        try {
+            const u = JSON.parse(saved);
+            if (u.nick && u.hash) {
+                // verify against firebase
+                verifySession(u.nick, u.hash);
+            }
+        } catch(e) {}
+    }
+});
+
+async function verifySession(nick, hash) {
+    try {
+        const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+        // we import db from window
+        const snap = await window._fbGetDoc(window._fbDoc(window._db, USERS_COL, nick.toLowerCase()));
+        if (snap.exists() && snap.data().hash === hash) {
+            loginSuccess(nick, snap.data());
+        } else {
+            localStorage.removeItem('papus_session');
+        }
+    } catch(e) {
+        // firebase not ready yet, retry once
+        setTimeout(() => verifySession(nick, hash), 1500);
+    }
+}
+
+async function doLogin() {
+    const nick = document.getElementById('loginNick').value.trim().toLowerCase();
+    const pass = document.getElementById('loginPass').value;
+    setLoginError('loginError', '');
+
+    if (!nick || !pass) { setLoginError('loginError', 'rellena todo bro 💀'); return; }
+    if (nick.length < 2)  { setLoginError('loginError', 'nick muy corto'); return; }
+
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(window._db, USERS_COL, nick));
+        if (!snap.exists()) { setLoginError('loginError', 'cuenta no encontrada — regístrate'); return; }
+        const data = snap.data();
+        if (data.hash !== hashPass(pass)) { setLoginError('loginError', 'contraseña incorrecta 💀'); return; }
+        // save session
+        localStorage.setItem('papus_session', JSON.stringify({ nick, hash: data.hash }));
+        loginSuccess(nick, data);
+    } catch(e) {
+        setLoginError('loginError', 'error de conexión, intenta de nuevo');
+    }
+}
+
+async function doRegister() {
+    const nick  = document.getElementById('regNick').value.trim().toLowerCase();
+    const pass  = document.getElementById('regPass').value;
+    const pass2 = document.getElementById('regPass2').value;
+    setLoginError('registerError', '');
+
+    if (!nick || !pass || !pass2)   { setLoginError('registerError', 'rellena todo 💀'); return; }
+    if (nick.length < 2)            { setLoginError('registerError', 'nick muy corto (mín 2 letras)'); return; }
+    if (nick.length > 16)           { setLoginError('registerError', 'nick muy largo (máx 16 letras)'); return; }
+    if (pass.length < 4)            { setLoginError('registerError', 'contraseña muy corta (mín 4 caracteres)'); return; }
+    if (pass !== pass2)             { setLoginError('registerError', 'las contraseñas no coinciden'); return; }
+    if (/[^a-z0-9_]/.test(nick))   { setLoginError('registerError', 'nick solo puede tener letras, números y _'); return; }
+
+    try {
+        // check if nick taken
+        const snap = await window._fbGetDoc(window._fbDoc(window._db, USERS_COL, nick));
+        if (snap.exists()) { setLoginError('registerError', 'ese nick ya está tomado 💀'); return; }
+
+        const hash = hashPass(pass);
+        const userData = {
+            nick, hash,
+            admin: isAdmin(nick),
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString(),
+        };
+        await window._fbSetDoc(window._fbDoc(window._db, USERS_COL, nick), userData);
+        localStorage.setItem('papus_session', JSON.stringify({ nick, hash }));
+        loginSuccess(nick, userData);
+    } catch(e) {
+        setLoginError('registerError', 'error al crear cuenta, intenta de nuevo');
+        console.error(e);
+    }
+}
+
+function loginSuccess(nick, data) {
+    currentUser = { nick, ...data };
+    // hide login overlay
+    const overlay = document.getElementById('loginOverlay');
+    if (overlay) { overlay.style.opacity='0'; overlay.style.transition='opacity .4s'; setTimeout(()=>overlay.remove(),400); }
+
+    // update last login
+    try {
+        window._fbUpdateDoc(window._fbDoc(window._db, USERS_COL, nick), { lastLogin: new Date().toISOString() });
+    } catch(e) {}
+
+    // show user badge in navbar
+    const badge = document.getElementById('userBadge');
+    if (badge) {
+        badge.style.display = 'block';
+        badge.textContent = isAdmin(nick) ? '👑 ' + nick : '👤 ' + nick;
+        if (isAdmin(nick)) badge.classList.add('admin-badge');
+    }
+
+    // if admin, load admin panel data
+    if (isAdmin(nick)) loadAdminData();
+
+    showFBToast(`👋 bienvenido ${nick}${isAdmin(nick)?' 👑':''}!`, '#00ff9d');
+}
+
+function toggleAdmin() {
+    if (!currentUser || !isAdmin(currentUser.nick)) return;
+    document.getElementById('adminPanel').classList.toggle('open');
+    loadAdminData();
+}
+
+async function loadAdminData() {
+    if (!currentUser || !isAdmin(currentUser.nick)) return;
+    try {
+        // get all users
+        const { getFirestore, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+        const snap = await window._fbGetDocs(window._fbCollection(window._db, USERS_COL));
+        const users = [];
+        snap.forEach(d => users.push(d.data()));
+
+        document.getElementById('adminTotalUsers').textContent = users.length;
+
+        // render user list
+        const list = document.getElementById('adminUserList');
+        if (list) {
+            list.innerHTML = '';
+            users.sort((a,b) => (b.lastLogin||'').localeCompare(a.lastLogin||'')).forEach(u => {
+                const row = document.createElement('div');
+                row.className = 'user-row';
+                const date = u.lastLogin ? new Date(u.lastLogin).toLocaleDateString('es') : '?';
+                row.innerHTML = `
+                    <div>
+                        <div class="uname">${u.nick}</div>
+                        <div class="udate">último acceso: ${date}</div>
+                    </div>
+                    <span class="ubadge ${u.admin?'admin':''}">${u.admin?'👑 admin':'papu'}</span>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        // get deaths total
+        const deathsSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'));
+        if (deathsSnap.exists()) {
+            const total = Object.values(deathsSnap.data()).reduce((a,b)=>a+b,0);
+            document.getElementById('adminTotalDeaths').textContent = total;
+        }
+
+        // get votes total
+        const votesSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'votes'));
+        if (votesSnap.exists()) {
+            const total = Object.values(votesSnap.data()).reduce((a,b)=>a+b,0);
+            document.getElementById('adminTotalVotes').textContent = total;
+        }
+
+        // online
+        const onlineSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'online'));
+        if (onlineSnap.exists()) {
+            document.getElementById('adminOnline').textContent = Math.max(1, onlineSnap.data().count||1);
+        }
+
+    } catch(e) { console.error('Admin load error:', e); }
+}
+
+function adminResetVotes() {
+    if (!currentUser || !isAdmin(currentUser.nick)) return;
+    window.resetVotesFB();
+}
+function adminResetDeaths() {
+    if (!currentUser || !isAdmin(currentUser.nick)) return;
+    window.resetDeathsFB();
+}
+async function adminDeleteUser() {
+    if (!currentUser || !isAdmin(currentUser.nick)) return;
+    const nick = prompt('Nick del usuario a eliminar:');
+    if (!nick || nick.toLowerCase() === 'emilio') { alert('No puedes eliminar esa cuenta 💀'); return; }
+    try {
+        const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+        await window._fbDeleteDoc(window._fbDoc(window._db, USERS_COL, nick.toLowerCase()));
+        showFBToast(`❌ Usuario ${nick} eliminado`, '#ff4466');
+        loadAdminData();
+    } catch(e) { showFBToast('Error al eliminar', '#ff4466'); }
+}
+
+// logout con Ctrl+Shift+L
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'L') {
+        if (confirm('¿Cerrar sesión?')) {
+            localStorage.removeItem('papus_session');
+            location.reload();
+        }
+    }
+});
+
 // =================== V12 FEATURES ===================
 
 // ── Lazy load particles after intro ──────────────────────────
-function lazyLoadParticles() {
-    const el = document.getElementById('particlesScript');
-    if (!el || el.src) return;
-    const s = document.createElement('script');
-    s.src = el.dataset.src;
-    s.onload = () => { if (window._initParticles) window._initParticles(); };
-    document.head.appendChild(s);
-    el.remove();
-}
+function lazyLoadParticles() { /* particles load normally now */ }
 
 // ── IntersectionObserver: pause heavy animations off-screen ──
 (function() {
