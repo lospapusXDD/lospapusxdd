@@ -773,6 +773,115 @@
 
 
 
+
+        /* ===== ADMIN PANEL V2 ===== */
+        #adminPanel {
+            position: fixed; top: 0; right: -480px; width: 460px; height: 100vh;
+            background: rgba(4,10,20,0.99); border-left: 1px solid rgba(255,215,0,0.2);
+            z-index: 9998; overflow-y: auto; padding: 0;
+            transition: right .35s cubic-bezier(.4,0,.2,1);
+            font-family: 'Poppins', sans-serif;
+        }
+        #adminPanel.open { right: 0; }
+        .admin-header {
+            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.1));
+            border-bottom: 1px solid rgba(255,215,0,0.2);
+            padding: 20px 24px; position: sticky; top: 0; z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+        .admin-header-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+        .admin-header h2 { font-size:16px; font-family:'Orbitron',sans-serif; color:#ffd700; margin:0; }
+        .admin-close { background:none; border:none; color:#80b0cc; font-size:20px; cursor:pointer; padding:4px 8px; border-radius:6px; transition:.2s; }
+        .admin-close:hover { background:rgba(255,68,102,0.2); color:#ff4466; }
+        .admin-tabs { display:flex; gap:6px; flex-wrap:wrap; }
+        .admin-tab {
+            padding:5px 12px; border-radius:20px; font-size:11px; font-weight:600;
+            cursor:pointer; border:1px solid rgba(255,215,0,0.2); color:#80b0cc;
+            background:transparent; transition:.2s; font-family:'Poppins',sans-serif;
+        }
+        .admin-tab.active { background:rgba(255,215,0,0.15); color:#ffd700; border-color:rgba(255,215,0,0.4); }
+        .admin-tab:hover { color:#ffd700; }
+        .admin-body { padding: 20px 24px; }
+        .admin-page { display:none; }
+        .admin-page.active { display:block; }
+        .admin-section { margin-bottom:24px; }
+        .admin-section-title {
+            font-size:11px; color:#80b0cc; text-transform:uppercase; letter-spacing:1.5px;
+            margin-bottom:12px; border-bottom:1px solid rgba(255,215,0,0.1); padding-bottom:8px;
+            display:flex; align-items:center; gap:6px;
+        }
+        .astat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+        .astat-card {
+            background:rgba(0,0,0,0.4); border:1px solid rgba(255,215,0,0.1);
+            border-radius:10px; padding:14px; text-align:center;
+        }
+        .astat-card .val { font-size:24px; font-weight:700; color:#ffd700; font-family:'Orbitron',sans-serif; }
+        .astat-card .lbl { font-size:10px; color:#80b0cc; margin-top:4px; }
+        .user-row { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(0,0,0,0.3); border-radius:8px; margin-bottom:8px; border:1px solid rgba(255,215,0,0.08); }
+        .user-row .uinfo .uname { font-weight:600; color:#fff; font-size:13px; }
+        .user-row .uinfo .umeta { font-size:10px; color:#445566; margin-top:2px; }
+        .user-row .uactions { display:flex; gap:6px; }
+        .ubadge { font-size:10px; padding:2px 8px; border-radius:20px; background:rgba(0,212,255,0.1); color:#00d4ff; }
+        .ubadge.admin { background:rgba(255,215,0,0.1); color:#ffd700; }
+        .ubadge.banned { background:rgba(255,68,102,0.1); color:#ff4466; }
+        .admin-input {
+            width:100%; padding:10px 14px; background:rgba(0,0,0,0.4);
+            border:1px solid rgba(255,215,0,0.2); border-radius:8px;
+            color:#fff; font-size:13px; font-family:'Poppins',sans-serif;
+            outline:none; transition:border-color .2s; box-sizing:border-box; margin-bottom:10px;
+        }
+        .admin-input:focus { border-color:#ffd700; }
+        .admin-textarea {
+            width:100%; padding:10px 14px; background:rgba(0,0,0,0.4);
+            border:1px solid rgba(255,215,0,0.2); border-radius:8px;
+            color:#fff; font-size:13px; font-family:'Poppins',sans-serif;
+            outline:none; resize:vertical; min-height:80px;
+            transition:border-color .2s; box-sizing:border-box; margin-bottom:10px;
+        }
+        .admin-textarea:focus { border-color:#ffd700; }
+        .abtn {
+            padding:9px 16px; border-radius:8px; font-size:12px; font-weight:600;
+            cursor:pointer; border:none; font-family:'Poppins',sans-serif;
+            transition:.2s; margin-bottom:8px;
+        }
+        .abtn-gold  { background:rgba(255,215,0,0.15); color:#ffd700; border:1px solid rgba(255,215,0,0.3); width:100%; }
+        .abtn-red   { background:rgba(255,68,102,0.15); color:#ff4466; border:1px solid rgba(255,68,102,0.3); width:100%; }
+        .abtn-green { background:rgba(0,255,100,0.1);  color:#00ff9d; border:1px solid rgba(0,255,100,0.2); width:100%; }
+        .abtn-blue  { background:rgba(0,212,255,0.1);  color:#00d4ff; border:1px solid rgba(0,212,255,0.2); width:100%; }
+        .abtn:hover { opacity:.8; transform:translateY(-1px); }
+        .log-entry {
+            padding:8px 12px; background:rgba(0,0,0,0.3); border-radius:6px;
+            margin-bottom:6px; border-left:2px solid rgba(255,215,0,0.3);
+            font-size:11px; color:#cdd3de;
+        }
+        .log-entry .log-time { color:#445566; font-size:10px; }
+        .log-entry .log-action { color:#ffd700; font-weight:600; }
+        .announcement-banner {
+            position:fixed; top:70px; left:50%; transform:translateX(-50%);
+            background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,140,0,0.15));
+            border:1px solid rgba(255,215,0,0.4); border-radius:12px;
+            padding:12px 24px; color:#ffd700; font-size:14px; font-weight:600;
+            z-index:9997; max-width:600px; text-align:center;
+            box-shadow:0 8px 32px rgba(255,215,0,0.15);
+            font-family:'Poppins',sans-serif; display:none;
+        }
+        .announcement-banner.show { display:block; animation: slideDown .3s ease; }
+        @keyframes slideDown { from{opacity:0;transform:translateX(-50%) translateY(-10px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+        .admin-select {
+            width:100%; padding:10px 14px; background:rgba(0,0,0,0.4);
+            border:1px solid rgba(255,215,0,0.2); border-radius:8px;
+            color:#fff; font-size:13px; font-family:'Poppins',sans-serif;
+            outline:none; margin-bottom:10px; cursor:pointer;
+        }
+        .abtn-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+        .banned-overlay {
+            position:fixed; inset:0; z-index:999999;
+            background:#000; display:flex; align-items:center; justify-content:center;
+            font-family:'Poppins',sans-serif; flex-direction:column; gap:16px;
+        }
+        .banned-overlay h1 { color:#ff4466; font-size:32px; font-family:'Orbitron',sans-serif; }
+        .banned-overlay p  { color:#80b0cc; font-size:14px; }
+
         /* ===== LOGIN ===== */
         #loginOverlay {
             position: fixed; inset: 0; z-index: 99999;
@@ -881,6 +990,54 @@
         }
         #userBadge:hover { background: rgba(0,212,255,0.15); color: var(--primary); }
         #userBadge.admin-badge { color: #ffd700; border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.08); }
+
+
+        /* ===== HAMBURGER MENU ===== */
+        .nav-links {
+            position: fixed !important;
+            top: 60px; right: -280px;
+            width: 260px; height: 100vh;
+            background: rgba(6,14,26,0.98);
+            border-left: 1px solid rgba(0,212,255,0.2);
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0 !important;
+            padding: 20px 0;
+            transition: right .3s ease;
+            z-index: 999;
+            overflow-y: auto;
+        }
+        .nav-links.open { right: 0 !important; }
+        .nav-links a {
+            width: 100%;
+            padding: 14px 24px !important;
+            border-bottom: 1px solid rgba(0,212,255,0.06);
+            font-size: 14px !important;
+            letter-spacing: 1px !important;
+        }
+        .nav-links a:hover { background: rgba(0,212,255,0.06); padding-left: 32px !important; }
+        .hamburger {
+            display: flex !important;
+            flex-direction: column;
+            gap: 5px; cursor: pointer;
+            padding: 4px; z-index: 1001;
+            background: none; border: none;
+        }
+        .hamburger span {
+            display: block; width: 24px; height: 2px;
+            background: var(--primary);
+            transition: .3s; border-radius: 2px;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        .nav-overlay {
+            display: none; position: fixed; inset: 0;
+            z-index: 998; background: rgba(0,0,0,0.5);
+        }
+        .nav-overlay.show { display: block; }
+        /* hide old nav-toggle */
+        .nav-toggle { display: none !important; }
 
         /* ===== REDUCED MOTION ===== */
         @media (prefers-reduced-motion: reduce) {
@@ -1147,28 +1304,142 @@
     </div>
 </div>
 
+<!-- ANNOUNCEMENT BANNER -->
+<div class="announcement-banner" id="announcementBanner"></div>
+
 <!-- ADMIN PANEL -->
 <div id="adminPanel">
-    <div class="admin-title">
-        👑 Panel Admin
-        <button class="admin-close" onclick="document.getElementById('adminPanel').classList.remove('open')">✕</button>
+    <div class="admin-header">
+        <div class="admin-header-top">
+            <h2>👑 Panel Admin</h2>
+            <button class="admin-close" onclick="document.getElementById('adminPanel').classList.remove('open')">✕</button>
+        </div>
+        <div class="admin-tabs">
+            <button class="admin-tab active" onclick="adminTab('stats')">📊 Stats</button>
+            <button class="admin-tab" onclick="adminTab('users')">👥 Usuarios</button>
+            <button class="admin-tab" onclick="adminTab('announce')">📣 Anuncio</button>
+            <button class="admin-tab" onclick="adminTab('tablero')">💀 Tablero</button>
+            <button class="admin-tab" onclick="adminTab('sitio')">🌐 Sitio</button>
+            <button class="admin-tab" onclick="adminTab('log')">📋 Log</button>
+        </div>
     </div>
-    <div class="admin-section">
-        <h3>📊 Estadísticas</h3>
-        <div class="admin-stat"><span>Usuarios registrados</span><span id="adminTotalUsers">0</span></div>
-        <div class="admin-stat"><span>Online ahora</span><span id="adminOnline">0</span></div>
-        <div class="admin-stat"><span>Total muertes</span><span id="adminTotalDeaths">0</span></div>
-        <div class="admin-stat"><span>Total votos</span><span id="adminTotalVotes">0</span></div>
-    </div>
-    <div class="admin-section">
-        <h3>👥 Cuentas registradas</h3>
-        <div id="adminUserList"></div>
-    </div>
-    <div class="admin-section">
-        <h3>🗑️ Acciones</h3>
-        <button class="admin-btn" onclick="adminResetVotes()">🗑️ Resetear todos los votos</button>
-        <button class="admin-btn" onclick="adminResetDeaths()">🗑️ Resetear todas las muertes</button>
-        <button class="admin-btn" onclick="adminDeleteUser()">❌ Eliminar usuario</button>
+    <div class="admin-body">
+
+        <!-- STATS PAGE -->
+        <div class="admin-page active" id="adminPage-stats">
+            <div class="astat-grid">
+                <div class="astat-card"><div class="val" id="adminTotalUsers">0</div><div class="lbl">usuarios</div></div>
+                <div class="astat-card"><div class="val" id="adminOnline">1</div><div class="lbl">online ahora</div></div>
+                <div class="astat-card"><div class="val" id="adminTotalDeaths">0</div><div class="lbl">muertes totales</div></div>
+                <div class="astat-card"><div class="val" id="adminTotalVotes">0</div><div class="lbl">votos totales</div></div>
+            </div>
+            <div class="admin-section">
+                <div class="admin-section-title">🏆 ranking de muertes</div>
+                <div id="adminDeathRanking"></div>
+            </div>
+            <div class="admin-section">
+                <div class="admin-section-title">☠ ranking de votos</div>
+                <div id="adminVoteRanking"></div>
+            </div>
+            <div class="admin-section">
+                <div class="admin-section-title">⚡ acciones rápidas</div>
+                <div class="abtn-row">
+                    <button class="abtn abtn-red" onclick="adminResetDeaths()">🗑 Reset muertes</button>
+                    <button class="abtn abtn-red" onclick="adminResetVotes()">🗑 Reset votos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- USERS PAGE -->
+        <div class="admin-page" id="adminPage-users">
+            <div class="admin-section">
+                <div class="admin-section-title">🔍 buscar usuario</div>
+                <input class="admin-input" id="adminSearchUser" placeholder="nick..." oninput="filterAdminUsers()">
+            </div>
+            <div class="admin-section">
+                <div class="admin-section-title">👥 todos los usuarios</div>
+                <div id="adminUserList"></div>
+            </div>
+        </div>
+
+        <!-- ANNOUNCE PAGE -->
+        <div class="admin-page" id="adminPage-announce">
+            <div class="admin-section">
+                <div class="admin-section-title">📣 anuncio global</div>
+                <p style="font-size:12px;color:#80b0cc;margin-bottom:12px;">aparece en la parte superior del sitio para TODOS los que estén conectados</p>
+                <input class="admin-input" id="announceText" placeholder="escribe el anuncio...">
+                <select class="admin-select" id="announceType">
+                    <option value="info">💬 Info normal</option>
+                    <option value="warn">⚠️ Advertencia</option>
+                    <option value="hype">🔥 Hype</option>
+                    <option value="troll">💀 Troll</option>
+                </select>
+                <button class="abtn abtn-gold" onclick="sendAnnouncement()">📣 Enviar anuncio</button>
+                <button class="abtn abtn-red" onclick="clearAnnouncement()">❌ Quitar anuncio</button>
+            </div>
+            <div class="admin-section">
+                <div class="admin-section-title">⚡ anuncios rápidos</div>
+                <button class="abtn abtn-blue" onclick="quickAnnounce('🔥 Los Papus online — a jugar!')">🔥 A jugar</button>
+                <button class="abtn abtn-blue" onclick="quickAnnounce('💀 Jero está en modo tóxico, cuidado')">💀 Jero tóxico</button>
+                <button class="abtn abtn-blue" onclick="quickAnnounce('👑 Emilio al habla — atención todos')">👑 Yo hablo</button>
+                <button class="abtn abtn-blue" onclick="quickAnnounce('🚨 SITIO EN MANTENIMIENTO — vuelvo en un rato')">🚨 Mantenimiento</button>
+                <button class="abtn abtn-blue" onclick="quickAnnounce('🎮 Sesión de 99 Nights ahora — únanse')">🎮 99 Nights</button>
+            </div>
+        </div>
+
+        <!-- TABLERO PAGE -->
+        <div class="admin-page" id="adminPage-tablero">
+            <div class="admin-section">
+                <div class="admin-section-title">➕ agregar papu al tablero</div>
+                <input class="admin-input" id="newPapuName" placeholder="nombre del nuevo papu...">
+                <button class="abtn abtn-gold" onclick="addPapuToBoard()">➕ Agregar papu</button>
+            </div>
+            <div class="admin-section">
+                <div class="admin-section-title">✏️ editar muertes manualmente</div>
+                <select class="admin-select" id="editPapuSelect"></select>
+                <input class="admin-input" id="editPapuDeaths" type="number" placeholder="número de muertes..." min="0">
+                <button class="abtn abtn-gold" onclick="setPapuDeaths()">💾 Guardar</button>
+            </div>
+            <div class="admin-section">
+                <div class="admin-section-title">🗑️ peligroso</div>
+                <button class="abtn abtn-red" onclick="adminResetDeaths()">💀 Reset todas las muertes</button>
+            </div>
+        </div>
+
+        <!-- SITIO PAGE -->
+        <div class="admin-page" id="adminPage-sitio">
+            <div class="admin-section">
+                <div class="admin-section-title">🌐 configuración del sitio</div>
+                <p style="font-size:11px;color:#80b0cc;margin-bottom:10px;">modo mantenimiento — bloquea el acceso a todos excepto admin</p>
+                <button class="abtn abtn-red" id="maintenanceBtn" onclick="toggleMaintenance()">🚧 Activar mantenimiento</button>
+            </div>
+            <div class="admin-section">
+                <div class="admin-section-title">🚫 gestión de bans</div>
+                <input class="admin-input" id="banNickInput" placeholder="nick a banear...">
+                <input class="admin-input" id="banReasonInput" placeholder="razón del ban (opcional)...">
+                <div class="abtn-row">
+                    <button class="abtn abtn-red" onclick="banUser()">🚫 Banear</button>
+                    <button class="abtn abtn-green" onclick="unbanUser()">✅ Desbanear</button>
+                </div>
+                <div class="admin-section-title" style="margin-top:16px;">lista de baneados</div>
+                <div id="bannedList"></div>
+            </div>
+            <div class="admin-section">
+                <div class="admin-section-title">🗑️ zona peligrosa</div>
+                <button class="abtn abtn-red" onclick="adminResetVotes()">🗑 Reset votos globales</button>
+                <button class="abtn abtn-red" onclick="adminNukeUser()">💥 Eliminar usuario</button>
+            </div>
+        </div>
+
+        <!-- LOG PAGE -->
+        <div class="admin-page" id="adminPage-log">
+            <div class="admin-section">
+                <div class="admin-section-title">📋 log de actividad</div>
+                <div id="activityLog"></div>
+                <button class="abtn abtn-red" style="margin-top:8px;" onclick="clearLog()">🗑 Limpiar log</button>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -1265,6 +1536,7 @@
         <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
     </div>
 </nav>
+<div class="nav-overlay" id="navOverlay" onclick="closeMenu()"></div>
 
 <!-- HOME -->
 <section class="home" id="home">
@@ -1585,6 +1857,7 @@ window._fbSetDoc     = setDoc;
 window._fbUpdateDoc  = updateDoc;
 window._fbCollection = collection;
 window._fbGetDocs    = getDocs;
+window._fbOnSnapshot = onSnapshot;
 window._fbDeleteDoc  = async (ref) => {
     const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
     return deleteDoc(ref);
@@ -4918,7 +5191,8 @@ function loginSuccess(nick, data) {
 
     // update last login
     try {
-        window._fbUpdateDoc(window._fbDoc(window._db, USERS_COL, nick), { lastLogin: new Date().toISOString() });
+        const { increment: inc2 } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+        window._fbUpdateDoc(window._fbDoc(window._db, USERS_COL, nick), { lastLogin: new Date().toISOString(), loginCount: inc2(1) });
     } catch(e) {}
 
     // show user badge in navbar
@@ -4930,6 +5204,8 @@ function loginSuccess(nick, data) {
     }
 
     // if admin, load admin panel data
+    // check ban + maintenance
+    window._checkAccessRestrictions(nick);
     if (isAdmin(nick)) loadAdminData();
 
     showFBToast(`👋 bienvenido ${nick}${isAdmin(nick)?' 👑':''}!`, '#00ff9d');
@@ -5022,6 +5298,364 @@ document.addEventListener('keydown', e => {
             location.reload();
         }
     }
+});
+
+
+// ── Hamburger menu ────────────────────────────────────────────
+function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    const burger = document.getElementById('hamburger');
+    const overlay = document.getElementById('navOverlay');
+    links.classList.toggle('open');
+    burger.classList.toggle('open');
+    overlay.classList.toggle('show');
+}
+function closeMenu() {
+    document.querySelector('.nav-links')?.classList.remove('open');
+    document.getElementById('hamburger')?.classList.remove('open');
+    document.getElementById('navOverlay')?.classList.remove('show');
+}
+// close menu on link click
+document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', closeMenu);
+});
+
+
+// =================== MEGA ADMIN PANEL ===================
+
+// ── Tab switching ─────────────────────────────────────────────
+function adminTab(tab) {
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    const page = document.getElementById('adminPage-' + tab);
+    if (page) page.classList.add('active');
+    if (tab === 'stats')   loadAdminStats();
+    if (tab === 'users')   loadAdminUsers();
+    if (tab === 'tablero') loadAdminTablero();
+    if (tab === 'sitio')   loadAdminSitio();
+    if (tab === 'log')     loadAdminLog();
+}
+
+// ── Activity logger ───────────────────────────────────────────
+async function logActivity(action, detail='') {
+    try {
+        const logs = JSON.parse(localStorage.getItem('papus_adminlog') || '[]');
+        logs.unshift({ action, detail, time: new Date().toISOString(), by: currentUser?.nick || '?' });
+        localStorage.setItem('papus_adminlog', JSON.stringify(logs.slice(0, 100)));
+        // also save to firebase
+        await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'lastAction'), {
+            action, detail, by: currentUser?.nick, time: new Date().toISOString()
+        });
+    } catch(e) {}
+}
+
+// ── Load stats ────────────────────────────────────────────────
+async function loadAdminStats() {
+    try {
+        // users
+        const usersSnap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        const users = []; usersSnap.forEach(d => users.push(d.data()));
+        document.getElementById('adminTotalUsers').textContent = users.length;
+
+        // deaths
+        const dSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'));
+        if (dSnap.exists()) {
+            const d = dSnap.data();
+            const total = Object.values(d).reduce((a,b)=>a+(b||0),0);
+            document.getElementById('adminTotalDeaths').textContent = total;
+            const ranking = document.getElementById('adminDeathRanking');
+            if (ranking) {
+                const sorted = Object.entries(d).sort((a,b)=>b[1]-a[1]);
+                ranking.innerHTML = sorted.map(([n,v],i) =>
+                    `<div class="user-row"><div class="uinfo"><div class="uname">${['🥇','🥈','🥉'][i]||'💀'} ${n}</div></div><span class="ubadge">${v} 💀</span></div>`
+                ).join('');
+            }
+        }
+
+        // votes
+        const vSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'votes'));
+        if (vSnap.exists()) {
+            const v = vSnap.data();
+            const total = Object.values(v).reduce((a,b)=>a+(b||0),0);
+            document.getElementById('adminTotalVotes').textContent = total;
+            const ranking = document.getElementById('adminVoteRanking');
+            if (ranking) {
+                const sorted = Object.entries(v).sort((a,b)=>b[1]-a[1]);
+                ranking.innerHTML = sorted.map(([n,v],i) =>
+                    `<div class="user-row"><div class="uinfo"><div class="uname">${['☠️','💀','🩸'][i]||'⚡'} ${n}</div></div><span class="ubadge">${v} votos</span></div>`
+                ).join('');
+            }
+        }
+
+        // online
+        const oSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'online'));
+        if (oSnap.exists()) document.getElementById('adminOnline').textContent = Math.max(1, oSnap.data().count||1);
+
+    } catch(e) { console.error(e); }
+}
+
+// ── Load users ────────────────────────────────────────────────
+let _allUsers = [];
+async function loadAdminUsers() {
+    try {
+        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        _allUsers = [];
+        snap.forEach(d => _allUsers.push(d.data()));
+        _allUsers.sort((a,b) => (b.lastLogin||'').localeCompare(a.lastLogin||''));
+        renderAdminUsers(_allUsers);
+    } catch(e) {}
+}
+
+function renderAdminUsers(users) {
+    const list = document.getElementById('adminUserList');
+    if (!list) return;
+    if (!users.length) { list.innerHTML = '<p style="color:#445566;font-size:12px;">no hay usuarios</p>'; return; }
+    list.innerHTML = users.map(u => {
+        const date = u.lastLogin ? new Date(u.lastLogin).toLocaleDateString('es') : '?';
+        const logins = u.loginCount || 1;
+        const banned = u.banned ? '<span class="ubadge banned">🚫 baneado</span>' : '';
+        const adminB = u.admin  ? '<span class="ubadge admin">👑 admin</span>' : '<span class="ubadge">papu</span>';
+        return `<div class="user-row">
+            <div class="uinfo">
+                <div class="uname">${u.nick} ${banned}</div>
+                <div class="umeta">último acceso: ${date} · ${logins} entradas</div>
+            </div>
+            <div class="uactions">
+                ${adminB}
+                ${!u.admin ? `<button class="abtn abtn-red" style="padding:4px 8px;font-size:10px;width:auto;margin:0;" onclick="adminNukeUserDirect('${u.nick}')">🗑</button>` : ''}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function filterAdminUsers() {
+    const q = (document.getElementById('adminSearchUser')?.value || '').toLowerCase();
+    renderAdminUsers(q ? _allUsers.filter(u => u.nick.includes(q)) : _allUsers);
+}
+
+// ── Nuke user ─────────────────────────────────────────────────
+async function adminNukeUserDirect(nick) {
+    if (!confirm(`¿Eliminar a ${nick}?`)) return;
+    try {
+        const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+        await deleteDoc(window._fbDoc(window._db, 'users', nick));
+        logActivity('DELETE_USER', nick);
+        showFBToast(`🗑 ${nick} eliminado`, '#ff4466');
+        loadAdminUsers();
+    } catch(e) { showFBToast('Error al eliminar', '#ff4466'); }
+}
+function adminNukeUser() {
+    const nick = prompt('Nick a eliminar:');
+    if (nick) adminNukeUserDirect(nick.toLowerCase());
+}
+
+// ── Announcements ─────────────────────────────────────────────
+const ANNOUNCE_DOC = window._fbDoc ? window._fbDoc(window._db, 'lospapus', 'announcement') : null;
+
+async function sendAnnouncement() {
+    const text = document.getElementById('announceText')?.value?.trim();
+    const type = document.getElementById('announceType')?.value || 'info';
+    if (!text) { showFBToast('escribe algo primero 💀', '#ff4466'); return; }
+    const icons = { info:'💬', warn:'⚠️', hype:'🔥', troll:'💀' };
+    const colors = { info:'#00d4ff', warn:'#ffd700', hype:'#ff6b00', troll:'#ff4466' };
+    await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'announcement'), {
+        text: icons[type] + ' ' + text, color: colors[type], active: true, time: new Date().toISOString()
+    });
+    logActivity('ANNOUNCEMENT', text);
+    showFBToast('📣 Anuncio enviado!', '#ffd700');
+}
+function quickAnnounce(text) {
+    if (document.getElementById('announceText')) document.getElementById('announceText').value = text.replace(/^[^\s]+\s/,'');
+    sendAnnouncement();
+}
+async function clearAnnouncement() {
+    await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'announcement'), { active: false, text:'', color:'' });
+    showFBToast('❌ Anuncio quitado', '#80b0cc');
+}
+
+// ── Listen for announcements (all users) ─────────────────────
+function initAnnouncementListener() {
+    try {
+        window._fbOnSnapshot(window._fbDoc(window._db, 'lospapus', 'announcement'), snap => {
+            const banner = document.getElementById('announcementBanner');
+            if (!banner) return;
+            if (!snap.exists() || !snap.data().active) { banner.classList.remove('show'); return; }
+            const data = snap.data();
+            banner.textContent = data.text;
+            banner.style.color = data.color || '#ffd700';
+            banner.style.borderColor = (data.color || '#ffd700') + '66';
+            banner.classList.add('show');
+        });
+    } catch(e) {}
+}
+
+// ── Ban system ────────────────────────────────────────────────
+async function banUser() {
+    const nick = document.getElementById('banNickInput')?.value?.trim().toLowerCase();
+    const reason = document.getElementById('banReasonInput')?.value?.trim() || 'sin razón';
+    if (!nick) { showFBToast('escribe un nick 💀', '#ff4466'); return; }
+    if (nick === 'emilio') { showFBToast('no puedes banearte a ti mismo xd', '#ff4466'); return; }
+    try {
+        await window._fbUpdateDoc(window._fbDoc(window._db, 'users', nick), { banned: true, banReason: reason });
+        logActivity('BAN', nick + ' — ' + reason);
+        showFBToast(`🚫 ${nick} baneado`, '#ff4466');
+        loadAdminSitio();
+    } catch(e) { showFBToast('usuario no encontrado', '#ff4466'); }
+}
+async function unbanUser() {
+    const nick = document.getElementById('banNickInput')?.value?.trim().toLowerCase();
+    if (!nick) { showFBToast('escribe el nick a desbanear', '#ff4466'); return; }
+    try {
+        await window._fbUpdateDoc(window._fbDoc(window._db, 'users', nick), { banned: false, banReason: '' });
+        logActivity('UNBAN', nick);
+        showFBToast(`✅ ${nick} desbaneado`, '#00ff9d');
+        loadAdminSitio();
+    } catch(e) { showFBToast('error', '#ff4466'); }
+}
+
+async function loadAdminSitio() {
+    try {
+        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+        const banned = [];
+        snap.forEach(d => { if (d.data().banned) banned.push(d.data()); });
+        const list = document.getElementById('bannedList');
+        if (list) {
+            list.innerHTML = banned.length
+                ? banned.map(u => `<div class="user-row"><div class="uinfo"><div class="uname">🚫 ${u.nick}</div><div class="umeta">${u.banReason||'sin razón'}</div></div></div>`).join('')
+                : '<p style="color:#445566;font-size:12px;">nadie baneado (por ahora 👀)</p>';
+        }
+        // maintenance
+        const mSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'settings'));
+        const maintenanceBtn = document.getElementById('maintenanceBtn');
+        if (maintenanceBtn && mSnap.exists()) {
+            const on = mSnap.data().maintenance;
+            maintenanceBtn.textContent = on ? '✅ Desactivar mantenimiento' : '🚧 Activar mantenimiento';
+            maintenanceBtn.className = on ? 'abtn abtn-green' : 'abtn abtn-red';
+        }
+    } catch(e) {}
+}
+
+async function toggleMaintenance() {
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'settings'));
+        const current = snap.exists() ? (snap.data().maintenance || false) : false;
+        await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'settings'), { maintenance: !current });
+        logActivity('MAINTENANCE', !current ? 'ON' : 'OFF');
+        showFBToast(!current ? '🚧 Mantenimiento activado' : '✅ Mantenimiento desactivado', '#ffd700');
+        loadAdminSitio();
+    } catch(e) {}
+}
+
+// ── Tablero management ────────────────────────────────────────
+async function loadAdminTablero() {
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'));
+        const select = document.getElementById('editPapuSelect');
+        if (select && snap.exists()) {
+            select.innerHTML = Object.keys(snap.data()).map(n => `<option value="${n}">${n}</option>`).join('');
+        }
+    } catch(e) {}
+}
+
+async function addPapuToBoard() {
+    const name = document.getElementById('newPapuName')?.value?.trim();
+    if (!name) { showFBToast('escribe un nombre 💀', '#ff4466'); return; }
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'));
+        const data = snap.exists() ? snap.data() : {};
+        if (data[name] !== undefined) { showFBToast('ese papu ya existe', '#ff4466'); return; }
+        data[name] = 0;
+        await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'deaths'), data);
+        const vSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'votes'));
+        const vData = vSnap.exists() ? vSnap.data() : {};
+        vData[name] = 0;
+        await window._fbSetDoc(window._fbDoc(window._db, 'lospapus', 'votes'), vData);
+        logActivity('ADD_PAPU', name);
+        showFBToast(`➕ ${name} agregado al tablero!`, '#00ff9d');
+        if (document.getElementById('newPapuName')) document.getElementById('newPapuName').value = '';
+        loadAdminTablero();
+    } catch(e) { showFBToast('error al agregar', '#ff4466'); }
+}
+
+async function setPapuDeaths() {
+    const name   = document.getElementById('editPapuSelect')?.value;
+    const deaths = parseInt(document.getElementById('editPapuDeaths')?.value);
+    if (!name || isNaN(deaths) || deaths < 0) { showFBToast('datos inválidos 💀', '#ff4466'); return; }
+    try {
+        await window._fbUpdateDoc(window._fbDoc(window._db, 'lospapus', 'deaths'), { [name]: deaths });
+        logActivity('SET_DEATHS', name + ' → ' + deaths);
+        showFBToast(`💾 ${name}: ${deaths} muertes`, '#00ff9d');
+    } catch(e) { showFBToast('error', '#ff4466'); }
+}
+
+// ── Activity log ──────────────────────────────────────────────
+function loadAdminLog() {
+    const logs = JSON.parse(localStorage.getItem('papus_adminlog') || '[]');
+    const container = document.getElementById('activityLog');
+    if (!container) return;
+    if (!logs.length) { container.innerHTML = '<p style="color:#445566;font-size:12px;">log vacío</p>'; return; }
+    container.innerHTML = logs.map(l => {
+        const time = new Date(l.time).toLocaleString('es');
+        return `<div class="log-entry">
+            <div class="log-action">${l.action}</div>
+            <div>${l.detail}</div>
+            <div class="log-time">${time} · por ${l.by}</div>
+        </div>`;
+    }).join('');
+}
+function clearLog() {
+    if (!confirm('¿Limpiar el log?')) return;
+    localStorage.removeItem('papus_adminlog');
+    loadAdminLog();
+}
+
+// ── Check ban on login ────────────────────────────────────────
+const _origLoginSuccess = window.loginSuccess;
+
+// ── Override loadAdminData (replace old one) ──────────────────
+window.loadAdminData = function() { loadAdminStats(); };
+
+// ── Check maintenance + ban on every page load ────────────────
+async function checkAccessRestrictions(nick) {
+    try {
+        // check ban
+        const uSnap = await window._fbGetDoc(window._fbDoc(window._db, 'users', nick));
+        if (uSnap.exists() && uSnap.data().banned && nick !== 'emilio') {
+            const reason = uSnap.data().banReason || 'contacta a emilio';
+            document.body.innerHTML = `<div class="banned-overlay">
+                <h1>🚫 BANEADO</h1>
+                <p>fuiste baneado del sitio</p>
+                <p style="color:#ff4466;">razón: ${reason}</p>
+                <p style="font-size:12px;color:#445566;">si crees que es un error, habla con emilio</p>
+            </div>`;
+            return false;
+        }
+        // check maintenance
+        const sSnap = await window._fbGetDoc(window._fbDoc(window._db, 'lospapus', 'settings'));
+        if (sSnap.exists() && sSnap.data().maintenance && nick !== 'emilio') {
+            document.body.innerHTML = `<div class="banned-overlay">
+                <h1>🚧 MANTENIMIENTO</h1>
+                <p>el sitio está en mantenimiento</p>
+                <p style="font-size:12px;color:#445566;">vuelve en un rato</p>
+            </div>`;
+            return false;
+        }
+        return true;
+    } catch(e) { return true; }
+}
+
+// expose for loginSuccess patch
+window._checkAccessRestrictions = checkAccessRestrictions;
+
+// ── Init announcement listener ────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    // wait for firebase to be ready
+    setTimeout(() => {
+        if (window._fbOnSnapshot && window._fbDoc && window._db) {
+            initAnnouncementListener();
+        }
+    }, 2000);
 });
 
 // =================== V12 FEATURES ===================
