@@ -1858,6 +1858,7 @@ window._fbUpdateDoc  = updateDoc;
 window._fbCollection = collection;
 window._fbGetDocs    = getDocs;
 window._fbOnSnapshot = onSnapshot;
+window._fbIncrement = increment;
 window._fbDeleteDoc  = async (ref) => {
     const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
     return deleteDoc(ref);
@@ -5191,8 +5192,7 @@ function loginSuccess(nick, data) {
 
     // update last login
     try {
-        const { increment: inc2 } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
-        window._fbUpdateDoc(window._fbDoc(window._db, USERS_COL, nick), { lastLogin: new Date().toISOString(), loginCount: inc2(1) });
+        window._fbUpdateDoc(window._fbDoc(window._db, USERS_COL, nick), { lastLogin: new Date().toISOString(), loginCount: (window._fbIncrement ? window._fbIncrement(1) : 1) });
     } catch(e) {}
 
     // show user badge in navbar
