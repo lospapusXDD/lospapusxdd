@@ -1887,20 +1887,34 @@
 <!-- INTRO -->
 <div id="intro">
     <canvas id="intro-canvas"></canvas>
-    <div id="intro-terminal"></div>
     <div id="intro-glitch-overlay"></div>
-    <div class="intro-content">
-        <div class="intro-tag">solo pa los papus</div>
-        <div class="intro-logo" data-text="LOS PAPUS">LOS <span>PAPUS</span></div>
-        <div class="intro-sub">el grupo más tóxico de roblox</div>
-        <div class="intro-bar-wrap">
-            <div class="intro-bar-track">
-                <div class="intro-bar-fill" id="introBar"></div>
+
+    <!-- FASE 1: hacker terminal -->
+    <div id="phase-hack" style="position:absolute;inset:0;z-index:4;display:flex;align-items:center;justify-content:center;padding:20px;">
+        <div style="width:min(760px,95vw);max-height:90vh;overflow:hidden;">
+            <div style="font-family:'Courier New',monospace;font-size:11px;color:rgba(0,212,255,0.4);letter-spacing:2px;margin-bottom:12px;border-bottom:1px solid rgba(0,212,255,0.1);padding-bottom:8px;">
+                LOSPAPUS — TERMINAL v2.4.1 — CONEXION SEGURA
             </div>
-            <div class="intro-bar-msg" id="introMsg">inicializando toxicidad...</div>
-            <div class="intro-pct" id="introPct">0%</div>
+            <div id="hack-terminal" style="font-family:'Courier New',monospace;font-size:12px;line-height:1.75;color:#00d4ff;max-height:80vh;overflow:hidden;"></div>
         </div>
-        <div id="intro-access"></div>
+    </div>
+
+    <!-- FASE 2: intro normal -->
+    <div id="phase-intro" style="position:absolute;inset:0;z-index:4;display:none;align-items:center;justify-content:center;flex-direction:column;">
+        <div id="intro-terminal"></div>
+        <div class="intro-content">
+            <div class="intro-tag">solo pa los papus</div>
+            <div class="intro-logo" data-text="LOS PAPUS">LOS <span>PAPUS</span></div>
+            <div class="intro-sub">el grupo más tóxico de roblox</div>
+            <div class="intro-bar-wrap">
+                <div class="intro-bar-track">
+                    <div class="intro-bar-fill" id="introBar"></div>
+                </div>
+                <div class="intro-bar-msg" id="introMsg">inicializando toxicidad...</div>
+                <div class="intro-pct" id="introPct">0%</div>
+            </div>
+            <div id="intro-access"></div>
+        </div>
     </div>
 </div>
 
@@ -2739,132 +2753,225 @@ document.addEventListener('DOMContentLoaded', async () => {
 <script>
 // =================== INTRO ===================
 (function() {
-    // falling code canvas
+    // ── Matrix rain canvas ─────────────────────────────────
     const canvas = document.getElementById('intro-canvas');
     const ctx    = canvas.getContext('2d');
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
-    const cols   = Math.floor(canvas.width / 20);
-    const drops  = Array(cols).fill(1);
-    const chars  = 'LOSPAPUS01アイウエオカキクケコ░▒▓█☠💀⚔🎮';
+    const cols  = Math.floor(canvas.width / 20);
+    const drops = Array(cols).fill(1);
+    const chars = 'LOSPAPUS01ABCDEFアイウエオ░▒▓█0123456789@#$%&><|/\\';
     function drawMatrix() {
         ctx.fillStyle = 'rgba(0,0,0,0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#00d4ff';
         ctx.font = '14px monospace';
         drops.forEach((y, i) => {
             const ch = chars[Math.floor(Math.random() * chars.length)];
+            const bright = Math.random() > 0.96;
+            ctx.fillStyle = bright ? '#ffffff' : `rgba(0,${Math.floor(Math.random()*80+140)},${Math.floor(Math.random()*60+180)},0.8)`;
             ctx.fillText(ch, i * 20, y * 20);
             if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
             drops[i]++;
         });
     }
-    const matrixInterval = setInterval(drawMatrix, 80);
+    const matrixInterval = setInterval(drawMatrix, 60);
 
-    // ---- TERMINAL LINES ----
-    const terminalLines = [
-        { text: '$ ssh papus@roblox.group --force',           cls: 'cmd',  delay: 500  },
-        { text: '> conectando al servidor tóxico...',          cls: 'warn', delay: 1100 },
-        { text: '> verificando identidad de papu...',          cls: 'warn', delay: 1600 },
-        { text: '> [OK] usuario: emilio | rol: proveedor',     cls: 'ok',   delay: 2100 },
-        { text: '> [OK] scripts cargados: 5/5',                cls: 'ok',   delay: 2500 },
-        { text: '> buscando a samuel... timeout 🕯️',           cls: 'err',  delay: 2900 },
-        { text: '> [OK] toxicidad al 100%',                    cls: 'ok',   delay: 3300 },
-        { text: '$ ./launch_lospapus.sh',                      cls: 'cmd',  delay: 3700 },
-    ];
-
-    const terminal = document.getElementById('intro-terminal');
-    terminalLines.forEach(({ text, cls, delay }) => {
-        setTimeout(() => {
-            const line = document.createElement('div');
-            line.className = 't-line show';
-            line.innerHTML = `<span class="${cls}">${text}</span>`;
-            terminal.appendChild(line);
-            // beep sound via AudioContext
-            try {
-                const ac = new (window.AudioContext || window.webkitAudioContext)();
-                const o  = ac.createOscillator();
-                const g  = ac.createGain();
-                o.connect(g); g.connect(ac.destination);
-                o.frequency.value = 440 + Math.random() * 300;
-                o.type = 'square';
-                g.gain.setValueAtTime(0.04, ac.currentTime);
-                g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.08);
-                o.start(); o.stop(ac.currentTime + 0.08);
-            } catch(e) {}
-        }, delay);
-    });
-
-    // ---- RANDOM SCREEN GLITCHES ----
+    // ── Glitch ─────────────────────────────────────────────
     const glitchOverlay = document.getElementById('intro-glitch-overlay');
     function triggerGlitch() {
         glitchOverlay.classList.remove('active');
         void glitchOverlay.offsetWidth;
         glitchOverlay.classList.add('active');
     }
-    // glitch at random moments during intro
-    [800, 1400, 2200, 2800, 3500].forEach(t => setTimeout(triggerGlitch, t));
+    [700, 1500, 2400, 3200, 4100, 5000, 6000].forEach(t => setTimeout(triggerGlitch, t));
 
-    // ---- LOADING BAR ----
-    const msgs = [
-        'inicializando toxicidad...',
-        'cargando scripts de farm...',
-        'buscando a Samuel... error 404',
-        'activando modo tóxico...',
-        'conectando con los papus...',
-        'spameando combos de Gabriel...',
-        'despertando a Sami (imposible)...',
-        'emilio.exe cargando...',
-        'cargando excusas de lag...',
-        'iniciando sesión como papu...',
-        '¡listo! entrando al grupo...',
+    // ── Helpers ─────────────────────────────────────────────
+    const G  = s => `<span style="color:#00ff9d">${s}</span>`;
+    const Y  = s => `<span style="color:#ffd700">${s}</span>`;
+    const R  = s => `<span style="color:#ff4466">${s}</span>`;
+    const C  = s => `<span style="color:#00d4ff">${s}</span>`;
+    const W  = s => `<span style="color:#ffffff">${s}</span>`;
+    const DM = s => `<span style="color:rgba(0,212,255,0.3)">${s}</span>`;
+    const hackTerm = document.getElementById('hack-terminal');
+
+    function addLine(html, delay) {
+        return new Promise(res => setTimeout(() => {
+            const div = document.createElement('div');
+            div.innerHTML = html === '' ? '&nbsp;' : html;
+            div.style.cssText = 'opacity:0;transform:translateX(-6px);transition:opacity .12s,transform .12s';
+            hackTerm.appendChild(div);
+            hackTerm.scrollTop = hackTerm.scrollHeight;
+            requestAnimationFrame(() => { div.style.opacity='1'; div.style.transform='none'; });
+            try {
+                const ac = new (window.AudioContext||window.webkitAudioContext)();
+                const o=ac.createOscillator(), g=ac.createGain();
+                o.connect(g); g.connect(ac.destination);
+                o.frequency.value = 180 + Math.random()*500;
+                o.type = 'square';
+                g.gain.setValueAtTime(0.015, ac.currentTime);
+                g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+0.055);
+                o.start(); o.stop(ac.currentTime+0.055);
+            } catch(e){}
+            res();
+        }, delay));
+    }
+
+    // ── FASE 1: Hacker terminal lines ──────────────────────
+    const lines = [
+        [0,    DM('┌──────────────────────────────────────────────────────────┐')],
+        [80,   DM('│') + C('  LOSPAPUS SECURE TERMINAL v2.4.1 — ACCESO RESTRINGIDO  ') + DM('│')],
+        [160,  DM('└──────────────────────────────────────────────────────────┘')],
+        [300,  ''],
+        [400,  C('root@lospapus:~# ') + W('nmap -sS -sV -O --script vuln 192.168.0.0/24')],
+        [900,  DM('Starting Nmap 7.94 — https://nmap.org')],
+        [1050, DM('Initiating SYN Stealth Scan at 21:33...')],
+        [1200, DM('Scanning 256 hosts [1000 ports/host]')],
+        [1380, G('[+] Host 192.168.0.12 is up (0.0018s latency)')],
+        [1520, G('[+] Host 192.168.0.47 is up (0.0041s latency)')],
+        [1650, R('[!] Host 192.168.0.99 — FIREWALL DETECTED')],
+        [1800, ''],
+        [1860, Y('PORT     STATE  SERVICE    VERSION')],
+        [1980, G('22/tcp   open   ssh        OpenSSH 9.1p1 Ubuntu')],
+        [2080, G('80/tcp   open   http       Apache httpd 2.4.57')],
+        [2170, G('443/tcp  open   ssl/https  nginx 1.25.3')],
+        [2260, G('3306/tcp open   mysql      MySQL 8.0.35')],
+        [2360, R('8080/tcp open   http-proxy Squid 5.7 — VULNERABLE')],
+        [2480, ''],
+        [2540, C('root@lospapus:~# ') + W('sqlmap -u "http://192.168.0.12/login.php?id=1" --dbs --batch')],
+        [2900, Y('[*] testing connection to target URL')],
+        [3050, Y('[*] checking if the target is protected by WAF/IPS')],
+        [3200, G('[+] the back-end DBMS is MySQL')],
+        [3350, G('[+] retrieved: information_schema')],
+        [3450, G('[+] retrieved: lospapus_db')],
+        [3550, G('[+] retrieved: usuarios')],
+        [3680, ''],
+        [3750, C('root@lospapus:~# ') + W('sqlmap -D lospapus_db -T usuarios --dump')],
+        [4050, Y('[*] fetching entries for table "usuarios"')],
+        [4180, DM('Database: lospapus_db — Table: usuarios')],
+        [4280, DM('+---------+-------------------+----------+')],
+        [4370, DM('| nick    | rol               | status   |')],
+        [4450, DM('+---------+-------------------+----------+')],
+        [4530, G('| emilio  | OWNER DEV         | online   |')],
+        [4610, C('| jero    | toxico            | raging   |')],
+        [4690, C('| gabriel | spam_master        | combo x9 |')],
+        [4770, C('| sami    | too_kind           | online   |')],
+        [4850, C('| luciana | novia_de_emilio    | online   |')],
+        [4930, C('| akiro   | nuevo              | online   |')],
+        [5010, Y('| samuel  | fantasma           | offline  |')],
+        [5090, DM('+---------+-------------------+----------+')],
+        [5180, ''],
+        [5240, C('root@lospapus:~# ') + W('hashcat -m 0 -a 0 hashes.txt rockyou.txt')],
+        [5500, Y('[*] Session........: hashcat')],
+        [5600, Y('[*] Hash.Mode......: 0 (MD5)')],
+        [5700, G('[+] b04e2b5a31a7cc4f21ac7ee2fd5e6b5f:p4pus_toxico_420')],
+        [5820, G('[STATUS] Cracked 1/1 hashes — 100% done')],
+        [5940, ''],
+        [6000, C('root@lospapus:~# ') + W('python3 exploit.py --target lospapus --payload reverse_shell')],
+        [6200, Y('[*] Generating payload...')],
+        [6350, Y('[*] Connecting to 192.168.0.12:4444...')],
+        [6500, G('[+] Shell obtenida. Bienvenido a LOS PAPUS.')],
+        [6640, ''],
+        [6700, G('root@lospapus:~# ') + W('./launch_site.sh')],
+        [6850, G('[+] Iniciando interfaz principal...')],
     ];
-    const bar   = document.getElementById('introBar');
-    const msg   = document.getElementById('introMsg');
-    const pct   = document.getElementById('introPct');
-    const intro  = document.getElementById('intro');
-    const access = document.getElementById('intro-access');
 
-    let progress = 0, msgIdx = 0;
+    lines.forEach(([delay, html]) => addLine(html, delay));
+
+    // ── Transición a fase 2 ─────────────────────────────────
     setTimeout(() => {
-        const interval = setInterval(() => {
-            progress += Math.random() * 7 + 2;
-            if (progress >= 100) progress = 100;
-            bar.style.width = progress + '%';
-            pct.textContent = Math.floor(progress) + '%';
-            const newIdx = Math.min(Math.floor(progress / (100 / msgs.length)), msgs.length - 1);
-            if (newIdx !== msgIdx) { msgIdx = newIdx; msg.textContent = msgs[msgIdx]; }
-            if (progress >= 100) {
-                clearInterval(interval);
-                // ACCESS GRANTED flash
-                setTimeout(() => {
-                    access.textContent = '✅ ACCESS GRANTED';
-                    access.classList.add('show');
-                    triggerGlitch();
-                    try {
-                        const ac = new (window.AudioContext || window.webkitAudioContext)();
-                        [0, 0.1, 0.2].forEach(t => {
-                            const o = ac.createOscillator();
-                            const g = ac.createGain();
-                            o.connect(g); g.connect(ac.destination);
-                            o.frequency.value = t === 0 ? 523 : t === 0.1 ? 659 : 784;
-                            o.type = 'sine';
-                            g.gain.setValueAtTime(0.08, ac.currentTime + t);
-                            g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + t + 0.15);
-                            o.start(ac.currentTime + t);
-                            o.stop(ac.currentTime + t + 0.15);
-                        });
-                    } catch(e) {}
-                }, 200);
-                setTimeout(() => {
-                    clearInterval(matrixInterval);
-                    intro.classList.add('fade-out');
-                    setTimeout(() => intro.remove(), 850);
-                }, 1200);
-            }
-        }, 120);
-    }, 1400);
+        triggerGlitch();
+        const p1 = document.getElementById('phase-hack');
+        const p2 = document.getElementById('phase-intro');
+        p1.style.transition = 'opacity .5s';
+        p1.style.opacity = '0';
+        setTimeout(() => {
+            p1.style.display = 'none';
+            p2.style.display = 'flex';
+            p2.style.opacity = '0';
+            p2.style.transition = 'opacity .5s';
+            requestAnimationFrame(() => { p2.style.opacity = '1'; });
+            startPhase2();
+        }, 500);
+    }, 7300);
+
+    // ── FASE 2: intro original ──────────────────────────────
+    function startPhase2() {
+        const terminal = document.getElementById('intro-terminal');
+        const introLines = [
+            [200,  'cmd', '> sistema iniciado'],
+            [500,  'ok',  '> verificando papus...'],
+            [900,  'warn','> buscando a samuel... ERROR 404'],
+            [1300, 'ok',  '> cargando scripts de farm...'],
+            [1700, 'ok',  '> modo tóxico activado'],
+            [2000, 'ok',  '> bienvenido papu'],
+        ];
+        introLines.forEach(([delay, cls, text]) => {
+            setTimeout(() => {
+                const line = document.createElement('div');
+                line.className = 't-line show';
+                line.innerHTML = `<span class="${cls}">${text}</span>`;
+                terminal.appendChild(line);
+            }, delay);
+        });
+
+        const msgs = [
+            'inicializando toxicidad...',
+            'cargando scripts de farm...',
+            'buscando a Samuel... error 404',
+            'activando modo tóxico...',
+            'conectando con los papus...',
+            'emilio.exe cargando...',
+            '¡listo! entrando al grupo...',
+        ];
+        const bar    = document.getElementById('introBar');
+        const msg    = document.getElementById('introMsg');
+        const pct    = document.getElementById('introPct');
+        const intro  = document.getElementById('intro');
+        const access = document.getElementById('intro-access');
+        let progress = 0, msgIdx = 0;
+
+        setTimeout(() => {
+            const interval = setInterval(() => {
+                progress += Math.random() * 7 + 2;
+                if (progress >= 100) progress = 100;
+                bar.style.width = progress + '%';
+                pct.textContent = Math.floor(progress) + '%';
+                const ni = Math.min(Math.floor(progress / (100 / msgs.length)), msgs.length - 1);
+                if (ni !== msgIdx) { msgIdx = ni; msg.textContent = msgs[msgIdx]; }
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        access.textContent = 'ACCESS GRANTED';
+                        access.classList.add('show');
+                        triggerGlitch();
+                        try {
+                            const ac = new (window.AudioContext || window.webkitAudioContext)();
+                            [0, 0.1, 0.2].forEach(t => {
+                                const o = ac.createOscillator();
+                                const g = ac.createGain();
+                                o.connect(g); g.connect(ac.destination);
+                                o.frequency.value = t === 0 ? 523 : t === 0.1 ? 659 : 784;
+                                o.type = 'sine';
+                                g.gain.setValueAtTime(0.08, ac.currentTime + t);
+                                g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + t + 0.15);
+                                o.start(ac.currentTime + t);
+                                o.stop(ac.currentTime + t + 0.15);
+                            });
+                        } catch(e) {}
+                    }, 200);
+                    setTimeout(() => {
+                        clearInterval(matrixInterval);
+                        intro.classList.add('fade-out');
+                        setTimeout(() => intro.remove(), 850);
+                    }, 1400);
+                }
+            }, 120);
+        }, 400);
+    }
+
 })();
+
+// =================== MATRIX BACKGROUND
 
 // =================== MATRIX BACKGROUND ===================
 (function() {
@@ -9156,3 +9263,4 @@ document.head.appendChild(ownerStyle);
       <div id="rk-staff-list"></div>
       <button class="abtn abtn-blue" onclick="loadStaffList()">🔄 Actualizar lista</button>
     </div>
+
