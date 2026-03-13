@@ -778,7 +778,7 @@
         /* ===== LOGIN ANIMADO ===== */
         #loginOverlay {
             position: fixed; inset: 0; z-index: 99999;
-            background: #060e1a;
+            background: radial-gradient(ellipse at 20% 50%, #0d1f3c 0%, #060e1a 50%, #0a0612 100%);
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
@@ -832,14 +832,19 @@
 
         .login-box {
             position: relative; z-index: 2;
-            background: rgba(6,14,26,0.85);
-            border: 1px solid rgba(0,212,255,0.25);
-            border-radius: 24px; padding: 48px 40px;
-            width: 100%; max-width: 420px;
-            box-shadow: 0 0 80px rgba(0,212,255,0.1), 0 0 0 1px rgba(0,212,255,0.05);
+            background: linear-gradient(145deg, rgba(8,18,38,0.95) 0%, rgba(6,12,28,0.98) 100%);
+            border: 1px solid rgba(0,212,255,0.2);
+            border-top: 1px solid rgba(0,212,255,0.4);
+            border-radius: 28px; padding: 52px 44px;
+            width: 100%; max-width: 430px;
+            box-shadow:
+                0 0 0 1px rgba(0,212,255,0.05),
+                0 0 60px rgba(0,212,255,0.08),
+                0 40px 80px rgba(0,0,0,0.6),
+                inset 0 1px 0 rgba(255,255,255,0.05);
             text-align: center;
-            animation: loginBoxIn .6s cubic-bezier(.34,1.56,.64,1) forwards;
-            backdrop-filter: blur(20px);
+            animation: loginBoxIn .7s cubic-bezier(.34,1.56,.64,1) forwards;
+            backdrop-filter: blur(24px);
         }
         @keyframes loginBoxIn {
             from { opacity:0; transform:translateY(30px) scale(.95); }
@@ -848,21 +853,31 @@
 
         /* Logo animado */
         .login-box .logo {
-            font-size: 32px; font-weight: 900;
+            font-size: 34px; font-weight: 900;
             font-family: 'Orbitron', sans-serif;
-            margin-bottom: 4px;
-            background: linear-gradient(135deg, #fff 0%, #00d4ff 50%, #fff 100%);
-            background-size: 200% auto;
+            margin-bottom: 6px; letter-spacing: 3px;
+            background: linear-gradient(135deg, #ffffff 0%, #00d4ff 40%, #7c3aed 70%, #00d4ff 100%);
+            background-size: 300% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: logoShine 3s linear infinite;
+            animation: logoShine 4s linear infinite;
+            filter: drop-shadow(0 0 20px rgba(0,212,255,0.3));
         }
         @keyframes logoShine {
-            from { background-position: 200% center; }
-            to   { background-position: -200% center; }
+            from { background-position: 300% center; }
+            to   { background-position: -300% center; }
         }
         .login-box .logo span { -webkit-text-fill-color: transparent; }
+        .login-logo-icon {
+            font-size: 42px; margin-bottom: 12px; display: block;
+            animation: logoBounce 2s ease infinite;
+            filter: drop-shadow(0 0 16px rgba(124,58,237,0.6));
+        }
+        @keyframes logoBounce {
+            0%,100% { transform: translateY(0) rotate(-3deg); }
+            50%      { transform: translateY(-6px) rotate(3deg); }
+        }
 
         /* Subtitle con typing */
         .login-box p {
@@ -872,45 +887,66 @@
 
         /* Inputs */
         .login-input {
-            width: 100%; padding: 14px 18px; margin-bottom: 12px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(0,212,255,0.15);
-            border-radius: 12px; color: #fff; font-size: 14px;
+            width: 100%; padding: 15px 20px; margin-bottom: 12px;
+            background: rgba(0,0,0,0.45);
+            border: 1px solid rgba(0,212,255,0.12);
+            border-radius: 14px; color: #fff; font-size: 14px;
             font-family: 'Poppins', sans-serif; outline: none;
-            transition: border-color .3s, box-shadow .3s;
+            transition: border-color .3s, box-shadow .3s, background .3s;
             box-sizing: border-box;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
         }
         .login-input:focus {
-            border-color: rgba(0,212,255,0.6);
-            box-shadow: 0 0 20px rgba(0,212,255,0.1);
+            border-color: rgba(0,212,255,0.5);
+            background: rgba(0,212,255,0.05);
+            box-shadow: 0 0 0 3px rgba(0,212,255,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
         }
-        .login-input::placeholder { color: #445566; }
+        .login-input::placeholder { color: #334455; }
+        .login-input-wrap {
+            position: relative; margin-bottom: 12px;
+        }
+        .login-input-wrap .input-icon {
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            font-size: 15px; pointer-events: none; opacity: 0.5;
+        }
+        .login-input-wrap .login-input {
+            padding-left: 44px; margin-bottom: 0;
+        }
 
         /* Botón con animación */
         .login-btn {
-            width: 100%; padding: 15px; margin-top: 4px;
-            background: linear-gradient(135deg, #00d4ff, #7c3aed);
-            border: none; border-radius: 12px; color: #fff;
+            width: 100%; padding: 16px; margin-top: 8px;
+            background: linear-gradient(135deg, #00b4d8 0%, #7c3aed 60%, #9d4edd 100%);
+            border: none; border-radius: 14px; color: #fff;
             font-size: 15px; font-weight: 700; cursor: pointer;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', sans-serif; letter-spacing: 0.5px;
             position: relative; overflow: hidden;
-            transition: transform .2s, box-shadow .2s;
-            box-shadow: 0 4px 24px rgba(0,212,255,0.3);
+            transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s;
+            box-shadow: 0 4px 30px rgba(124,58,237,0.4), 0 0 0 1px rgba(255,255,255,0.05) inset;
+        }
+        .login-btn::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            border-radius: 14px;
         }
         .login-btn::after {
             content: '';
-            position: absolute; top: -50%; left: -60%;
-            width: 40%; height: 200%;
-            background: rgba(255,255,255,0.15);
+            position: absolute; top: -50%; left: -80%;
+            width: 50%; height: 200%;
+            background: rgba(255,255,255,0.12);
             transform: skewX(-20deg);
-            animation: btnShine 3s ease infinite;
+            animation: btnShine 3.5s ease infinite;
         }
         @keyframes btnShine {
-            0%   { left: -60%; }
-            100% { left: 140%; }
+            0%   { left: -80%; }
+            100% { left: 160%; }
         }
-        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,212,255,0.4); }
-        .login-btn:active { transform: translateY(0); }
+        .login-btn:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 12px 40px rgba(124,58,237,0.5), 0 0 0 1px rgba(255,255,255,0.08) inset;
+        }
+        .login-btn:active { transform: translateY(0) scale(0.99); }
 
         .login-error {
             color: #ff4466; font-size: 13px; margin-top: 10px; min-height: 18px;
@@ -944,158 +980,293 @@
             100% { opacity:0; transform:translateY(-100vh) rotate(360deg); }
         }
 
-        /* ===== ADMIN PANEL V2 ===== */
+
+
+        /* ===== PREFERS-REDUCED-MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            /* solo apagar efectos de fondo, NO la intro ni elementos funcionales */
+            #aurora, #particles-js, #speed-canvas { display: none !important; }
+            .login-orb, .grid-lines, .floating-emojis { display: none !important; }
+            /* no tocar #intro, #stars-canvas, ni transitions de UI */
+        }
+
+        /* ===== CONFIRM MODAL ===== */
+        #confirmModal {
+            display:none; position:fixed; inset:0; z-index:999999;
+            background:rgba(0,0,0,.75); align-items:center; justify-content:center;
+            backdrop-filter:blur(8px);
+        }
+        #confirmModal.show { display:flex; animation: cmFadeIn .2s ease; }
+        @keyframes cmFadeIn { from { opacity:0; } to { opacity:1; } }
+        .confirm-box {
+            background: linear-gradient(145deg, #0a1628, #07101f);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-top: 1px solid rgba(255,255,255,0.14);
+            border-radius: 20px; padding: 32px 36px; max-width: 360px; width: 90%;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,0.03);
+            animation: loginBoxIn .35s cubic-bezier(.34,1.56,.64,1);
+        }
+        .confirm-box .confirm-icon { font-size: 40px; margin-bottom: 14px; display: block; }
+        .confirm-box h3 {
+            font-family: 'Orbitron', sans-serif; font-size: 14px; color: #fff;
+            margin: 0 0 10px; letter-spacing: 0.5px;
+        }
+        .confirm-box p  { color: #5a7a9a; font-size: 13px; margin: 0 0 24px; line-height: 1.5; }
+        .confirm-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .confirm-btns button {
+            padding: 12px; border-radius: 12px; border: none; cursor: pointer;
+            font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; transition: .2s;
+        }
+        .confirm-cancel {
+            background: rgba(255,255,255,.05); color: #6688aa;
+            border: 1px solid rgba(255,255,255,.08);
+        }
+        .confirm-cancel:hover { background: rgba(255,255,255,.09); color: #aac0d0; }
+        .confirm-ok {
+            background: linear-gradient(135deg, #ff3355, #cc1133); color: #fff;
+            box-shadow: 0 4px 20px rgba(255,68,102,.25);
+        }
+        .confirm-ok:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(255,68,102,.4); }
+        .confirm-ok.gold {
+            background: linear-gradient(135deg, #ffd700, #e8a000);
+            box-shadow: 0 4px 20px rgba(255,215,0,.25); color: #000;
+        }
+
+        /* ===== ADMIN PANEL V3 ===== */
         #adminPanel {
             display: none;
-            position: fixed; top: 0; right: -480px; width: 460px; height: 100vh;
-            background: rgba(4,10,20,0.99); border-left: 1px solid rgba(255,215,0,0.2);
+            position: fixed; top: 0; right: -520px; width: 500px; height: 100vh;
+            background: linear-gradient(180deg, #070f1f 0%, #050c18 100%);
+            border-left: 1px solid rgba(255,215,0,0.15);
             z-index: 9998; overflow-y: auto; padding: 0;
-            transition: right .35s cubic-bezier(.4,0,.2,1);
+            transition: right .4s cubic-bezier(.4,0,.2,1);
             font-family: 'Poppins', sans-serif;
+            scrollbar-width: thin; scrollbar-color: rgba(255,215,0,0.2) transparent;
+            box-shadow: -20px 0 60px rgba(0,0,0,0.8);
         }
+        #adminPanel::-webkit-scrollbar { width: 4px; }
+        #adminPanel::-webkit-scrollbar-track { background: transparent; }
+        #adminPanel::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.2); border-radius: 2px; }
         #adminPanel.open { right: 0; }
+
         .admin-header {
-            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,140,0,0.1));
-            border-bottom: 1px solid rgba(255,215,0,0.2);
-            padding: 20px 24px; position: sticky; top: 0; z-index: 10;
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(255,215,0,0.12) 0%, rgba(255,140,0,0.06) 100%);
+            border-bottom: 1px solid rgba(255,215,0,0.12);
+            padding: 22px 24px 16px; position: sticky; top: 0; z-index: 10;
+            backdrop-filter: blur(20px);
         }
-        .admin-header-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
-        .admin-header h2 { font-size:16px; font-family:'Orbitron',sans-serif; color:#ffd700; margin:0; }
-        .admin-close { background:none; border:none; color:#80b0cc; font-size:20px; cursor:pointer; padding:4px 8px; border-radius:6px; transition:.2s; }
-        .admin-close:hover { background:rgba(255,68,102,0.2); color:#ff4466; }
-        .admin-tabs { display:flex; gap:6px; flex-wrap:wrap; }
+        .admin-header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .admin-header-title {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .admin-header-title h2 {
+            font-size: 15px; font-family: 'Orbitron', sans-serif;
+            color: #ffd700; margin: 0; letter-spacing: 1px;
+        }
+        .admin-header-badge {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.15));
+            border: 1px solid rgba(255,215,0,0.3); border-radius: 20px;
+            padding: 3px 10px; font-size: 10px; color: #ffd700; font-weight: 600;
+        }
+        .admin-close {
+            background: rgba(255,68,102,0.1); border: 1px solid rgba(255,68,102,0.2);
+            color: #80b0cc; font-size: 16px; cursor: pointer;
+            padding: 6px 10px; border-radius: 8px; transition: .2s;
+        }
+        .admin-close:hover { background: rgba(255,68,102,0.25); color: #ff4466; transform: scale(1.05); }
+
+        .admin-tabs {
+            display: flex; gap: 4px; flex-wrap: wrap;
+        }
         .admin-tab {
-            padding:5px 12px; border-radius:20px; font-size:11px; font-weight:600;
-            cursor:pointer; border:1px solid rgba(255,215,0,0.2); color:#80b0cc;
-            background:transparent; transition:.2s; font-family:'Poppins',sans-serif;
+            padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600;
+            cursor: pointer; border: 1px solid rgba(255,255,255,0.06); color: #556677;
+            background: transparent; transition: .2s; font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
         }
-        .admin-tab.active { background:rgba(255,215,0,0.15); color:#ffd700; border-color:rgba(255,215,0,0.4); }
-        .admin-tab:hover { color:#ffd700; }
-        .admin-body { padding: 20px 24px; }
-        .admin-page { display:none; }
-        .admin-page.active { display:block; }
-        .admin-section { margin-bottom:24px; }
+        .admin-tab.active {
+            background: rgba(255,215,0,0.12);
+            color: #ffd700; border-color: rgba(255,215,0,0.3);
+            box-shadow: 0 0 12px rgba(255,215,0,0.1);
+        }
+        .admin-tab:hover:not(.active) { color: #aabbcc; border-color: rgba(255,255,255,0.12); }
+
+        .admin-body { padding: 20px 22px; }
+        .admin-page { display: none; animation: fadeIn .2s ease; }
+        .admin-page.active { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+
         .admin-section-title {
-            font-size:11px; color:#80b0cc; text-transform:uppercase; letter-spacing:1.5px;
-            margin-bottom:12px; border-bottom:1px solid rgba(255,215,0,0.1); padding-bottom:8px;
-            display:flex; align-items:center; gap:6px;
+            font-size: 10px; color: #556677; text-transform: uppercase; letter-spacing: 2px;
+            margin: 18px 0 10px; display: flex; align-items: center; gap: 8px;
+            font-weight: 600;
         }
-        .astat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+        .admin-section-title::after {
+            content: ''; flex: 1; height: 1px;
+            background: linear-gradient(90deg, rgba(255,215,0,0.15), transparent);
+        }
+
+        /* ── STAT CARDS ── */
+        .astat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
         .astat-card {
-            background:rgba(0,0,0,0.4); border:1px solid rgba(255,215,0,0.1);
-            border-radius:10px; padding:14px; text-align:center;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px; padding: 14px 10px; text-align: center;
+            transition: .2s; position: relative; overflow: hidden;
         }
-        .astat-card .val { font-size:24px; font-weight:700; color:#ffd700; font-family:'Orbitron',sans-serif; }
-        .astat-card .lbl { font-size:10px; color:#80b0cc; margin-top:4px; }
-        .user-row { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:rgba(0,0,0,0.3); border-radius:8px; margin-bottom:8px; border:1px solid rgba(255,215,0,0.08); }
-        .user-row .uinfo .uname { font-weight:600; color:#fff; font-size:13px; }
-        .user-row .uinfo .umeta { font-size:10px; color:#445566; margin-top:2px; }
-        .user-row .uactions { display:flex; gap:6px; }
-        .ubadge { font-size:10px; padding:2px 8px; border-radius:20px; background:rgba(0,212,255,0.1); color:#00d4ff; }
-        .ubadge.admin { background:rgba(255,215,0,0.1); color:#ffd700; }
-        .ubadge.banned { background:rgba(255,68,102,0.1); color:#ff4466; }
+        .astat-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+        }
+        .astat-card:hover { border-color: rgba(255,215,0,0.15); transform: translateY(-1px); }
+        .astat-card .val {
+            font-size: 26px; font-weight: 800; color: #ffd700;
+            font-family: 'Orbitron', sans-serif; line-height: 1;
+        }
+        .astat-card .lbl { font-size: 9px; color: #445566; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ── USER ROWS ── */
+        .user-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 11px 14px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 10px; margin-bottom: 6px;
+            transition: .2s;
+        }
+        .user-row:hover {
+            background: rgba(0,212,255,0.04);
+            border-color: rgba(0,212,255,0.12);
+        }
+        .user-row .uinfo .uname { font-weight: 600; color: #dde5f0; font-size: 13px; }
+        .user-row .uinfo .umeta { font-size: 10px; color: #334455; margin-top: 2px; }
+        .ubadge {
+            font-size: 10px; padding: 3px 9px; border-radius: 20px;
+            background: rgba(0,212,255,0.1); color: #00d4ff; font-weight: 600;
+        }
+        .ubadge.admin  { background: rgba(255,215,0,0.1);  color: #ffd700; }
+        .ubadge.banned { background: rgba(255,68,102,0.1); color: #ff4466; }
+
+        /* ── INPUTS ── */
         .admin-input {
-            width:100%; padding:10px 14px; background:rgba(0,0,0,0.4);
-            border:1px solid rgba(255,215,0,0.2); border-radius:8px;
-            color:#fff; font-size:13px; font-family:'Poppins',sans-serif;
-            outline:none; transition:border-color .2s; box-sizing:border-box; margin-bottom:10px;
-        }
-        .admin-input:focus { border-color:#ffd700; }
-        .admin-textarea {
-            width:100%; padding:10px 14px; background:rgba(0,0,0,0.4);
-            border:1px solid rgba(255,215,0,0.2); border-radius:8px;
-            color:#fff; font-size:13px; font-family:'Poppins',sans-serif;
-            outline:none; resize:vertical; min-height:80px;
-            transition:border-color .2s; box-sizing:border-box; margin-bottom:10px;
-        }
-        .admin-textarea:focus { border-color:#ffd700; }
-        .abtn {
-            padding:9px 16px; border-radius:8px; font-size:12px; font-weight:600;
-            cursor:pointer; border:none; font-family:'Poppins',sans-serif;
-            transition:.2s; margin-bottom:8px;
-        }
-        .abtn-gold  { background:rgba(255,215,0,0.15); color:#ffd700; border:1px solid rgba(255,215,0,0.3); width:100%; }
-        .abtn-red   { background:rgba(255,68,102,0.15); color:#ff4466; border:1px solid rgba(255,68,102,0.3); width:100%; }
-        .abtn-green { background:rgba(0,255,100,0.1);  color:#00ff9d; border:1px solid rgba(0,255,100,0.2); width:100%; }
-        .abtn-blue  { background:rgba(0,212,255,0.1);  color:#00d4ff; border:1px solid rgba(0,212,255,0.2); width:100%; }
-        .abtn:hover { opacity:.8; transform:translateY(-1px); }
-        .log-entry {
-            padding:8px 12px; background:rgba(0,0,0,0.3); border-radius:6px;
-            margin-bottom:6px; border-left:2px solid rgba(255,215,0,0.3);
-            font-size:11px; color:#cdd3de;
-        }
-        .log-entry .log-time { color:#445566; font-size:10px; }
-        .log-entry .log-action { color:#ffd700; font-weight:600; }
-        .announcement-banner {
-            position:fixed; top:70px; left:50%; transform:translateX(-50%);
-            background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,140,0,0.15));
-            border:1px solid rgba(255,215,0,0.4); border-radius:12px;
-            padding:12px 24px; color:#ffd700; font-size:14px; font-weight:600;
-            z-index:9997; max-width:600px; text-align:center;
-            box-shadow:0 8px 32px rgba(255,215,0,0.15);
-            font-family:'Poppins',sans-serif; display:none;
-        }
-        .announcement-banner.show { display:block; animation: slideDown .3s ease; }
-        @keyframes slideDown { from{opacity:0;transform:translateX(-50%) translateY(-10px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
-        .admin-select {
-            width:100%; padding:10px 14px; background:rgba(0,0,0,0.4);
-            border:1px solid rgba(255,215,0,0.2); border-radius:8px;
-            color:#fff; font-size:13px; font-family:'Poppins',sans-serif;
-            outline:none; margin-bottom:10px; cursor:pointer;
-        }
-        .abtn-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-        .banned-overlay {
-            position:fixed; inset:0; z-index:999999;
-            background:#000; display:flex; align-items:center; justify-content:center;
-            font-family:'Poppins',sans-serif; flex-direction:column; gap:16px;
-        }
-        .banned-overlay h1 { color:#ff4466; font-size:32px; font-family:'Orbitron',sans-serif; }
-        .banned-overlay p  { color:#80b0cc; font-size:14px; }
-
-        /* ===== LOGIN ===== */
-/* loginOverlay CSS moved to animation section */
-        .login-box {
-            background: rgba(17,34,64,0.95);
-            border: 1px solid rgba(0,212,255,0.3);
-            border-radius: 20px; padding: 48px 40px;
-            width: 100%; max-width: 420px;
-            box-shadow: 0 0 60px rgba(0,212,255,0.1);
-            text-align: center;
-        }
-        .login-box .logo { font-size: 28px; font-weight: 900; font-family: 'Orbitron', sans-serif; margin-bottom: 8px; }
-        .login-box .logo span { color: var(--primary); }
-        .login-box p  { color: #80b0cc; font-size: 13px; margin-bottom: 32px; }
-        .login-input  {
-            width: 100%; padding: 14px 18px; margin-bottom: 14px;
-            background: rgba(0,0,0,0.4); border: 1px solid rgba(0,212,255,0.2);
-            border-radius: 10px; color: #fff; font-size: 14px;
+            width: 100%; padding: 11px 14px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px; color: #dde5f0; font-size: 13px;
             font-family: 'Poppins', sans-serif; outline: none;
-            transition: border-color .3s;
-            box-sizing: border-box;
+            transition: border-color .2s, box-shadow .2s;
+            box-sizing: border-box; margin-bottom: 8px;
         }
-        .login-input:focus { border-color: var(--primary); }
-        .login-btn {
-            width: 100%; padding: 14px; margin-top: 8px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: none; border-radius: 10px; color: #fff;
-            font-size: 15px; font-weight: 700; cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            transition: opacity .2s, transform .2s;
+        .admin-input:focus {
+            border-color: rgba(255,215,0,0.4);
+            box-shadow: 0 0 0 3px rgba(255,215,0,0.06);
         }
-        .login-btn:hover { opacity: .85; transform: translateY(-1px); }
-        .login-error {
-            color: #ff4466; font-size: 13px; margin-top: 12px;
-            min-height: 20px;
+        .admin-input::placeholder { color: #2a3a4a; }
+        .admin-select {
+            width: 100%; padding: 11px 14px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 10px; color: #dde5f0; font-size: 13px;
+            font-family: 'Poppins', sans-serif; outline: none;
+            margin-bottom: 8px; cursor: pointer;
+            transition: border-color .2s;
         }
-        .login-switch {
-            color: #80b0cc; font-size: 13px; margin-top: 20px;
-        }
-        .login-switch span {
-            color: var(--primary); cursor: pointer; font-weight: 600;
-        }
-        .login-switch span:hover { text-decoration: underline; }
+        .admin-select:focus { border-color: rgba(255,215,0,0.4); }
 
+        /* ── BUTTONS ── */
+        .abtn {
+            padding: 10px 16px; border-radius: 10px; font-size: 12px; font-weight: 600;
+            cursor: pointer; border: none; font-family: 'Poppins', sans-serif;
+            transition: transform .15s, box-shadow .15s, opacity .15s;
+            margin-bottom: 7px; width: 100%; position: relative; overflow: hidden;
+        }
+        .abtn::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 60%);
+        }
+        .abtn:hover { transform: translateY(-1px); opacity: .9; }
+        .abtn:active { transform: translateY(0) scale(.98); }
+        .abtn-gold  {
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.15));
+            color: #ffd700; border: 1px solid rgba(255,215,0,0.25);
+            box-shadow: 0 4px 16px rgba(255,215,0,0.1);
+        }
+        .abtn-red    {
+            background: linear-gradient(135deg, rgba(255,68,102,0.2), rgba(200,20,60,0.15));
+            color: #ff6688; border: 1px solid rgba(255,68,102,0.25);
+            box-shadow: 0 4px 16px rgba(255,68,102,0.1);
+        }
+        .abtn-green  {
+            background: linear-gradient(135deg, rgba(0,255,100,0.15), rgba(0,200,80,0.1));
+            color: #00ff9d; border: 1px solid rgba(0,255,100,0.2);
+        }
+        .abtn-blue   {
+            background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(0,150,200,0.08));
+            color: #00d4ff; border: 1px solid rgba(0,212,255,0.2);
+        }
+        .abtn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+
+        /* ── LOG ENTRIES ── */
+        .log-entry {
+            padding: 9px 12px; background: rgba(0,0,0,0.3);
+            border-radius: 8px; margin-bottom: 5px;
+            border-left: 2px solid rgba(255,215,0,0.25);
+            font-size: 11px; color: #8899aa;
+        }
+        .log-entry .log-time   { color: #334455; font-size: 10px; }
+        .log-entry .log-action { color: #ffd700; font-weight: 600; }
+
+        /* ── ANNOUNCEMENT BANNER ── */
+        .announcement-banner {
+            position: fixed; top: 72px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,140,0,0.12));
+            border: 1px solid rgba(255,215,0,0.35);
+            border-radius: 14px; padding: 12px 28px; color: #ffd700;
+            font-size: 14px; font-weight: 600; z-index: 9997;
+            max-width: 600px; text-align: center;
+            box-shadow: 0 8px 32px rgba(255,215,0,0.12), 0 0 0 1px rgba(255,215,0,0.05);
+            font-family: 'Poppins', sans-serif; display: none;
+        }
+        .announcement-banner.show { display: block; animation: slideDown .35s cubic-bezier(.34,1.56,.64,1); }
+        @keyframes slideDown {
+            from { opacity:0; transform:translateX(-50%) translateY(-14px) scale(.96); }
+            to   { opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+        }
+
+        /* ── BANNED OVERLAY ── */
+        .banned-overlay {
+            position: fixed; inset: 0; z-index: 999999;
+            background: radial-gradient(ellipse at center, #1a0008 0%, #000 70%);
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Poppins', sans-serif; flex-direction: column; gap: 16px;
+        }
+        .banned-overlay h1 { color: #ff4466; font-size: 32px; font-family: 'Orbitron', sans-serif; }
+        .banned-overlay p  { color: #80b0cc; font-size: 14px; }
+
+        /* ── PROFILE PANEL ── */
+        #au-profile {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(0,212,255,0.15);
+            border-radius: 14px; padding: 16px;
+            margin-top: 12px;
+        }
+
+        /* ── USER BADGE BUTTON ── */
+        #userBadge {
+            background: linear-gradient(135deg, rgba(6,14,26,0.98), rgba(10,20,40,0.98)) !important;
+            border: 1px solid rgba(255,215,0,0.3) !important;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,215,0,0.05) !important;
+        }
+        #userBadge:hover {
+            border-color: rgba(255,215,0,0.6) !important;
+            box-shadow: 0 6px 30px rgba(255,215,0,0.15), 0 0 0 1px rgba(255,215,0,0.1) !important;
+        }
+
+        
         /* ===== ADMIN PANEL ===== */
         #adminPanel {
             position: fixed; top: 0; right: -420px; width: 400px; height: 100vh;
@@ -1284,15 +1455,23 @@
 
         /* ===== CTRL+T SHORTCUT HINT ===== */
         .shortcut-toast {
-            position: fixed; bottom: 80px; right: 20px;
-            background: rgba(0,212,255,.15); border: 1px solid var(--primary);
-            color: var(--primary); padding: 8px 16px; border-radius: 20px;
-            font-size: 12px; font-family: 'Poppins',sans-serif;
-            opacity: 0; transform: translateY(10px);
-            transition: opacity .3s, transform .3s; z-index: 9000;
-            pointer-events: none;
+            position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px);
+            background: linear-gradient(135deg, rgba(6,14,28,0.97), rgba(4,10,20,0.98));
+            border: 1px solid rgba(0,212,255,0.2);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            color: #00d4ff; padding: 12px 24px; border-radius: 14px;
+            font-size: 13px; font-weight: 600; font-family: 'Poppins',sans-serif;
+            opacity: 0;
+            transition: opacity .35s cubic-bezier(.34,1.56,.64,1), transform .35s cubic-bezier(.34,1.56,.64,1);
+            z-index: 999990; pointer-events: none;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 12px 40px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,0.03);
+            white-space: nowrap; max-width: 90vw; text-align: center;
         }
-        .shortcut-toast.show { opacity: 1; transform: translateY(0); }
+        .shortcut-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
 
         /* ===== TOOLTIP TOXICOS ===== */
         [data-tip] { position: relative; cursor: help; }
@@ -1447,6 +1626,19 @@
 <!-- Cursor -->
 
 
+<!-- ===== CONFIRM MODAL ===== -->
+<div id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-icon" id="cmIcon">⚠️</div>
+    <h3 id="cmTitle">¿Estás seguro?</h3>
+    <p id="cmMsg">Esta acción no se puede deshacer.</p>
+    <div class="confirm-btns">
+      <button class="confirm-cancel" onclick="cmResolve(false)">Cancelar</button>
+      <button class="confirm-ok" id="cmOk" onclick="cmResolve(true)">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== LOGIN OVERLAY ===== -->
 <div id="loginOverlay">
   <canvas id="loginCanvas"></canvas>
@@ -1454,13 +1646,23 @@
   <div class="login-orb"></div>
   <div class="login-orb"></div>
   <div class="login-box">
+    <span class="login-logo-icon">💀</span>
     <div class="logo">LOS<span>PAPUS</span></div>
-    <p>grupo cerrado — si no eres papu, te vas 💀</p>
+    <p id="loginSubtitle">grupo cerrado — si no eres papu, te vas 💀</p>
     <div id="authForm">
-      <input class="login-input" id="authNick" type="text" placeholder="tu nick" maxlength="16" autocomplete="off">
-      <input class="login-input" id="authPass" type="password" placeholder="contraseña" autocomplete="off">
+      <div class="login-input-wrap">
+        <span class="input-icon">👤</span>
+        <input class="login-input" id="authNick" type="text" placeholder="tu nick" maxlength="16" autocomplete="off">
+      </div>
+      <div class="login-input-wrap">
+        <span class="input-icon">🔒</span>
+        <input class="login-input" id="authPass" type="password" placeholder="contraseña" maxlength="32" autocomplete="off">
+      </div>
       <div id="authPass2Wrap" style="display:none">
-        <input class="login-input" id="authPass2" type="password" placeholder="repite contraseña" autocomplete="off">
+        <div class="login-input-wrap">
+          <span class="input-icon">🔒</span>
+          <input class="login-input" id="authPass2" type="password" placeholder="repite contraseña" autocomplete="off">
+        </div>
       </div>
       <button class="login-btn" id="authSubmitBtn" onclick="authSubmit()">🔑 Entrar</button>
       <div class="login-error" id="authError"></div>
@@ -1470,17 +1672,23 @@
 </div>
 
 <!-- ===== ANNOUNCEMENT BANNER ===== -->
-<div id="announcementBanner" style="display:none;position:fixed;top:70px;left:50%;transform:translateX(-50%);background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.4);border-radius:12px;padding:12px 24px;color:#ffd700;font-size:14px;font-weight:600;z-index:9997;max-width:600px;text-align:center;font-family:'Poppins',sans-serif;box-shadow:0 8px 32px rgba(255,215,0,0.15);"></div>
+<div id="announcementBanner" style="display:none;position:fixed;top:72px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,140,0,0.1));border:1px solid rgba(255,215,0,0.3);border-top:1px solid rgba(255,215,0,0.5);border-radius:16px;padding:13px 48px 13px 24px;color:#ffd700;font-size:14px;font-weight:600;z-index:9997;max-width:600px;text-align:center;font-family:'Poppins',sans-serif;box-shadow:0 8px 40px rgba(255,215,0,0.12),0 0 0 1px rgba(255,255,255,0.03);backdrop-filter:blur(12px);position:relative;">
+  <span id="annBanner"></span>
+  <button onclick="document.getElementById('announcementBanner').style.display='none'" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,215,0,0.5);font-size:16px;cursor:pointer;padding:4px;line-height:1;">✕</button>
+</div>
 
 <!-- ===== USER BADGE ===== -->
-<button id="userBadge" onclick="toggleAdminPanel()" style="display:none;position:fixed;bottom:80px;right:20px;z-index:9000;padding:10px 18px;border-radius:30px;background:rgba(6,14,26,0.95);border:1px solid rgba(0,212,255,0.3);color:#80b0cc;font-family:'Poppins',sans-serif;font-size:13px;cursor:pointer;transition:.2s;box-shadow:0 4px 20px rgba(0,0,0,0.4);"></button>
+<button id="userBadge" onclick="toggleAdminPanel()" style="display:none;position:fixed;bottom:28px;right:24px;z-index:9000;padding:11px 20px;border-radius:30px;background:linear-gradient(135deg,rgba(6,14,26,0.98),rgba(10,20,40,0.98));border:1px solid rgba(255,215,0,0.25);color:#ffd700;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,0.6),0 0 20px rgba(255,215,0,0.08);letter-spacing:0.3px;"></button>
 
 <!-- ===== ADMIN PANEL ===== -->
 <div id="adminPanel">
   <div class="admin-header">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-      <h2 style="font-size:16px;font-family:'Orbitron',sans-serif;color:#ffd700;margin:0;">👑 Panel Admin</h2>
-      <button onclick="toggleAdminPanel()" style="background:none;border:none;color:#80b0cc;font-size:20px;cursor:pointer;">✕</button>
+    <div class="admin-header-top">
+      <div class="admin-header-title">
+        <h2>👑 Panel Admin</h2>
+        <span class="admin-header-badge">emilio</span>
+      </div>
+      <button class="admin-close" onclick="toggleAdminPanel()">✕</button>
     </div>
     <div class="admin-tabs">
       <button class="admin-tab active" onclick="adminTab(this,'stats')">📊 Stats</button>
@@ -1531,7 +1739,7 @@
         <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('week')">📅 Semana</button>
         <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('ghost')">👻 Fantasmas</button>
       </div>
-      <input class="admin-input" id="au-search" placeholder="buscar nick..." oninput="renderUsers()">
+      <input class="admin-input" id="au-search" placeholder="buscar nick..." oninput="debouncedRenderUsers()">
       <div id="au-list"></div>
       <!-- Modal perfil usuario -->
       <div id="au-profile" style="display:none;background:rgba(0,0,0,.6);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:14px;margin-top:10px;">
@@ -1547,7 +1755,7 @@
           <button class="abtn abtn-red" style="font-size:11px;padding:6px;" onclick="deleteSelectedUser()">💥 Eliminar</button>
         </div>
         <div class="admin-section-title" style="margin-top:10px;">📝 nota privada</div>
-        <input class="admin-input" id="aup-note" placeholder="nota solo visible para ti...">
+        <input class="admin-input" id="aup-note" placeholder="nota solo visible para ti..." maxlength="200">
         <button class="abtn abtn-gold" onclick="saveUserNote()">💾 Guardar nota</button>
       </div>
     </div>
@@ -1555,7 +1763,7 @@
     <!-- ══ ANUNCIO ════════════════════════════════════════════ -->
     <div class="admin-page" id="ap-announce">
       <p style="font-size:12px;color:#80b0cc;margin-bottom:12px;">aparece arriba del sitio para todos en tiempo real</p>
-      <input class="admin-input" id="an-text" placeholder="mensaje...">
+      <input class="admin-input" id="an-text" placeholder="mensaje..." maxlength="120"><div id="an-chars" style="font-size:10px;color:#445566;text-align:right;margin-top:-6px;margin-bottom:6px;">0/120</div>
       <select class="admin-select" id="an-type">
         <option value="#ffd700">💬 Normal</option>
         <option value="#ff6b00">🔥 Hype</option>
@@ -1611,7 +1819,7 @@
     <div class="admin-page" id="ap-bans">
       <div class="admin-section-title">🚫 banear usuario</div>
       <input class="admin-input" id="ab-nick" placeholder="nick...">
-      <input class="admin-input" id="ab-reason" placeholder="razón (opcional)...">
+      <input class="admin-input" id="ab-reason" placeholder="razón (opcional)..." maxlength="100">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <button class="abtn abtn-red" onclick="banUser()">🚫 Banear</button>
         <button class="abtn abtn-green" onclick="unbanUser()">✅ Desbanear</button>
@@ -2066,7 +2274,7 @@ window.changeDeathFB = async function(name, delta) {
 };
 
 window.resetDeathsFB = async function() {
-    if (!confirm('¿Resetear TODAS las muertes para todos?')) return;
+    if (!await showConfirm('Esto pone todas las muertes a 0.','¿Reset todas las muertes?','💀')) return;
     const reset = { Jero:0, Gabriel:0, Sami:0, Emilio:0, Luciana:0, Akiro:0, Daniel:0, Isabella:0 };
     await setDoc(DEATHS_DOC, reset);
     showFBToast('🗑️ Muertes reseteadas', '#ff4466');
@@ -2131,7 +2339,7 @@ window.voteFB = async function(name) {
 };
 
 window.resetVotesFB = async function() {
-    if (!confirm('¿Resetear TODOS los votos para todos?')) return;
+    if (!await showConfirm('Esto resetea todos los votos del ranking.','¿Reset todos los votos?','☠️')) return;
     const reset = { Jero:0, Gabriel:0, Sami:0, Emilio:0, Luciana:0, Akiro:0, Daniel:0, Isabella:0 };
     await setDoc(VOTES_DOC, reset);
     localStorage.removeItem('papus_voted_fb');
@@ -4652,7 +4860,7 @@ CMD.papus = async function(args) {
       print(` <span class="a6">logins:     </span>${u.loginCount||1}`);
       print(` <span class="a6">creado:     </span>${u.createdAt ? new Date(u.createdAt).toLocaleString('es') : 'desconocido'}`);
       print(` <span class="a6">último acc: </span>${u.lastLogin ? new Date(u.lastLogin).toLocaleString('es') : 'nunca'}`);
-      if (u.note) print(` <span class="a6">nota admin: </span><span class="adim">${u.note}</span>`);
+      if (u.note) print(` <span class="a6">nota admin: </span><span class="adim">${sanitize(u.note)}</span>`);
     }));
     return;
   }
@@ -4897,7 +5105,7 @@ CMD.papus = async function(args) {
         await window._fbUpdateDoc(window._fbDoc(window._db,'lospapus','deaths'),{[name]:0});
         print(`<span class="a1">🗑 muertes de ${name} reseteadas</span>`);
       } else {
-        if (!confirm('¿Reset TODAS las muertes?')) { print('<span class="adim">cancelado</span>'); return; }
+        if (!await showConfirm('Esto pone todas las muertes a 0.','¿Reset todas las muertes?','💀')) { print('<span class="adim">cancelado</span>'); return; }
         window.resetDeathsFB && window.resetDeathsFB();
         print(`<span class="a1">🗑 todas las muertes reseteadas</span>`);
       }
@@ -4950,7 +5158,7 @@ CMD.papus = async function(args) {
         await window._fbUpdateDoc(window._fbDoc(window._db,'lospapus','votes'),{[name]:0});
         print(`<span class="a1">🗑 votos de ${name} reseteados</span>`);
       } else {
-        if (!confirm('¿Reset TODOS los votos?')) { print('<span class="adim">cancelado</span>'); return; }
+        if (!await showConfirm('Esto resetea todos los votos.','¿Reset todos los votos?','☠️')) { print('<span class="adim">cancelado</span>'); return; }
         window.resetVotesFB && window.resetVotesFB();
         print(`<span class="a1">🗑 todos los votos reseteados</span>`);
       }
@@ -5153,8 +5361,8 @@ CMD.papus = async function(args) {
   }
 
   if (sub === 'clearlog') {
-    staffOnly(() => {
-      if (!confirm('¿Limpiar todo el log?')) { print('<span class="adim">cancelado</span>'); return; }
+    staffOnly(async () => {
+      if (!await showConfirm('Se borrará el historial de acciones admin.','¿Limpiar log?','🗑️')) { print('<span class="adim">cancelado</span>'); return; }
       localStorage.removeItem('papus_adminlog_v2');
       print('<span class="adim">🗑 log limpiado</span>');
     });
@@ -5240,7 +5448,7 @@ CMD.papus = async function(args) {
     staffOnly(() => noDb(async () => {
       const name = rest.join(' ');
       if (!name) { print('<span class="a1">uso: papus delpapu &lt;nombre&gt;</span>'); return; }
-      if (!confirm(`¿Eliminar a ${name} del tablero? Se pierden sus muertes y votos.`)) { print('<span class="adim">cancelado</span>'); return; }
+      if (!await showConfirm(`Se eliminarán muertes y votos de ${name}.`,`¿Eliminar ${name}?`,'🗑️')) { print('<span class="adim">cancelado</span>'); return; }
       const [dSnap,vSnap] = await Promise.all([
         window._fbGetDoc(window._fbDoc(window._db,'lospapus','deaths')),
         window._fbGetDoc(window._fbDoc(window._db,'lospapus','votes')),
@@ -5688,8 +5896,8 @@ function vote(name) {
     votes[name] = (votes[name] || 0) + 1;
     saveVotes(votes); markVoted(); renderRanking();
 }
-function resetVotes() {
-    if (!confirm('¿Resetear todos los votos?')) return;
+async function resetVotes() {
+    if (!await showConfirm('Esto resetea todos los votos a 0.','¿Reset todos los votos?','☠️')) return;
     localStorage.removeItem('papus_votes'); localStorage.removeItem('papus_voted'); renderRanking();
 }
 document.addEventListener("DOMContentLoaded", () => renderRanking());
@@ -5788,8 +5996,8 @@ function changeDeath(name, delta) {
         } catch(e) {}
     }
 }
-function resetDeaths() {
-    if (!confirm('¿Resetear todas las muertes?')) return;
+async function resetDeaths() {
+    if (!await showConfirm('Esto resetea todas las muertes a 0.','¿Reset todas las muertes?','💀')) return;
     localStorage.removeItem('papus_deaths'); renderDeaths();
 }
 if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",renderDeaths);}else{renderDeaths();}
@@ -6251,11 +6459,12 @@ function importData() {
 // ── Destroy everything button (Ctrl+Shift+D) ─────────────────
 document.addEventListener('keydown', e => {
     if (e.ctrlKey && e.shiftKey && e.key === 'D') {
-        if (confirm('💀 ¿Borrar TODOS los datos guardados y recargar?')) {
+        showConfirm('Se borrarán todos los datos locales y recargará la página.','¿Borrar todo?','💥').then(ok => {
+            if (!ok) return;
             ['papus_deaths','papus_votes','papus_voted','papus_theme','papus_modes','papus_theme_v2'].forEach(k => localStorage.removeItem(k));
             showToast('💥 Todo borrado. Recargando...');
             setTimeout(() => location.reload(), 1000);
-        }
+        });
     }
 });
 
@@ -6625,10 +6834,57 @@ function waitForDB(cb, attempts=0) {
 }
 
 // ── Simple hash ───────────────────────────────────────────────
-function hashPass(p) {
+
+
+// ── Confirm modal (replaces native confirm()) ─────────────────
+let _cmResolve = null;
+window.cmResolve = function(val) {
+    document.getElementById('confirmModal').classList.remove('show');
+    if (_cmResolve) { _cmResolve(val); _cmResolve = null; }
+};
+function showConfirm(msg, title='¿Estás seguro?', icon='⚠️', okClass='') {
+    return new Promise(resolve => {
+        _cmResolve = resolve;
+        document.getElementById('cmTitle').textContent = title;
+        document.getElementById('cmMsg').textContent   = msg;
+        document.getElementById('cmIcon').textContent  = icon;
+        const ok = document.getElementById('cmOk');
+        ok.className = 'confirm-ok' + (okClass?' '+okClass:'');
+        document.getElementById('confirmModal').classList.add('show');
+    });
+}
+
+
+
+// ── Global async error wrapper ────────────────────────────────
+function tryCatch(fn) {
+    return async function(...args) {
+        try {
+            return await fn.apply(this, args);
+        } catch(e) {
+            console.error('[Papus]', e);
+            showFBToast('❌ Error: ' + (e.message||'algo salió mal'), '#ff4466');
+        }
+    };
+}
+// ── Debounce utility ──────────────────────────────────────────
+function debounce(fn, ms=300) {
+    let t; return (...a) => { clearTimeout(t); t = setTimeout(()=>fn(...a), ms); };
+}
+// ── Sanitize HTML to prevent XSS ─────────────────────────────
+function sanitize(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+}
+function hashPass(p, salt) {
+    // salt = nick (per-user salt so same pass → different hash)
+    const salted = (salt||'') + p + (salt||'').split('').reverse().join('');
     let h = 5381;
-    for (let i=0; i<p.length; i++) h = ((h<<5)+h) ^ p.charCodeAt(i);
-    return 'p' + (h>>>0).toString(36) + p.length.toString(36);
+    for (let i=0; i<salted.length; i++) h = ((h<<5)+h) ^ salted.charCodeAt(i);
+    let h2 = 0x811c9dc5;
+    for (let i=0; i<salted.length; i++) h2 = Math.imul(h2 ^ salted.charCodeAt(i), 0x01000193);
+    return 's2_' + (h>>>0).toString(36) + (h2>>>0).toString(36) + salted.length.toString(36);
 }
 
 function isAdmin(nick) { return (nick||'').toLowerCase() === ADMIN_NICK; }
@@ -6706,7 +6962,7 @@ async function doLogin() {
         const snap = await window._fbGetDoc(window._fbDoc(db, 'users', nick));
         if (!snap.exists())            { showAuthError('cuenta no encontrada — regístrate'); return; }
         const data = snap.data();
-        if (data.hash !== hashPass(pass)) { showAuthError('contraseña incorrecta 💀'); return; }
+        if (data.hash !== hashPass(pass, nick)) { showAuthError('nick o contraseña incorrectos 💀'); return; }
         if (data.banned)                   { showBanned(data.banReason||'contacta a emilio'); return; }
         localStorage.setItem(SESSION_KEY, JSON.stringify({ nick, hash: data.hash }));
         loginSuccess(nick, data);
@@ -6727,7 +6983,7 @@ async function doRegister() {
     try {
         const snap = await window._fbGetDoc(window._fbDoc(db, 'users', nick));
         if (snap.exists()) { showAuthError('ese nick ya está tomado 💀'); return; }
-        const hash = hashPass(pass);
+        const hash = hashPass(pass, nick);
         const userData = { nick, hash, admin: isAdmin(nick), banned: false, banReason:'',
                            loginCount: 1, createdAt: new Date().toISOString(), lastLogin: new Date().toISOString() };
         await window._fbSetDoc(window._fbDoc(db, 'users', nick), userData);
@@ -6789,10 +7045,11 @@ function showBanned(reason) {
 // ── Ctrl+Shift+L = logout ─────────────────────────────────────
 document.addEventListener('keydown', e => {
     if (e.ctrlKey && e.shiftKey && e.key === 'L') {
-        if (confirm('¿Cerrar sesión?')) {
+        showConfirm('¿Cerrar sesión de Los Papus?','Cerrar sesión','👋','gold').then(ok => {
+            if (!ok) return;
             localStorage.removeItem(SESSION_KEY);
             location.reload();
-        }
+        });
     }
 });
 
@@ -6804,9 +7061,12 @@ function initAnnouncementListener() {
         if (!banner) return;
         if (!snap.exists() || !snap.data().active) { banner.style.display='none'; return; }
         const d = snap.data();
-        banner.textContent = d.text;
+        const annSpan = document.getElementById('annBanner');
+        if (annSpan) annSpan.textContent = d.text; // safe — textContent
+        else banner.textContent = d.text;
         banner.style.color = d.color||'#ffd700';
-        banner.style.borderColor = (d.color||'#ffd700')+'66';
+        banner.style.borderColor = (d.color||'#ffd700')+'44';
+        banner.style.boxShadow = `0 8px 40px ${d.color||'#ffd700'}18, 0 0 0 1px rgba(255,255,255,0.03)`;
         banner.style.display = 'block';
     });
 }
@@ -6955,7 +7215,7 @@ async function loadBans() {
         snap.forEach(d => { if (d.data().banned) banned.push(d.data()); });
         const el = document.getElementById('ab-list');
         if (el) el.innerHTML = banned.length
-            ? banned.map(u=>`<div class="user-row"><div><div style="font-weight:600;color:#ff4466">${u.nick}</div><div style="font-size:10px;color:#445566">${u.banReason||'sin razón'}</div></div></div>`).join('')
+            ? banned.map(u=>`<div class="user-row"><div><div style="font-weight:600;color:#ff4466">${sanitize(u.nick)}</div><div style="font-size:10px;color:#445566">${sanitize(u.banReason||'sin razón')}</div></div></div>`).join('')
             : '<p style="color:#445566;font-size:12px">nadie baneado (por ahora 👀)</p>';
     } catch(e) {}
 }
@@ -6987,7 +7247,7 @@ window.unbanUser = async function() {
 };
 
 window.deleteUserDirect = async function(nick) {
-    if (!confirm(`¿Eliminar a ${nick}? Esto no se puede deshacer.`)) return;
+    if (!await showConfirm(`Eliminar cuenta de ${nick}. Irreversible.`,`¿Eliminar a ${nick}?`,'💥')) return;
     try {
         const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
         await deleteDoc(window._fbDoc(db,'users',nick));
@@ -7023,16 +7283,35 @@ window.quickMsg = function(text) {
 };
 
 // ── Admin reset wrappers ──────────────────────────────────────
-window.adminResetDeaths = function() { if(confirm('¿Reset todas las muertes?')) { window.resetDeathsFB(); addLog('RESET_DEATHS',''); } };
-window.adminResetVotes  = function() { if(confirm('¿Reset todos los votos?'))   { window.resetVotesFB();  addLog('RESET_VOTES','');  } };
+window.adminResetDeaths = async function() { if(!await showConfirm('Esto pone todas las muertes a 0.','¿Reset muertes?','💀')) return; window.resetDeathsFB(); addLog('RESET_DEATHS',''); };
+window.adminResetVotes  = async function() { if(!await showConfirm('Esto resetea todos los votos.','¿Reset votos?','☠️')) return; window.resetVotesFB(); addLog('RESET_VOTES',''); };
 
 // ── Activity log ──────────────────────────────────────────────
 function addLog(action, detail) {
+    const entry = {action, detail, by: currentUser?.nick||'?', time: new Date().toISOString()};
+    // localStorage (backup local)
     const logs = JSON.parse(localStorage.getItem(LOG_KEY)||'[]');
-    logs.unshift({action, detail, by: currentUser?.nick||'?', time: new Date().toISOString()});
-    localStorage.setItem(LOG_KEY, JSON.stringify(logs.slice(0,100)));
+    logs.unshift(entry);
+    localStorage.setItem(LOG_KEY, JSON.stringify(logs.slice(0,200)));
+    // Firebase (persistente entre dispositivos)
+    if (window._db && window._fbGetDoc && window._fbSetDoc) {
+        window._fbGetDoc(window._fbDoc(window._db,'lospapus','adminlog'))
+            .then(snap => {
+                const fbLogs = snap.exists() ? (snap.data().entries||[]) : [];
+                fbLogs.unshift(entry);
+                return window._fbSetDoc(window._fbDoc(window._db,'lospapus','adminlog'), {entries: fbLogs.slice(0,500)});
+            }).catch(()=>{});
+    }
 }
-function loadLog() {
+async function loadLog() {
+    if (window._db && window._fbGetDoc) {
+        try {
+            const snap = await window._fbGetDoc(window._fbDoc(window._db,'lospapus','adminlog'));
+            if (snap.exists() && snap.data().entries?.length) {
+                localStorage.setItem(LOG_KEY, JSON.stringify(snap.data().entries));
+            }
+        } catch(e) {}
+    }
     const logs = JSON.parse(localStorage.getItem(LOG_KEY)||'[]');
     const el = document.getElementById('al-list');
     if (!el) return;
@@ -7044,7 +7323,7 @@ function loadLog() {
             <div style="color:#445566;font-size:10px">${new Date(l.time).toLocaleString('es')} · ${l.by}</div>
         </div>`).join('');
 }
-window.clearLog = function() { if(confirm('¿Limpiar log?')) { localStorage.removeItem(LOG_KEY); loadLog(); } };
+window.clearLog = async function() { if(!await showConfirm('Se borrará el historial de acciones.','¿Limpiar log?','🗑️')) return; localStorage.removeItem(LOG_KEY); loadLog(); };
 
 // ── Helpers ───────────────────────────────────────────────────
 function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val; }
@@ -7115,6 +7394,20 @@ window.renderUsers = function() {
     }).join('');
 };
 
+window.debouncedRenderUsers = debounce(renderUsers, 250);
+
+// Announcement char counter
+document.addEventListener('DOMContentLoaded', () => {
+    const anText = document.getElementById('an-text');
+    const anChars = document.getElementById('an-chars');
+    if (anText && anChars) {
+        anText.addEventListener('input', () => {
+            anChars.textContent = anText.value.length + '/120';
+            anChars.style.color = anText.value.length > 100 ? '#ff4466' : '#445566';
+        });
+    }
+});
+
 window.openUserProfile = function(nick) {
     const u = allUsers.find(x=>x.nick===nick);
     if(!u) return;
@@ -7160,7 +7453,7 @@ window.resetUserPass = async function() {
     if(!_selectedUser) return;
     function hashPass(p){let h=5381;for(let i=0;i<p.length;i++)h=((h<<5)+h)^p.charCodeAt(i);return 'p'+(h>>>0).toString(36)+p.length.toString(36);}
     const tmp = Math.random().toString(36).slice(2,6);
-    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{hash:hashPass(tmp)});
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{hash:hashPass(tmp,_selectedUser.nick)});
     addLog('RESET_PASS',_selectedUser.nick);
     showFBToast(`🔑 pass de ${_selectedUser.nick}: ${tmp}`,'#ffd700');
     prompt(`Nueva contraseña temporal de ${_selectedUser.nick}:`, tmp);
@@ -7195,7 +7488,7 @@ window.quickDeath = async function(delta) {
 
 window.resetOnePapuDeaths = async function() {
     const name = document.getElementById('at-select')?.value;
-    if(!name||!confirm(`¿Reset muertes de ${name}?`)) return;
+    if(!name) return; if(!await showConfirm(`Poner muertes de ${name} a 0.`,`¿Reset ${name}?`,'💀')) return;
     await window._fbUpdateDoc(window._fbDoc(db,'lospapus','deaths'),{[name]:0});
     addLog('RESET_ONE_DEATHS',name);
     showFBToast(`🗑 ${name}: 0 muertes`,'#ff4466');
@@ -7204,7 +7497,7 @@ window.resetOnePapuDeaths = async function() {
 
 window.deletePapu = async function() {
     const name = document.getElementById('at-del-select')?.value;
-    if(!name||!confirm(`¿Eliminar a ${name} del tablero?`)) return;
+    if(!name) return; if(!await showConfirm(`Se eliminará ${name} del tablero.`,`¿Eliminar ${name}?`,'🗑️')) return;
     const [dSnap,vSnap] = await Promise.all([
         window._fbGetDoc(window._fbDoc(db,'lospapus','deaths')),
         window._fbGetDoc(window._fbDoc(db,'lospapus','votes')),
@@ -7264,7 +7557,7 @@ window.setPapuVotes = async function() {
 
 window.resetOnePapuVotes = async function() {
     const name = document.getElementById('ar-select')?.value;
-    if(!name||!confirm(`¿Reset votos de ${name}?`)) return;
+    if(!name) return; if(!await showConfirm(`Poner votos de ${name} a 0.`,`¿Reset ${name}?`,'☠️')) return;
     await window._fbUpdateDoc(window._fbDoc(db,'lospapus','votes'),{[name]:0});
     addLog('RESET_ONE_VOTES',name);
     showFBToast(`🗑 ${name}: 0 votos`,'#ff4466');
@@ -7410,7 +7703,7 @@ window.showRoast = function() {
     const list=roasts[nick]||[`${nick} es tan irrelevante que ni tengo roast 💀`];
     const txt=list[Math.floor(Math.random()*list.length)];
     const el=document.getElementById('af-roast-result');
-    if(el){el.textContent=`"${txt}"`;el.style.display='block';}
+    if(el){el.textContent=txt;el.style.display='block';}
 };
 
 window.showToxicQuote = function() {
@@ -7476,8 +7769,27 @@ function saveDeviceInfo(nick) {
     window._fbUpdateDoc(window._fbDoc(window._db,'users',nick), info).catch(()=>{});
 }
 
+
+// Wrap admin functions with error handling
+window.setPapuDeaths   = tryCatch(window.setPapuDeaths   || (()=>{}));
+window.setPapuVotes    = tryCatch(window.setPapuVotes    || (()=>{}));
+window.banUser         = tryCatch(window.banUser         || (()=>{}));
+window.unbanUser       = tryCatch(window.unbanUser       || (()=>{}));
+window.deleteUser      = tryCatch(window.deleteUser      || (()=>{}));
+window.sendAnnouncement = tryCatch(window.sendAnnouncement || (()=>{}));
+window.clearAnnouncement = tryCatch(window.clearAnnouncement || (()=>{}));
+window.addPapu         = tryCatch(window.addPapu         || (()=>{}));
+window.promoteUser     = tryCatch(window.promoteUser     || (()=>{}));
+window.demoteUser      = tryCatch(window.demoteUser      || (()=>{}));
+window.resetUserPass   = tryCatch(window.resetUserPass   || (()=>{}));
+window.saveUserNote    = tryCatch(window.saveUserNote    || (()=>{}));
+window.backupAll       = tryCatch(window.backupAll       || (()=>{}));
+window.exportAll       = tryCatch(window.exportAll       || (()=>{}));
+window.setMaintenance  = tryCatch(window.setMaintenance  || (()=>{}));
+
 })(); // end IIFE
 
 </script>
+<div id="shortcutToast" class="shortcut-toast"></div>
 </body>
 </html>
