@@ -1033,208 +1033,429 @@
             box-shadow: 0 4px 20px rgba(255,215,0,.25); color: #000;
         }
 
-        /* ===== ADMIN PANEL V3 ===== */
+        /* ===== ADMIN PANEL V5 — HUD SCI-FI ===== */
+
         #adminPanel {
             display: none;
-            position: fixed; top: 0; right: -520px; width: 500px; height: 100vh;
-            background: linear-gradient(180deg, #070f1f 0%, #050c18 100%);
-            border-left: 1px solid rgba(255,215,0,0.15);
-            z-index: 9998; overflow-y: auto; padding: 0;
-            transition: right .4s cubic-bezier(.4,0,.2,1);
-            font-family: 'Poppins', sans-serif;
-            scrollbar-width: thin; scrollbar-color: rgba(255,215,0,0.2) transparent;
-            box-shadow: -20px 0 60px rgba(0,0,0,0.8);
+            position: fixed; top: 0; right: -560px; width: 540px; height: 100vh;
+            background: #010a0f;
+            border-left: 1px solid rgba(0,220,255,0.2);
+            z-index: 9998; overflow-y: auto; overflow-x: hidden; padding: 0;
+            transition: right .45s cubic-bezier(.4,0,.2,1);
+            font-family: 'Courier New', monospace;
+            scrollbar-width: thin; scrollbar-color: rgba(0,220,255,0.2) transparent;
+            box-shadow: -20px 0 80px rgba(0,0,0,0.95);
         }
-        #adminPanel::-webkit-scrollbar { width: 4px; }
-        #adminPanel::-webkit-scrollbar-track { background: transparent; }
-        #adminPanel::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.2); border-radius: 2px; }
+        #adminPanel::-webkit-scrollbar { width: 3px; }
+        #adminPanel::-webkit-scrollbar-thumb { background: rgba(0,220,255,0.2); border-radius: 2px; }
         #adminPanel.open { right: 0; }
 
+        /* scanline overlay */
+        #adminPanel::after {
+            content: '';
+            position: fixed; top: 0; right: 0; width: 540px; height: 100vh;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,220,255,0.012) 2px,
+                rgba(0,220,255,0.012) 4px
+            );
+            pointer-events: none; z-index: 100;
+        }
+
+        /* ── HUD HEADER ── */
         .admin-header {
-            background: linear-gradient(135deg, rgba(255,215,0,0.12) 0%, rgba(255,140,0,0.06) 100%);
-            border-bottom: 1px solid rgba(255,215,0,0.12);
-            padding: 22px 24px 16px; position: sticky; top: 0; z-index: 10;
+            position: sticky; top: 0; z-index: 15;
+            background: rgba(0,8,14,0.97);
+            border-bottom: 1px solid rgba(0,220,255,0.15);
+            padding: 0;
             backdrop-filter: blur(20px);
         }
-        .admin-header-top {
-            display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 16px;
+        .admin-header-bar {
+            height: 2px; width: 100%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(0,220,255,0.8) 20%,
+                rgba(0,255,200,0.6) 50%,
+                rgba(0,220,255,0.8) 80%,
+                transparent 100%);
+            animation: hudScan 3s linear infinite;
+            background-size: 200% 100%;
         }
-        .admin-header-title {
-            display: flex; align-items: center; gap: 10px;
+        @keyframes hudScan {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
-        .admin-header-title h2 {
-            font-size: 15px; font-family: 'Orbitron', sans-serif;
-            color: #ffd700; margin: 0; letter-spacing: 1px;
+
+        /* Globe container */
+        .admin-globe-wrap {
+            background: linear-gradient(180deg, rgba(0,30,50,0.9) 0%, rgba(0,8,14,0.95) 100%);
+            padding: 16px 20px 12px;
+            position: relative; overflow: hidden;
+            border-bottom: 1px solid rgba(0,220,255,0.1);
         }
-        .admin-header-badge {
-            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.15));
-            border: 1px solid rgba(255,215,0,0.3); border-radius: 20px;
-            padding: 3px 10px; font-size: 10px; color: #ffd700; font-weight: 600;
+        .admin-globe-wrap::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(0,100,180,0.12) 0%, transparent 70%);
+        }
+        .hud-globe-row {
+            display: flex; align-items: center; gap: 16px;
+        }
+        #hudGlobeCanvas {
+            width: 80px; height: 80px; flex-shrink: 0;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0,180,255,0.3), 0 0 40px rgba(0,100,200,0.15);
+        }
+        .hud-title-block { flex: 1; }
+        .hud-title-block h2 {
+            font-size: 16px; font-family: 'Orbitron', sans-serif;
+            color: #00dcff; margin: 0 0 4px; letter-spacing: 3px;
+            text-shadow: 0 0 12px rgba(0,220,255,0.5);
+        }
+        .hud-subtitle {
+            font-size: 10px; color: rgba(0,220,255,0.5);
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .hud-status-row {
+            display: flex; gap: 12px; margin-top: 8px; align-items: center;
+        }
+        .hud-status-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #00ff9d;
+            box-shadow: 0 0 6px #00ff9d;
+            animation: hudBlink 1.5s ease infinite;
+        }
+        @keyframes hudBlink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .hud-status-text { font-size: 10px; color: #00ff9d; letter-spacing: 1px; }
+        .hud-badge {
+            margin-left: auto;
+            background: rgba(0,220,255,0.08);
+            border: 1px solid rgba(0,220,255,0.3);
+            border-radius: 4px; padding: 4px 12px;
+            font-size: 10px; color: #00dcff; letter-spacing: 2px;
+            font-family: 'Orbitron', sans-serif;
         }
         .admin-close {
-            background: rgba(255,68,102,0.1); border: 1px solid rgba(255,68,102,0.2);
-            color: #80b0cc; font-size: 16px; cursor: pointer;
-            padding: 6px 10px; border-radius: 8px; transition: .2s;
+            position: absolute; top: 12px; right: 16px;
+            width: 28px; height: 28px; border-radius: 4px;
+            background: rgba(255,60,80,0.1); border: 1px solid rgba(255,60,80,0.3);
+            color: #ff3c50; font-size: 13px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: .2s; font-family: monospace;
         }
-        .admin-close:hover { background: rgba(255,68,102,0.25); color: #ff4466; transform: scale(1.05); }
+        .admin-close:hover { background: rgba(255,60,80,0.25); transform: scale(1.1); }
 
+        /* mini stat strip */
+        .hud-strip {
+            display: grid; grid-template-columns: repeat(4,1fr);
+            border-top: 1px solid rgba(0,220,255,0.08);
+            margin-top: 12px;
+        }
+        .hud-strip-item {
+            padding: 8px 6px; text-align: center;
+            border-right: 1px solid rgba(0,220,255,0.08);
+        }
+        .hud-strip-item:last-child { border-right: none; }
+        .hud-strip-item .sv { font-size: 16px; font-weight: 900; color: #00dcff; font-family: 'Orbitron', sans-serif; }
+        .hud-strip-item .sl { font-size: 8px; color: rgba(0,220,255,0.4); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+        /* ── TABS ── */
+        .admin-header-inner { padding: 10px 16px 0; }
         .admin-tabs {
-            display: flex; gap: 4px; flex-wrap: wrap;
+            display: flex; gap: 2px; flex-wrap: wrap;
+            border-bottom: 1px solid rgba(0,220,255,0.08);
+            padding-bottom: 0;
         }
         .admin-tab {
-            padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600;
-            cursor: pointer; border: 1px solid rgba(255,255,255,0.06); color: #556677;
-            background: transparent; transition: .2s; font-family: 'Poppins', sans-serif;
-            white-space: nowrap;
+            padding: 7px 12px; border-radius: 0; font-size: 10px; font-weight: 600;
+            cursor: pointer; border: none; border-bottom: 2px solid transparent;
+            color: rgba(0,220,255,0.35); background: transparent;
+            transition: .2s; font-family: 'Courier New', monospace;
+            white-space: nowrap; letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
         .admin-tab.active {
-            background: rgba(255,215,0,0.12);
-            color: #ffd700; border-color: rgba(255,215,0,0.3);
-            box-shadow: 0 0 12px rgba(255,215,0,0.1);
+            color: #00dcff; border-bottom-color: #00dcff;
+            background: rgba(0,220,255,0.05);
+            text-shadow: 0 0 8px rgba(0,220,255,0.4);
         }
-        .admin-tab:hover:not(.active) { color: #aabbcc; border-color: rgba(255,255,255,0.12); }
+        .admin-tab:hover:not(.active) { color: rgba(0,220,255,0.7); }
 
-        .admin-body { padding: 20px 22px; }
-        .admin-page { display: none; animation: fadeIn .2s ease; }
+        /* ── BODY ── */
+        .admin-body { padding: 16px 18px 40px; }
+        .admin-page { display: none; animation: hudFadeIn .2s ease; }
         .admin-page.active { display: block; }
-        @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:none; } }
+        @keyframes hudFadeIn {
+            from { opacity:0; transform: translateY(4px); }
+            to   { opacity:1; transform: none; }
+        }
 
+        /* ── SECTION TITLES ── */
         .admin-section-title {
-            font-size: 10px; color: #556677; text-transform: uppercase; letter-spacing: 2px;
+            font-size: 9px; color: rgba(0,220,255,0.5);
+            text-transform: uppercase; letter-spacing: 3px;
             margin: 18px 0 10px; display: flex; align-items: center; gap: 8px;
-            font-weight: 600;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .admin-section-title::before {
+            content: '//'; color: rgba(0,220,255,0.25); font-size: 9px;
         }
         .admin-section-title::after {
             content: ''; flex: 1; height: 1px;
-            background: linear-gradient(90deg, rgba(255,215,0,0.15), transparent);
+            background: linear-gradient(90deg, rgba(0,220,255,0.2), transparent);
         }
 
         /* ── STAT CARDS ── */
-        .astat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .astat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
         .astat-card {
-            background: rgba(0,0,0,0.35);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px; padding: 14px 10px; text-align: center;
+            background: rgba(0,20,35,0.8);
+            border: 1px solid rgba(0,220,255,0.12);
+            border-radius: 4px; padding: 14px 10px; text-align: center;
             transition: .2s; position: relative; overflow: hidden;
+            cursor: default;
         }
         .astat-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,220,255,0.5), transparent);
         }
-        .astat-card:hover { border-color: rgba(255,215,0,0.15); transform: translateY(-1px); }
+        .astat-card::after {
+            content: ''; position: absolute; bottom: 0; right: 0;
+            width: 20px; height: 20px;
+            border-right: 1px solid rgba(0,220,255,0.3);
+            border-bottom: 1px solid rgba(0,220,255,0.3);
+        }
+        .astat-card:hover {
+            border-color: rgba(0,220,255,0.3);
+            background: rgba(0,30,50,0.9);
+            box-shadow: 0 0 20px rgba(0,220,255,0.08), inset 0 0 20px rgba(0,220,255,0.03);
+        }
+        .astat-card .ico { font-size: 16px; margin-bottom: 4px; display: block; }
         .astat-card .val {
-            font-size: 26px; font-weight: 800; color: #ffd700;
+            font-size: 26px; font-weight: 900; color: #00dcff;
             font-family: 'Orbitron', sans-serif; line-height: 1;
+            text-shadow: 0 0 16px rgba(0,220,255,0.4);
         }
-        .astat-card .lbl { font-size: 9px; color: #445566; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .astat-card .lbl {
+            font-size: 8px; color: rgba(0,220,255,0.4); margin-top: 5px;
+            text-transform: uppercase; letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+        }
 
         /* ── USER ROWS ── */
         .user-row {
             display: flex; align-items: center; justify-content: space-between;
-            padding: 11px 14px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.04);
-            border-radius: 10px; margin-bottom: 6px;
-            transition: .2s;
+            padding: 10px 12px;
+            background: rgba(0,15,28,0.6);
+            border: 1px solid rgba(0,220,255,0.08);
+            border-radius: 4px; margin-bottom: 4px;
+            transition: .2s; position: relative; overflow: hidden;
         }
+        .user-row::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+            background: rgba(0,220,255,0); transition: background .2s;
+        }
+        .user-row:hover::before { background: #00dcff; box-shadow: 0 0 8px #00dcff; }
         .user-row:hover {
-            background: rgba(0,212,255,0.04);
-            border-color: rgba(0,212,255,0.12);
+            background: rgba(0,30,50,0.8);
+            border-color: rgba(0,220,255,0.2);
         }
-        .user-row .uinfo .uname { font-weight: 600; color: #dde5f0; font-size: 13px; }
-        .user-row .uinfo .umeta { font-size: 10px; color: #334455; margin-top: 2px; }
+        .user-row .uinfo .uname { font-weight: 700; color: #b0e8f0; font-size: 12px; letter-spacing: 0.5px; font-family: 'Courier New', monospace; }
+        .user-row .uinfo .umeta { font-size: 9px; color: rgba(0,220,255,0.3); margin-top: 2px; letter-spacing: 0.5px; }
         .ubadge {
-            font-size: 10px; padding: 3px 9px; border-radius: 20px;
-            background: rgba(0,212,255,0.1); color: #00d4ff; font-weight: 600;
+            font-size: 9px; padding: 2px 8px; border-radius: 2px; font-weight: 700;
+            background: rgba(0,220,255,0.1); color: #00dcff;
+            border: 1px solid rgba(0,220,255,0.2); font-family: monospace; letter-spacing: 1px;
         }
-        .ubadge.admin  { background: rgba(255,215,0,0.1);  color: #ffd700; }
-        .ubadge.banned { background: rgba(255,68,102,0.1); color: #ff4466; }
+        .ubadge.admin  { background: rgba(255,215,0,0.1);  color: #ffd700; border-color: rgba(255,215,0,0.3); }
+        .ubadge.banned { background: rgba(255,60,80,0.1);  color: #ff3c50; border-color: rgba(255,60,80,0.3); }
 
         /* ── INPUTS ── */
         .admin-input {
-            width: 100%; padding: 11px 14px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 10px; color: #dde5f0; font-size: 13px;
-            font-family: 'Poppins', sans-serif; outline: none;
+            width: 100%; padding: 10px 14px;
+            background: rgba(0,10,20,0.8);
+            border: 1px solid rgba(0,220,255,0.15);
+            border-radius: 3px; color: #b0e8f0; font-size: 12px;
+            font-family: 'Courier New', monospace; outline: none;
             transition: border-color .2s, box-shadow .2s;
-            box-sizing: border-box; margin-bottom: 8px;
+            box-sizing: border-box; margin-bottom: 7px;
+            letter-spacing: 0.5px;
         }
         .admin-input:focus {
-            border-color: rgba(255,215,0,0.4);
-            box-shadow: 0 0 0 3px rgba(255,215,0,0.06);
+            border-color: rgba(0,220,255,0.5);
+            box-shadow: 0 0 0 2px rgba(0,220,255,0.08), 0 0 12px rgba(0,220,255,0.1);
         }
-        .admin-input::placeholder { color: #2a3a4a; }
-        .admin-select {
-            width: 100%; padding: 11px 14px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 10px; color: #dde5f0; font-size: 13px;
-            font-family: 'Poppins', sans-serif; outline: none;
-            margin-bottom: 8px; cursor: pointer;
+        .admin-input::placeholder { color: rgba(0,220,255,0.2); }
+        .admin-textarea {
+            width: 100%; padding: 10px 14px;
+            background: rgba(0,10,20,0.8);
+            border: 1px solid rgba(0,220,255,0.15);
+            border-radius: 3px; color: #b0e8f0; font-size: 12px;
+            font-family: 'Courier New', monospace; outline: none;
+            resize: vertical; min-height: 70px;
             transition: border-color .2s;
+            box-sizing: border-box; margin-bottom: 7px;
         }
-        .admin-select:focus { border-color: rgba(255,215,0,0.4); }
+        .admin-textarea:focus { border-color: rgba(0,220,255,0.5); }
+        .admin-textarea::placeholder { color: rgba(0,220,255,0.2); }
+        .admin-select {
+            width: 100%; padding: 10px 14px;
+            background: rgba(0,10,20,0.8);
+            border: 1px solid rgba(0,220,255,0.15);
+            border-radius: 3px; color: #b0e8f0; font-size: 12px;
+            font-family: 'Courier New', monospace; outline: none;
+            margin-bottom: 7px; cursor: pointer;
+            transition: border-color .2s; -webkit-appearance: none;
+        }
+        .admin-select:focus { border-color: rgba(0,220,255,0.5); }
 
         /* ── BUTTONS ── */
         .abtn {
-            padding: 10px 16px; border-radius: 10px; font-size: 12px; font-weight: 600;
-            cursor: pointer; border: none; font-family: 'Poppins', sans-serif;
-            transition: transform .15s, box-shadow .15s, opacity .15s;
-            margin-bottom: 7px; width: 100%; position: relative; overflow: hidden;
+            padding: 11px 16px; border-radius: 3px; font-size: 11px; font-weight: 700;
+            cursor: pointer; border: none; font-family: 'Courier New', monospace;
+            transition: all .15s; margin-bottom: 6px; width: 100%;
+            position: relative; overflow: hidden; letter-spacing: 1px;
+            text-transform: uppercase;
         }
         .abtn::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 60%);
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+            transition: left .4s;
         }
-        .abtn:hover { transform: translateY(-1px); opacity: .9; }
-        .abtn:active { transform: translateY(0) scale(.98); }
-        .abtn-gold  {
-            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,140,0,0.15));
-            color: #ffd700; border: 1px solid rgba(255,215,0,0.25);
-            box-shadow: 0 4px 16px rgba(255,215,0,0.1);
+        .abtn:hover::before { left: 100%; }
+        .abtn:hover { transform: translateY(-1px); }
+        .abtn:active { transform: translateY(0) scale(.99); }
+        .abtn-gold {
+            background: rgba(255,215,0,0.08);
+            color: #ffd700; border: 1px solid rgba(255,215,0,0.3);
+            box-shadow: 0 0 12px rgba(255,215,0,0.08), inset 0 1px 0 rgba(255,215,0,0.05);
+            text-shadow: 0 0 8px rgba(255,215,0,0.4);
         }
-        .abtn-red    {
-            background: linear-gradient(135deg, rgba(255,68,102,0.2), rgba(200,20,60,0.15));
-            color: #ff6688; border: 1px solid rgba(255,68,102,0.25);
-            box-shadow: 0 4px 16px rgba(255,68,102,0.1);
+        .abtn-gold:hover { box-shadow: 0 0 20px rgba(255,215,0,0.15); border-color: rgba(255,215,0,0.5); }
+        .abtn-red {
+            background: rgba(255,60,80,0.08);
+            color: #ff3c50; border: 1px solid rgba(255,60,80,0.3);
+            box-shadow: 0 0 12px rgba(255,60,80,0.08);
+            text-shadow: 0 0 8px rgba(255,60,80,0.4);
         }
-        .abtn-green  {
-            background: linear-gradient(135deg, rgba(0,255,100,0.15), rgba(0,200,80,0.1));
-            color: #00ff9d; border: 1px solid rgba(0,255,100,0.2);
+        .abtn-red:hover { box-shadow: 0 0 20px rgba(255,60,80,0.15); border-color: rgba(255,60,80,0.5); }
+        .abtn-green {
+            background: rgba(0,255,157,0.08);
+            color: #00ff9d; border: 1px solid rgba(0,255,157,0.3);
+            box-shadow: 0 0 12px rgba(0,255,157,0.06);
+            text-shadow: 0 0 8px rgba(0,255,157,0.4);
         }
-        .abtn-blue   {
-            background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(0,150,200,0.08));
-            color: #00d4ff; border: 1px solid rgba(0,212,255,0.2);
+        .abtn-blue {
+            background: rgba(0,220,255,0.08);
+            color: #00dcff; border: 1px solid rgba(0,220,255,0.25);
+            box-shadow: 0 0 12px rgba(0,220,255,0.06);
+            text-shadow: 0 0 8px rgba(0,220,255,0.3);
         }
-        .abtn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+        .abtn-blue:hover { box-shadow: 0 0 20px rgba(0,220,255,0.12); border-color: rgba(0,220,255,0.45); }
+        .abtn-row  { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .abtn-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
 
         /* ── LOG ENTRIES ── */
         .log-entry {
-            padding: 9px 12px; background: rgba(0,0,0,0.3);
-            border-radius: 8px; margin-bottom: 5px;
-            border-left: 2px solid rgba(255,215,0,0.25);
-            font-size: 11px; color: #8899aa;
+            padding: 8px 12px;
+            background: rgba(0,10,20,0.5);
+            border-radius: 2px; margin-bottom: 3px;
+            border-left: 2px solid rgba(0,220,255,0.2);
+            font-size: 10px; color: rgba(0,220,255,0.5);
+            font-family: 'Courier New', monospace;
+            transition: .15s;
         }
-        .log-entry .log-time   { color: #334455; font-size: 10px; }
-        .log-entry .log-action { color: #ffd700; font-weight: 600; }
+        .log-entry:hover { background: rgba(0,20,35,0.7); border-left-color: rgba(0,220,255,0.6); }
+        .log-entry .log-time   { color: rgba(0,220,255,0.25); font-size: 9px; }
+        .log-entry .log-action { color: #00dcff; font-weight: 700; }
 
-        /* ── ANNOUNCEMENT BANNER ── */
-        .announcement-banner {
+        /* ── ANNOUNCEMENT BANNER — GLITCH STYLE ── */
+        #announcementBanner {
             position: fixed; top: 72px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(135deg, rgba(255,215,0,0.18), rgba(255,140,0,0.12));
-            border: 1px solid rgba(255,215,0,0.35);
-            border-radius: 14px; padding: 12px 28px; color: #ffd700;
-            font-size: 14px; font-weight: 600; z-index: 9997;
+            background: linear-gradient(135deg, rgba(10,8,0,0.95), rgba(20,15,0,0.95));
+            border: 1px solid rgba(255,215,0,0.5);
+            border-radius: 4px; padding: 13px 48px 13px 22px; color: #ffd700;
+            font-size: 13px; font-weight: 700; z-index: 9997;
             max-width: 600px; text-align: center;
-            box-shadow: 0 8px 32px rgba(255,215,0,0.12), 0 0 0 1px rgba(255,215,0,0.05);
-            font-family: 'Poppins', sans-serif; display: none;
+            font-family: 'Orbitron', sans-serif; display: none;
+            backdrop-filter: blur(16px); letter-spacing: 2px;
+            pointer-events: auto;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+            box-shadow:
+                0 0 0 1px rgba(255,215,0,0.1),
+                0 0 20px rgba(255,215,0,0.1),
+                inset 0 0 30px rgba(255,215,0,0.03);
+            animation: annGlitch 4s infinite;
+            overflow: hidden;
         }
-        .announcement-banner.show { display: block; animation: slideDown .35s cubic-bezier(.34,1.56,.64,1); }
-        @keyframes slideDown {
-            from { opacity:0; transform:translateX(-50%) translateY(-14px) scale(.96); }
-            to   { opacity:1; transform:translateX(-50%) translateY(0) scale(1); }
+        #announcementBanner::before {
+            content: '';
+            position: absolute; top: 0; left: -100%; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.8), transparent);
+            animation: annScan 3s linear infinite;
+        }
+        #announcementBanner::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                0deg, transparent, transparent 3px,
+                rgba(255,215,0,0.015) 3px, rgba(255,215,0,0.015) 4px
+            );
+            pointer-events: none;
+        }
+        @keyframes annScan {
+            0%   { left: -100%; }
+            100% { left: 200%; }
+        }
+        @keyframes annGlitch {
+            0%,92%,100% {
+                clip-path: none;
+                transform: translateX(-50%);
+                border-color: rgba(255,215,0,0.5);
+            }
+            93% {
+                clip-path: polygon(0 20%, 100% 20%, 100% 25%, 0 25%);
+                transform: translateX(calc(-50% + 3px));
+                border-color: rgba(0,220,255,0.8);
+                color: #00dcff;
+                text-shadow: -2px 0 #ff4466, 2px 0 #00dcff;
+            }
+            94% {
+                clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%);
+                transform: translateX(calc(-50% - 2px));
+                border-color: rgba(255,68,102,0.8);
+                color: #ff4466;
+            }
+            95% {
+                clip-path: none;
+                transform: translateX(-50%);
+                color: #ffd700;
+                text-shadow: 0 0 10px rgba(255,215,0,0.5);
+                border-color: rgba(255,215,0,0.5);
+            }
+            97% {
+                transform: translateX(calc(-50% + 1px));
+                text-shadow: -1px 0 #00dcff, 1px 0 #ff4466;
+            }
+        }
+        #announcementBanner button {
+            position: absolute; right: 12px; top: 50%;
+            transform: translateY(-50%);
+            background: none; border: none;
+            color: rgba(255,215,0,0.4); font-size: 14px; cursor: pointer;
+            padding: 4px; transition: .2s;
+        }
+        #announcementBanner button:hover { color: #ffd700; }
+
+        /* ── PROFILE PANEL ── */
+        #au-profile {
+            background: rgba(0,12,22,0.9);
+            border: 1px solid rgba(0,220,255,0.15);
+            border-top: 1px solid rgba(0,220,255,0.35);
+            border-radius: 4px; padding: 16px; margin-top: 10px;
+            box-shadow: inset 0 0 30px rgba(0,220,255,0.02);
         }
 
         /* ── BANNED OVERLAY ── */
@@ -1242,83 +1463,25 @@
             position: fixed; inset: 0; z-index: 999999;
             background: radial-gradient(ellipse at center, #1a0008 0%, #000 70%);
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Poppins', sans-serif; flex-direction: column; gap: 16px;
+            font-family: 'Orbitron', sans-serif; flex-direction: column; gap: 16px;
         }
-        .banned-overlay h1 { color: #ff4466; font-size: 32px; font-family: 'Orbitron', sans-serif; }
-        .banned-overlay p  { color: #80b0cc; font-size: 14px; }
+        .banned-overlay h1 { color: #ff3c50; font-size: 28px; letter-spacing: 4px; }
+        .banned-overlay p  { color: rgba(0,220,255,0.5); font-size: 12px; letter-spacing: 2px; }
 
-        /* ── PROFILE PANEL ── */
-        #au-profile {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(0,212,255,0.15);
-            border-radius: 14px; padding: 16px;
-            margin-top: 12px;
-        }
-
-        /* ── USER BADGE BUTTON ── */
+        /* ── USER BADGE ── */
         #userBadge {
-            background: linear-gradient(135deg, rgba(6,14,26,0.98), rgba(10,20,40,0.98)) !important;
-            border: 1px solid rgba(255,215,0,0.3) !important;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,215,0,0.05) !important;
+            background: linear-gradient(135deg, rgba(0,8,16,0.98), rgba(0,14,26,0.98)) !important;
+            border: 1px solid rgba(0,220,255,0.25) !important;
+            color: #00dcff !important; font-family: 'Orbitron', sans-serif !important;
+            font-size: 11px !important; letter-spacing: 1px !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8), 0 0 12px rgba(0,220,255,0.08) !important;
         }
         #userBadge:hover {
-            border-color: rgba(255,215,0,0.6) !important;
-            box-shadow: 0 6px 30px rgba(255,215,0,0.15), 0 0 0 1px rgba(255,215,0,0.1) !important;
+            border-color: rgba(0,220,255,0.5) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8), 0 0 20px rgba(0,220,255,0.15) !important;
         }
 
-        
-        /* ===== ADMIN PANEL ===== */
-        #adminPanel {
-            position: fixed; top: 0; right: -420px; width: 400px; height: 100vh;
-            background: rgba(6,14,26,0.98); border-left: 1px solid rgba(0,212,255,0.3);
-            z-index: 9998; overflow-y: auto; padding: 24px;
-            transition: right .3s ease; font-family: 'Poppins', sans-serif;
-        }
-        #adminPanel.open { right: 0; }
-        .admin-title {
-            font-size: 18px; font-weight: 700; color: var(--primary);
-            font-family: 'Orbitron', sans-serif; margin-bottom: 20px;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .admin-close {
-            cursor: pointer; color: #80b0cc; font-size: 20px;
-            background: none; border: none; color: #80b0cc;
-        }
-        .admin-section { margin-bottom: 24px; }
-        .admin-section h3 {
-            font-size: 12px; color: #80b0cc; text-transform: uppercase;
-            letter-spacing: 1px; margin-bottom: 12px;
-            border-bottom: 1px solid rgba(0,212,255,0.1); padding-bottom: 8px;
-        }
-        .user-row {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 14px; background: rgba(0,0,0,0.3);
-            border-radius: 8px; margin-bottom: 8px;
-            border: 1px solid rgba(0,212,255,0.1);
-        }
-        .user-row .uname { font-weight: 600; color: #fff; font-size: 14px; }
-        .user-row .udate { font-size: 11px; color: #445566; }
-        .user-row .ubadge {
-            font-size: 10px; padding: 2px 8px; border-radius: 20px;
-            background: rgba(0,212,255,0.15); color: var(--primary);
-        }
-        .user-row .ubadge.admin { background: rgba(255,180,0,0.15); color: #ffd700; }
-        .admin-stat {
-            display: flex; justify-content: space-between;
-            padding: 8px 0; border-bottom: 1px solid rgba(0,212,255,0.05);
-            font-size: 13px; color: #cdd3de;
-        }
-        .admin-stat span:last-child { color: var(--primary); font-weight: 600; }
-        .admin-btn {
-            width: 100%; padding: 10px; margin-top: 8px;
-            background: rgba(255,68,102,0.15); border: 1px solid rgba(255,68,102,0.3);
-            border-radius: 8px; color: #ff4466; font-size: 13px;
-            cursor: pointer; font-family: 'Poppins', sans-serif;
-            transition: background .2s;
-        }
-        .admin-btn:hover { background: rgba(255,68,102,0.25); }
-
-        /* ===== USER BADGE IN NAVBAR ===== */
+                /* ===== USER BADGE IN NAVBAR ===== */
         #userBadge {
             font-size: 12px; color: #80b0cc; cursor: pointer;
             background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.15);
@@ -1599,7 +1762,125 @@
             .title { font-size:24px; }
             .wheel-wrap { width:260px; height:260px; }
         }
-    </style>
+    
+        /* ══════════════════════════════════════════════════════
+           RANK SYSTEM — Owner Dev / Admin / Mod / Helper
+           ══════════════════════════════════════════════════════ */
+
+        /* Base rank badge */
+        .rank-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 3px 10px; border-radius: 3px;
+            font-family: 'Orbitron', sans-serif; font-size: 9px; font-weight: 700;
+            letter-spacing: 2px; text-transform: uppercase;
+            position: relative; overflow: hidden;
+        }
+        .rank-badge::before {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: rankShine 3s ease infinite;
+        }
+        @keyframes rankShine {
+            0%   { left: -100%; }
+            60%  { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* ── OWNER DEV — morado neón glitch ── */
+        .rank-owner {
+            background: rgba(168,85,247,0.12);
+            border: 1px solid rgba(168,85,247,0.5);
+            color: #d946ef;
+            box-shadow: 0 0 12px rgba(168,85,247,0.3), inset 0 0 12px rgba(168,85,247,0.05);
+            text-shadow: 0 0 8px rgba(217,70,239,0.8);
+            animation: ownerGlitch 5s infinite, rankShine 3s ease infinite;
+        }
+        @keyframes ownerGlitch {
+            0%,88%,100% {
+                text-shadow: 0 0 8px rgba(217,70,239,0.8);
+                box-shadow: 0 0 12px rgba(168,85,247,0.3), inset 0 0 12px rgba(168,85,247,0.05);
+                border-color: rgba(168,85,247,0.5);
+            }
+            89% {
+                text-shadow: -2px 0 #00dcff, 2px 0 #ff4466, 0 0 8px rgba(217,70,239,0.9);
+                transform: skewX(-2deg);
+                border-color: rgba(0,220,255,0.8);
+            }
+            90% {
+                text-shadow: 2px 0 #ff4466, -2px 0 #00dcff;
+                transform: skewX(2deg);
+                border-color: rgba(255,68,102,0.8);
+            }
+            91% {
+                text-shadow: 0 0 8px rgba(217,70,239,0.8);
+                transform: skewX(0);
+                border-color: rgba(168,85,247,0.5);
+            }
+        }
+
+        /* ── ADMIN — dorado ── */
+        .rank-admin {
+            background: rgba(255,215,0,0.1);
+            border: 1px solid rgba(255,215,0,0.4);
+            color: #ffd700;
+            box-shadow: 0 0 8px rgba(255,215,0,0.2);
+            text-shadow: 0 0 6px rgba(255,215,0,0.5);
+        }
+
+        /* ── MOD — cyan ── */
+        .rank-mod {
+            background: rgba(0,220,255,0.08);
+            border: 1px solid rgba(0,220,255,0.35);
+            color: #00dcff;
+            box-shadow: 0 0 8px rgba(0,220,255,0.15);
+            text-shadow: 0 0 6px rgba(0,220,255,0.5);
+        }
+
+        /* ── HELPER — verde ── */
+        .rank-helper {
+            background: rgba(0,255,157,0.08);
+            border: 1px solid rgba(0,255,157,0.3);
+            color: #00ff9d;
+            box-shadow: 0 0 8px rgba(0,255,157,0.12);
+            text-shadow: 0 0 6px rgba(0,255,157,0.5);
+        }
+
+        /* ── USER — gris ── */
+        .rank-user {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #6688aa;
+        }
+
+        /* Rank display in navbar badge */
+        #userBadge .rank-icon { font-size: 12px; }
+
+        /* Rank panel in admin */
+        .rank-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 12px;
+            background: rgba(0,10,20,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 4px; margin-bottom: 4px;
+            transition: .2s;
+        }
+        .rank-row:hover { border-color: rgba(168,85,247,0.2); background: rgba(168,85,247,0.04); }
+        .rank-select-inline {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 3px; color: #b0e8f0;
+            font-family: 'Courier New', monospace; font-size: 10px;
+            padding: 4px 8px; cursor: pointer; outline: none;
+        }
+
+        /* Rank perms list */
+        .rank-perms { font-size: 10px; color: rgba(0,220,255,0.4); margin-top: 4px; line-height: 1.6; }
+        .rank-perm-item { padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .rank-perm-item.allowed { color: #00ff9d; }
+        .rank-perm-item.denied  { color: rgba(255,255,255,0.15); text-decoration: line-through; }
+
+        </style>
 </head>
 <body>
 
@@ -1672,9 +1953,9 @@
 </div>
 
 <!-- ===== ANNOUNCEMENT BANNER ===== -->
-<div id="announcementBanner" style="display:none;position:fixed;top:72px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,140,0,0.1));border:1px solid rgba(255,215,0,0.3);border-top:1px solid rgba(255,215,0,0.5);border-radius:16px;padding:13px 48px 13px 24px;color:#ffd700;font-size:14px;font-weight:600;z-index:9997;max-width:600px;text-align:center;font-family:'Poppins',sans-serif;box-shadow:0 8px 40px rgba(255,215,0,0.12),0 0 0 1px rgba(255,255,255,0.03);backdrop-filter:blur(12px);position:relative;">
+<div id="announcementBanner">
   <span id="annBanner"></span>
-  <button onclick="document.getElementById('announcementBanner').style.display='none'" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,215,0,0.5);font-size:16px;cursor:pointer;padding:4px;line-height:1;">✕</button>
+  <button onclick="document.getElementById('announcementBanner').style.display='none'" >✕</button>
 </div>
 
 <!-- ===== USER BADGE ===== -->
@@ -1683,13 +1964,29 @@
 <!-- ===== ADMIN PANEL ===== -->
 <div id="adminPanel">
   <div class="admin-header">
-    <div class="admin-header-top">
-      <div class="admin-header-title">
-        <h2>👑 Panel Admin</h2>
-        <span class="admin-header-badge">emilio</span>
-      </div>
+    <div class="admin-header-bar"></div>
+    <div class="admin-globe-wrap">
       <button class="admin-close" onclick="toggleAdminPanel()">✕</button>
+      <div class="hud-globe-row">
+        <canvas id="hudGlobeCanvas" width="80" height="80"></canvas>
+        <div class="hud-title-block">
+          <h2>DATA CENTER</h2>
+          <div class="hud-subtitle">Los Papus Control System</div>
+          <div class="hud-status-row">
+            <div class="hud-status-dot"></div>
+            <span class="hud-status-text">SISTEMA ONLINE</span>
+            <span class="hud-badge" id="adminHeaderBadge">EMILIO</span>
+          </div>
+        </div>
+      </div>
+      <div class="hud-strip">
+        <div class="hud-strip-item"><div class="sv" id="hs-users">-</div><div class="sl">usuarios</div></div>
+        <div class="hud-strip-item"><div class="sv" id="hs-online">-</div><div class="sl">online</div></div>
+        <div class="hud-strip-item"><div class="sv" id="hs-deaths">-</div><div class="sl">muertes</div></div>
+        <div class="hud-strip-item"><div class="sv" id="hs-votes">-</div><div class="sl">votos</div></div>
+      </div>
     </div>
+    <div class="admin-header-inner">
     <div class="admin-tabs">
       <button class="admin-tab active" onclick="adminTab(this,'stats')">📊 Stats</button>
       <button class="admin-tab" onclick="adminTab(this,'users')">👥 Usuarios</button>
@@ -1701,23 +1998,28 @@
       <button class="admin-tab" onclick="adminTab(this,'datos')">💾 Datos</button>
       <button class="admin-tab" onclick="adminTab(this,'fun')">🎭 Fun</button>
       <button class="admin-tab" onclick="adminTab(this,'log')">📋 Log</button>
+      <button class="admin-tab" onclick="adminTab(this,'modtools')">🛡 Mod</button>
+      <button class="admin-tab" onclick="adminTab(this,'ranks')">💎 Rangos</button>
+      <button class="admin-tab" onclick="adminTab(this,'modtools')">🛡 Mod</button>
+      <button class="admin-tab" onclick="adminTab(this,'ranks')">💎 Rangos</button>
     </div>
-  </div>
+    </div><!-- /admin-header-inner -->
+  </div><!-- /admin-header -->
   <div class="admin-body">
 
     <!-- ══ STATS ══════════════════════════════════════════════ -->
     <div class="admin-page active" id="ap-stats">
       <div class="astat-grid">
-        <div class="astat-card"><div class="val" id="as-users">-</div><div class="lbl">usuarios</div></div>
-        <div class="astat-card"><div class="val" id="as-online">-</div><div class="lbl">online</div></div>
-        <div class="astat-card"><div class="val" id="as-deaths">-</div><div class="lbl">muertes</div></div>
-        <div class="astat-card"><div class="val" id="as-votes">-</div><div class="lbl">votos</div></div>
+        <div class="astat-card"><span class="ico">👥</span><div class="val" id="as-users">-</div><div class="lbl">usuarios</div></div>
+        <div class="astat-card"><span class="ico">🟢</span><div class="val" id="as-online">-</div><div class="lbl">online</div></div>
+        <div class="astat-card"><span class="ico">💀</span><div class="val" id="as-deaths">-</div><div class="lbl">muertes</div></div>
+        <div class="astat-card"><span class="ico">☠️</span><div class="val" id="as-votes">-</div><div class="lbl">votos tóx</div></div>
       </div>
-      <div class="astat-grid" style="margin-top:8px;">
-        <div class="astat-card"><div class="val" id="as-banned" style="color:#ff4466">-</div><div class="lbl">baneados</div></div>
-        <div class="astat-card"><div class="val" id="as-newusers" style="color:#00ff9d">-</div><div class="lbl">nuevos 7d</div></div>
-        <div class="astat-card"><div class="val" id="as-active" style="color:#00d4ff">-</div><div class="lbl">activos hoy</div></div>
-        <div class="astat-card"><div class="val" id="as-ghosts" style="color:#556677">-</div><div class="lbl">fantasmas</div></div>
+      <div class="astat-grid" style="margin-top:7px;">
+        <div class="astat-card"><span class="ico">🚫</span><div class="val" id="as-banned" style="color:#ff4466">-</div><div class="lbl">baneados</div></div>
+        <div class="astat-card"><span class="ico">✨</span><div class="val" id="as-newusers" style="color:#00ff9d">-</div><div class="lbl">nuevos 7d</div></div>
+        <div class="astat-card"><span class="ico">⚡</span><div class="val" id="as-active" style="color:#00d4ff">-</div><div class="lbl">activos hoy</div></div>
+        <div class="astat-card"><span class="ico">👻</span><div class="val" id="as-ghosts" style="color:#556677">-</div><div class="lbl">fantasmas</div></div>
       </div>
       <div class="admin-section-title">🏆 muertes</div>
       <div id="as-death-rank"></div>
@@ -1733,54 +2035,106 @@
 
     <!-- ══ USUARIOS ═══════════════════════════════════════════ -->
     <div class="admin-page" id="ap-users">
-      <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;">
-        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('all')">👥 Todos</button>
-        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('today')">🟢 Hoy</button>
-        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('week')">📅 Semana</button>
-        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:11px;" onclick="filterUsers('ghost')">👻 Fantasmas</button>
+      <div style="display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap;">
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:10px;" onclick="filterUsers('all')">👥 Todos</button>
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:10px;" onclick="filterUsers('today')">🟢 Hoy</button>
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:10px;" onclick="filterUsers('week')">📅 Semana</button>
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:10px;" onclick="filterUsers('ghost')">👻 Fantasmas</button>
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:10px;" onclick="filterUsers('muted')">🔇 Silenciados</button>
+        <button class="abtn abtn-blue" style="flex:1;padding:6px;font-size:10px;" onclick="filterUsers('warned')">⚠️ Warned</button>
       </div>
-      <input class="admin-input" id="au-search" placeholder="buscar nick..." oninput="debouncedRenderUsers()">
+      <input class="admin-input" id="au-search" placeholder="buscar nick, dispositivo..." oninput="debouncedRenderUsers()">
       <div id="au-list"></div>
-      <!-- Modal perfil usuario -->
-      <div id="au-profile" style="display:none;background:rgba(0,0,0,.6);border:1px solid rgba(0,212,255,.2);border-radius:12px;padding:14px;margin-top:10px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <!-- Perfil usuario expandido -->
+      <div id="au-profile" style="display:none;background:rgba(0,0,0,.5);border:1px solid rgba(0,212,255,.15);border-radius:14px;padding:16px;margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
           <span id="aup-nick" style="font-weight:700;font-size:15px;color:#fff;"></span>
-          <button onclick="document.getElementById('au-profile').style.display='none'" style="background:none;border:none;color:#80b0cc;cursor:pointer;font-size:16px;">✕</button>
+          <button onclick="document.getElementById('au-profile').style.display='none'" style="background:rgba(255,68,102,.1);border:1px solid rgba(255,68,102,.2);color:#80b0cc;cursor:pointer;font-size:14px;border-radius:6px;padding:4px 8px;">✕</button>
         </div>
-        <div id="aup-info" style="font-size:12px;color:#80b0cc;line-height:1.8;"></div>
-        <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <button class="abtn abtn-gold" style="font-size:11px;padding:6px;" onclick="promoteUser()">👑 Hacer admin</button>
-          <button class="abtn abtn-blue" style="font-size:11px;padding:6px;" onclick="demoteUser()">👤 Quitar admin</button>
-          <button class="abtn abtn-blue" style="font-size:11px;padding:6px;" onclick="resetUserPass()">🔑 Reset pass</button>
-          <button class="abtn abtn-red" style="font-size:11px;padding:6px;" onclick="deleteSelectedUser()">💥 Eliminar</button>
+        <!-- Tags -->
+        <div style="margin-bottom:10px;">
+          <div style="font-size:10px;color:#556677;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">🏷 etiquetas</div>
+          <div id="aup-tags" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;"></div>
+          <div style="display:flex;gap:6px;">
+            <select class="admin-select" id="aup-tag-select" style="margin-bottom:0;flex:1;font-size:11px;padding:6px;">
+              <option value="toxico">☠ tóxico</option>
+              <option value="crack">⭐ crack</option>
+              <option value="fantasma">👻 fantasma</option>
+              <option value="noob">💀 noob</option>
+              <option value="vip">👑 vip</option>
+              <option value="sospechoso">🚨 sospechoso</option>
+            </select>
+            <button class="abtn abtn-blue" style="margin:0;padding:6px 10px;font-size:11px;" onclick="addUserTag()">+ Tag</button>
+            <button class="abtn abtn-red" style="margin:0;padding:6px 10px;font-size:11px;" onclick="clearUserTags()">✕</button>
+          </div>
         </div>
-        <div class="admin-section-title" style="margin-top:10px;">📝 nota privada</div>
-        <input class="admin-input" id="aup-note" placeholder="nota solo visible para ti..." maxlength="200">
-        <button class="abtn abtn-gold" onclick="saveUserNote()">💾 Guardar nota</button>
+        <div id="aup-info" style="font-size:11px;color:#6688aa;line-height:1.9;margin-bottom:12px;"></div>
+        <!-- Acciones grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px;">
+          <button class="abtn abtn-gold" style="font-size:11px;padding:7px;" onclick="promoteUser()">👑 Hacer admin</button>
+          <button class="abtn abtn-blue" style="font-size:11px;padding:7px;" onclick="demoteUser()">👤 Quitar admin</button>
+          <button class="abtn abtn-blue" style="font-size:11px;padding:7px;" onclick="resetUserPass()">🔑 Reset pass</button>
+          <button class="abtn abtn-blue" style="font-size:11px;padding:7px;" onclick="renameUser()">✏️ Cambiar nick</button>
+          <button class="abtn abtn-blue" style="font-size:11px;padding:7px;" onclick="toggleMuteUser()">🔇 Silenciar</button>
+          <button class="abtn abtn-blue" style="font-size:11px;padding:7px;" onclick="warnUser()">⚠️ Advertir</button>
+          <button class="abtn abtn-red" style="font-size:11px;padding:7px;" onclick="banSelectedUser()">🚫 Banear</button>
+          <button class="abtn abtn-red" style="font-size:11px;padding:7px;" onclick="deleteSelectedUser()">💥 Eliminar</button>
+        </div>
+        <!-- Historial -->
+        <div class="admin-section-title">📋 historial acciones</div>
+        <div id="aup-history" style="max-height:120px;overflow-y:auto;font-size:10px;color:#445566;"></div>
+        <!-- Nota privada -->
+        <div class="admin-section-title" style="margin-top:8px;">📝 nota privada</div>
+        <input class="admin-input" id="aup-note" placeholder="nota solo visible para ti..." maxlength="200" style="margin-bottom:6px;">
+        <button class="abtn abtn-gold" style="padding:8px;" onclick="saveUserNote()">💾 Guardar nota</button>
       </div>
     </div>
 
     <!-- ══ ANUNCIO ════════════════════════════════════════════ -->
     <div class="admin-page" id="ap-announce">
-      <p style="font-size:12px;color:#80b0cc;margin-bottom:12px;">aparece arriba del sitio para todos en tiempo real</p>
-      <input class="admin-input" id="an-text" placeholder="mensaje..." maxlength="120"><div id="an-chars" style="font-size:10px;color:#445566;text-align:right;margin-top:-6px;margin-bottom:6px;">0/120</div>
-      <select class="admin-select" id="an-type">
-        <option value="#ffd700">💬 Normal</option>
-        <option value="#ff6b00">🔥 Hype</option>
-        <option value="#ff4466">⚠️ Urgente</option>
-        <option value="#00ff9d">✅ Info</option>
-        <option value="#c084fc">🎉 Fiesta</option>
-        <option value="#00d4ff">📢 Info cyan</option>
+      <div class="admin-section-title">📣 mensaje global</div>
+      <div style="position:relative;">
+        <input class="admin-input" id="an-text" placeholder="mensaje..." maxlength="120" oninput="document.getElementById('an-chars').textContent=this.value.length+'/120'">
+        <div id="an-chars" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:rgba(0,220,255,0.3);pointer-events:none;">0/120</div>
+      </div>
+      <div class="admin-section-title">🎨 tipo de alerta</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:8px;">
+        <button onclick="setAnnType('#ffd700',this)" class="ann-type-btn" style="padding:8px;border-radius:4px;border:1px solid rgba(255,215,0,0.3);background:rgba(255,215,0,0.08);color:#ffd700;font-size:10px;cursor:pointer;font-family:monospace;letter-spacing:1px;">💬 NORMAL</button>
+        <button onclick="setAnnType('#ff6b00',this)" class="ann-type-btn" style="padding:8px;border-radius:4px;border:1px solid rgba(255,107,0,0.3);background:rgba(255,107,0,0.08);color:#ff6b00;font-size:10px;cursor:pointer;font-family:monospace;letter-spacing:1px;">🔥 HYPE</button>
+        <button onclick="setAnnType('#ff4466',this)" class="ann-type-btn" style="padding:8px;border-radius:4px;border:1px solid rgba(255,68,102,0.3);background:rgba(255,68,102,0.08);color:#ff4466;font-size:10px;cursor:pointer;font-family:monospace;letter-spacing:1px;">⚠️ URGENTE</button>
+        <button onclick="setAnnType('#00ff9d',this)" class="ann-type-btn" style="padding:8px;border-radius:4px;border:1px solid rgba(0,255,157,0.3);background:rgba(0,255,157,0.08);color:#00ff9d;font-size:10px;cursor:pointer;font-family:monospace;letter-spacing:1px;">✅ INFO</button>
+        <button onclick="setAnnType('#c084fc',this)" class="ann-type-btn" style="padding:8px;border-radius:4px;border:1px solid rgba(192,132,252,0.3);background:rgba(192,132,252,0.08);color:#c084fc;font-size:10px;cursor:pointer;font-family:monospace;letter-spacing:1px;">🎉 FIESTA</button>
+        <button onclick="setAnnType('#00dcff',this)" class="ann-type-btn" style="padding:8px;border-radius:4px;border:1px solid rgba(0,220,255,0.3);background:rgba(0,220,255,0.08);color:#00dcff;font-size:10px;cursor:pointer;font-family:monospace;letter-spacing:1px;">📢 SISTEMA</button>
+      </div>
+      <select class="admin-select" id="an-type" style="display:none">
+        <option value="#ffd700">Normal</option><option value="#ff6b00">Hype</option>
+        <option value="#ff4466">Urgente</option><option value="#00ff9d">Info</option>
+        <option value="#c084fc">Fiesta</option><option value="#00dcff">Sistema</option>
       </select>
-      <button class="abtn abtn-gold" onclick="sendAnnouncement()">📣 Enviar</button>
-      <button class="abtn abtn-red" onclick="clearAnnouncement()">❌ Quitar</button>
-      <div class="admin-section-title" style="margin-top:16px;">⚡ rápidos</div>
-      <button class="abtn abtn-blue" onclick="quickMsg('🔥 Los Papus online — a jugar!')">🔥 A jugar</button>
-      <button class="abtn abtn-blue" onclick="quickMsg('💀 Jero en modo tóxico, cuidado')">💀 Jero tóxico</button>
-      <button class="abtn abtn-blue" onclick="quickMsg('👑 Emilio al habla — atención')">👑 Yo hablo</button>
-      <button class="abtn abtn-blue" onclick="quickMsg('🚨 Sitio en mantenimiento — vuelvo pronto')">🚨 Mantenimiento</button>
-      <button class="abtn abtn-blue" onclick="quickMsg('🎉 Feliz cumpleaños papus!')">🎉 Cumpleaños</button>
-      <button class="abtn abtn-blue" onclick="quickMsg('📢 Nuevo script agregado — vayan a verlo')">📢 Nuevo script</button>
+      <div class="admin-section-title">⏱ duración auto-apagar</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:8px;">
+        <button onclick="setAnnDuration(0,this)" class="ann-dur-btn" style="padding:7px;border-radius:4px;border:1px solid rgba(0,220,255,0.2);background:rgba(0,220,255,0.05);color:rgba(0,220,255,0.7);font-size:10px;cursor:pointer;font-family:monospace;">∞ PERM</button>
+        <button onclick="setAnnDuration(5,this)" class="ann-dur-btn" style="padding:7px;border-radius:4px;border:1px solid rgba(0,220,255,0.2);background:rgba(0,220,255,0.05);color:rgba(0,220,255,0.7);font-size:10px;cursor:pointer;font-family:monospace;">5 MIN</button>
+        <button onclick="setAnnDuration(30,this)" class="ann-dur-btn" style="padding:7px;border-radius:4px;border:1px solid rgba(0,220,255,0.2);background:rgba(0,220,255,0.05);color:rgba(0,220,255,0.7);font-size:10px;cursor:pointer;font-family:monospace;">30 MIN</button>
+        <button onclick="setAnnDuration(60,this)" class="ann-dur-btn" style="padding:7px;border-radius:4px;border:1px solid rgba(0,220,255,0.2);background:rgba(0,220,255,0.05);color:rgba(0,220,255,0.7);font-size:10px;cursor:pointer;font-family:monospace;">1 HRA</button>
+      </div>
+      <div class="abtn-row" style="margin-bottom:6px;">
+        <button class="abtn abtn-gold" onclick="sendAnnouncement()">📣 ENVIAR</button>
+        <button class="abtn abtn-red" onclick="clearAnnouncement()">✕ QUITAR</button>
+      </div>
+      <div class="admin-section-title">🔖 historial anuncios</div>
+      <div id="ann-history" style="max-height:100px;overflow-y:auto;font-size:10px;margin-bottom:10px;"></div>
+      <div class="admin-section-title">⚡ mensajes rápidos</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <button class="abtn abtn-blue" onclick="quickMsg('🔥 Los Papus online — a jugar!')">🔥 A jugar</button>
+        <button class="abtn abtn-blue" onclick="quickMsg('💀 Jero en modo tóxico — cuidado 💀')">💀 Jero tóxico</button>
+        <button class="abtn abtn-blue" onclick="quickMsg('👑 Emilio al habla — atención papus')">👑 Yo hablo</button>
+        <button class="abtn abtn-blue" onclick="quickMsg('🚨 Sitio en mantenimiento — vuelvo pronto')">🚨 Mantenimiento</button>
+        <button class="abtn abtn-blue" onclick="quickMsg('🎉 Feliz cumpleaños papu! 🎂')">🎉 Cumpleaños</button>
+        <button class="abtn abtn-blue" onclick="quickMsg('📢 Nuevo script agregado — chécalo')">📢 Nuevo script</button>
+        <button class="abtn abtn-blue" onclick="quickMsg('⚠️ No entren al servidor — está caído')">⚠️ Servidor caído</button>
+        <button class="abtn abtn-blue" onclick="quickMsg('🏆 Torneo de Los Papus — inscríbanse!')">🏆 Torneo</button>
+      </div>
     </div>
 
     <!-- ══ TABLERO ════════════════════════════════════════════ -->
@@ -7014,10 +7368,22 @@ function loginSuccess(nick, data) {
     // show user badge
     const badge = document.getElementById('userBadge');
     if (badge) {
-        badge.style.display = 'block';
+        badge.style.display = 'flex';
+        badge.style.alignItems = 'center';
+        badge.style.gap = '4px';
+        // Will be updated by rank system after FB load
         badge.textContent = isAdmin(nick) ? '👑 ' + nick : '👤 ' + nick;
-        badge.style.color  = isAdmin(nick) ? '#ffd700' : '#80b0cc';
-        badge.style.borderColor = isAdmin(nick) ? 'rgba(255,215,0,0.4)' : 'rgba(0,212,255,0.3)';
+        badge.style.color  = isAdmin(nick) ? '#ffd700' : '#00dcff';
+        badge.style.borderColor = isAdmin(nick) ? 'rgba(255,215,0,0.4)' : 'rgba(0,220,255,0.2)';
+        // Async rank update
+        setTimeout(async () => {
+            if (window._fbGetDoc && window._fbDoc && db) {
+                try {
+                    const _rs = await window._fbGetDoc(window._fbDoc(db,'users',nick));
+                    if (_rs.exists()) updateUserBadgeWithRank({..._rs.data(), nick});
+                } catch(e) {}
+            }
+        }, 800);
     }
 
     if (isAdmin(nick)) {
@@ -7068,6 +7434,9 @@ function initAnnouncementListener() {
         banner.style.borderColor = (d.color||'#ffd700')+'44';
         banner.style.boxShadow = `0 8px 40px ${d.color||'#ffd700'}18, 0 0 0 1px rgba(255,255,255,0.03)`;
         banner.style.display = 'block';
+        // trigger glitch animation reset
+        banner.style.animation = 'none';
+        requestAnimationFrame(() => { banner.style.animation = ''; });
     });
 }
 
@@ -7787,9 +8156,1003 @@ window.backupAll       = tryCatch(window.backupAll       || (()=>{}));
 window.exportAll       = tryCatch(window.exportAll       || (()=>{}));
 window.setMaintenance  = tryCatch(window.setMaintenance  || (()=>{}));
 
+
+// ══════════════════════════════════════════════════════════════
+// MODERATION SYSTEM — tags, mute, warn, rename, history
+// ══════════════════════════════════════════════════════════════
+
+// ── Tag colors ────────────────────────────────────────────────
+const TAG_STYLES = {
+    toxico:     { emoji:'☠', color:'#ff4466', bg:'rgba(255,68,102,0.15)' },
+    crack:      { emoji:'⭐', color:'#ffd700', bg:'rgba(255,215,0,0.15)'  },
+    fantasma:   { emoji:'👻', color:'#8899aa', bg:'rgba(136,153,170,0.15)' },
+    noob:       { emoji:'💀', color:'#ff9900', bg:'rgba(255,153,0,0.15)'  },
+    vip:        { emoji:'👑', color:'#c084fc', bg:'rgba(192,132,252,0.15)' },
+    sospechoso: { emoji:'🚨', color:'#ff6b00', bg:'rgba(255,107,0,0.15)'  },
+};
+
+// ── Render tags ───────────────────────────────────────────────
+function renderTags(tags) {
+    const el = document.getElementById('aup-tags');
+    if (!el) return;
+    if (!tags || !tags.length) { el.innerHTML = '<span style="color:#334455;font-size:11px">sin etiquetas</span>'; return; }
+    el.innerHTML = tags.map(t => {
+        const s = TAG_STYLES[t] || { emoji:'🏷', color:'#00d4ff', bg:'rgba(0,212,255,0.1)' };
+        return `<span style="background:${s.bg};color:${s.color};border:1px solid ${s.color}44;border-radius:20px;padding:3px 10px;font-size:10px;font-weight:600;">${s.emoji} ${t}</span>`;
+    }).join('');
+}
+
+// ── Add tag ───────────────────────────────────────────────────
+window.addUserTag = async function() {
+    if (!_selectedUser) return;
+    const tag = document.getElementById('aup-tag-select')?.value;
+    if (!tag) return;
+    const tags = _selectedUser.tags || [];
+    if (tags.includes(tag)) { showFBToast('ya tiene esa etiqueta', '#ff4466'); return; }
+    tags.push(tag);
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{tags});
+    _selectedUser.tags = tags;
+    renderTags(tags);
+    addLog('TAG', `${_selectedUser.nick} → ${tag}`);
+    showFBToast(`🏷 ${tag} agregado a ${_selectedUser.nick}`, '#00d4ff');
+    loadUsers();
+};
+
+window.clearUserTags = async function() {
+    if (!_selectedUser) return;
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{tags:[]});
+    _selectedUser.tags = [];
+    renderTags([]);
+    addLog('CLEAR_TAGS', _selectedUser.nick);
+    showFBToast('🏷 etiquetas borradas', '#80b0cc');
+    loadUsers();
+};
+
+// ── Mute/Unmute ───────────────────────────────────────────────
+window.toggleMuteUser = async function() {
+    if (!_selectedUser) return;
+    const muted = !_selectedUser.muted;
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{muted});
+    _selectedUser.muted = muted;
+    addLog(muted?'MUTE':'UNMUTE', _selectedUser.nick);
+    showFBToast(muted ? `🔇 ${_selectedUser.nick} silenciado` : `🔊 ${_selectedUser.nick} des-silenciado`, muted?'#ff9900':'#00ff9d');
+    loadUsers();
+    // Update profile display
+    openUserProfile(_selectedUser.nick);
+};
+
+// ── Warn user ─────────────────────────────────────────────────
+window.warnUser = async function() {
+    if (!_selectedUser) return;
+    const snap = await window._fbGetDoc(window._fbDoc(db,'users',_selectedUser.nick));
+    if (!snap.exists()) return;
+    const warns = (snap.data().warns || 0) + 1;
+    const updates = { warns };
+    // auto-ban at 3 warns
+    if (warns >= 3) {
+        updates.banned = true;
+        updates.banReason = 'Auto-ban: 3 advertencias acumuladas';
+        showFBToast(`🚫 ${_selectedUser.nick} auto-baneado (3 warns)`, '#ff4466');
+    } else {
+        showFBToast(`⚠️ ${_selectedUser.nick}: ${warns}/3 advertencias`, '#ff9900');
+    }
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick), updates);
+    addLog('WARN', `${_selectedUser.nick} (${warns}/3)`);
+    loadUsers();
+    openUserProfile(_selectedUser.nick);
+};
+
+// ── Remove warn ───────────────────────────────────────────────
+window.removeWarn = async function() {
+    if (!_selectedUser) return;
+    const snap = await window._fbGetDoc(window._fbDoc(db,'users',_selectedUser.nick));
+    if (!snap.exists()) return;
+    const warns = Math.max(0, (snap.data().warns||0) - 1);
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{warns});
+    addLog('REMOVE_WARN', `${_selectedUser.nick} (${warns}/3)`);
+    showFBToast(`⚠️ warn removido: ${_selectedUser.nick} tiene ${warns}/3`, '#ffd700');
+    openUserProfile(_selectedUser.nick);
+};
+
+// ── Rename user ───────────────────────────────────────────────
+window.renameUser = async function() {
+    if (!_selectedUser) return;
+    const newNick = prompt(`Nuevo nick para ${_selectedUser.nick}:`);
+    if (!newNick || !/^[a-z0-9_]{2,16}$/.test(newNick.toLowerCase())) {
+        showFBToast('nick inválido (solo a-z 0-9 _ 2-16 chars)', '#ff4466'); return;
+    }
+    const nick = newNick.toLowerCase();
+    // Check if taken
+    const exists = await window._fbGetDoc(window._fbDoc(db,'users',nick));
+    if (exists.exists()) { showFBToast('ese nick ya existe 💀', '#ff4466'); return; }
+    // Copy data to new nick
+    const snap = await window._fbGetDoc(window._fbDoc(db,'users',_selectedUser.nick));
+    const data = { ...snap.data(), nick };
+    await window._fbSetDoc(window._fbDoc(db,'users',nick), data);
+    // Delete old
+    const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+    await deleteDoc(window._fbDoc(db,'users',_selectedUser.nick));
+    addLog('RENAME', `${_selectedUser.nick} → ${nick}`);
+    showFBToast(`✏️ ${_selectedUser.nick} → ${nick}`, '#00d4ff');
+    document.getElementById('au-profile').style.display='none';
+    loadUsers();
+};
+
+// ── Ban from profile ──────────────────────────────────────────
+window.banSelectedUser = async function() {
+    if (!_selectedUser) return;
+    if (_selectedUser.nick === 'emilio') { showFBToast('no te puedes banear 💀', '#ff4466'); return; }
+    const reason = prompt(`Razón del ban para ${_selectedUser.nick}:`) || 'sin razón';
+    await window._fbUpdateDoc(window._fbDoc(db,'users',_selectedUser.nick),{banned:true,banReason:reason});
+    addLog('BAN', `${_selectedUser.nick}: ${reason}`);
+    showFBToast(`🚫 ${_selectedUser.nick} baneado`, '#ff4466');
+    document.getElementById('au-profile').style.display='none';
+    loadUsers();
+};
+
+// ── User history ──────────────────────────────────────────────
+function renderUserHistory(nick) {
+    const el = document.getElementById('aup-history');
+    if (!el) return;
+    const logs = JSON.parse(localStorage.getItem('papus_adminlog_v2')||'[]');
+    const userLogs = logs.filter(l => l.detail && l.detail.includes(nick)).slice(0,10);
+    if (!userLogs.length) { el.innerHTML = '<span style="color:#223344">sin historial</span>'; return; }
+    el.innerHTML = userLogs.map(l =>
+        `<div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+            <span style="color:#ffd700;font-weight:600">${l.action}</span>
+            <span style="color:#334455"> · ${new Date(l.time).toLocaleDateString('es')}</span>
+        </div>`
+    ).join('');
+}
+
+// ── Override openUserProfile to include new fields ────────────
+const _origOpenProfile = window.openUserProfile;
+window.openUserProfile = async function(nick) {
+    const snap = await window._fbGetDoc(window._fbDoc(db,'users',nick));
+    const u = snap.exists() ? snap.data() : allUsers.find(x=>x.nick===nick);
+    if (!u) return;
+    _selectedUser = u;
+    const panel = document.getElementById('au-profile');
+    if (!panel) return;
+
+    document.getElementById('aup-nick').innerHTML =
+        `${u.nick}${u.admin?' <span style="color:#ffd700">👑</span>':''}${u.banned?' <span style="color:#ff4466">🚫</span>':''}${u.muted?' <span style="color:#ff9900">🔇</span>':''}`;
+
+    const warns = u.warns||0;
+    const warnBar = warns>0 ? `<span style="color:${warns>=3?'#ff4466':'#ff9900'}">⚠️ ${warns}/3 advertencias${warns>=3?' — AUTO-BAN':''}</span> <button onclick="removeWarn()" style="background:none;border:none;color:#556677;cursor:pointer;font-size:10px">[-1]</button><br>` : '';
+
+    document.getElementById('aup-info').innerHTML = `
+        ${warnBar}
+        <b>Admin:</b> ${u.admin?'<span style="color:#ffd700">Sí</span>':'No'} &nbsp;
+        <b>Muted:</b> ${u.muted?'<span style="color:#ff9900">Sí</span>':'No'}<br>
+        <b>Baneado:</b> ${u.banned?`<span style="color:#ff4466">Sí — ${sanitize(u.banReason||'sin razón')}</span>`:'No'}<br>
+        <b>Logins:</b> ${u.loginCount||1} &nbsp; <b>Warns:</b> ${warns}/3<br>
+        <b>Creado:</b> ${u.createdAt?new Date(u.createdAt).toLocaleDateString('es'):'?'}<br>
+        <b>Último:</b> ${u.lastLogin?new Date(u.lastLogin).toLocaleString('es'):'?'}<br>
+        ${u.device?`<b>Dispositivo:</b> <span style="font-size:10px">${sanitize(u.device.slice(0,60))}</span><br>`:''}
+        ${u.timezone?`<b>Zona:</b> ${sanitize(u.timezone)}<br>`:''}
+    `;
+
+    renderTags(u.tags||[]);
+    renderUserHistory(nick);
+    const noteEl = document.getElementById('aup-note');
+    if (noteEl) noteEl.value = u.note||'';
+    panel.style.display='block';
+};
+
+// ── Update renderUsers to show tags + mute + warns ────────────
+const _origRenderUsers2 = window.renderUsers;
+window.renderUsers = function() {
+    const q=(document.getElementById('au-search')?.value||'').toLowerCase();
+    const today=new Date().toDateString();
+    const week=Date.now()-7*24*3600*1000;
+    const month30=Date.now()-30*24*3600*1000;
+    let list=[...allUsers];
+    if(_userFilter==='today')  list=list.filter(u=>u.lastLogin&&new Date(u.lastLogin).toDateString()===today);
+    if(_userFilter==='week')   list=list.filter(u=>u.lastLogin&&new Date(u.lastLogin).getTime()>week);
+    if(_userFilter==='ghost')  list=list.filter(u=>!u.lastLogin||new Date(u.lastLogin).getTime()<month30);
+    if(_userFilter==='muted')  list=list.filter(u=>u.muted);
+    if(_userFilter==='warned') list=list.filter(u=>(u.warns||0)>0);
+    if(q) list=list.filter(u=>u.nick.includes(q)||(u.device||'').toLowerCase().includes(q)||(u.tags||[]).join('').includes(q));
+    const el=document.getElementById('au-list');
+    if(!el) return;
+    if(!list.length){el.innerHTML='<p style="color:#334455;font-size:12px;text-align:center;padding:20px">sin usuarios</p>';return;}
+    el.innerHTML=list.map(u=>{
+        const date=u.lastLogin?new Date(u.lastLogin).toLocaleDateString('es'):'?';
+        const badges = [
+            u.admin  ? '<span style="color:#ffd700;font-size:10px">👑</span>' : '',
+            u.banned ? '<span style="color:#ff4466;font-size:10px">🚫</span>' : '',
+            u.muted  ? '<span style="color:#ff9900;font-size:10px">🔇</span>' : '',
+            (u.warns||0)>0 ? `<span style="color:#ff9900;font-size:10px">⚠️${u.warns}</span>` : '',
+        ].filter(Boolean).join(' ');
+        const tags = (u.tags||[]).map(t=>{
+            const s=TAG_STYLES[t]||{emoji:'🏷',color:'#00d4ff'};
+            return `<span style="color:${s.color};font-size:9px">${s.emoji}</span>`;
+        }).join('');
+        return `<div class="user-row" style="cursor:pointer" onclick="openUserProfile('${u.nick}')">
+            <div>
+                <div style="font-weight:600;color:#dde5f0;font-size:13px">${sanitize(u.nick)} ${badges} ${tags}</div>
+                <div style="font-size:10px;color:#334455">${date} · ${u.loginCount||1} logins</div>
+            </div>
+            <span style="color:#334455;font-size:18px">›</span>
+        </div>`;
+    }).join('');
+};
+window.debouncedRenderUsers = debounce(window.renderUsers, 250);
+
+// ── Freeze ranking ────────────────────────────────────────────
+window.toggleFreezeRanking = async function() {
+    const snap = await window._fbGetDoc(window._fbDoc(db,'lospapus','settings'));
+    const frozen = snap.exists() ? !snap.data().rankingFrozen : true;
+    await window._fbUpdateDoc(window._fbDoc(db,'lospapus','settings'),{rankingFrozen: frozen});
+    addLog('FREEZE_RANKING', frozen?'ON':'OFF');
+    showFBToast(frozen?'🧊 Ranking congelado — nadie puede votar':'🔥 Ranking descongelado', frozen?'#00d4ff':'#ff9900');
+    loadSitio();
+};
+
+// ── Read-only mode ────────────────────────────────────────────
+window.toggleReadOnly = async function() {
+    const snap = await window._fbGetDoc(window._fbDoc(db,'lospapus','settings'));
+    const ro = snap.exists() ? !snap.data().readOnly : true;
+    await window._fbUpdateDoc(window._fbDoc(db,'lospapus','settings'),{readOnly: ro});
+    addLog('READ_ONLY', ro?'ON':'OFF');
+    showFBToast(ro?'📖 Modo solo lectura ON':'✏️ Modo solo lectura OFF', ro?'#00d4ff':'#00ff9d');
+    loadSitio();
+};
+
+// ── Check mute/readOnly on vote ───────────────────────────────
+const _origVoteFB = window.voteFB;
+window.voteFB = async function(name) {
+    // Check if user is muted
+    if (window.currentUser) {
+        const snap = await window._fbGetDoc(window._fbDoc(db,'users',window.currentUser.nick));
+        if (snap.exists() && snap.data().muted) {
+            showFBToast('🔇 estás silenciado — no puedes votar', '#ff9900'); return;
+        }
+    }
+    // Check if ranking frozen
+    const settings = await window._fbGetDoc(window._fbDoc(db,'lospapus','settings'));
+    if (settings.exists() && settings.data().rankingFrozen) {
+        showFBToast('🧊 el ranking está congelado', '#00d4ff'); return;
+    }
+    if (_origVoteFB) return _origVoteFB(name);
+};
+
+
+// ══════════════════════════════════════════════════════════════
+// HUD GLOBE — animated wireframe globe for admin panel
+// ══════════════════════════════════════════════════════════════
+function initHudGlobe() {
+    const canvas = document.getElementById('hudGlobeCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = 80, H = 80, R = 34;
+    let rot = 0;
+
+    function drawGlobe() {
+        ctx.clearRect(0, 0, W, H);
+
+        // glow bg
+        const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, R);
+        grad.addColorStop(0, 'rgba(0,100,180,0.25)');
+        grad.addColorStop(0.7, 'rgba(0,60,120,0.1)');
+        grad.addColorStop(1, 'rgba(0,220,255,0.05)');
+        ctx.beginPath();
+        ctx.arc(W/2, H/2, R, 0, Math.PI*2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        ctx.save();
+        ctx.translate(W/2, H/2);
+
+        // latitude lines
+        for (let lat = -75; lat <= 75; lat += 25) {
+            const y = R * Math.sin(lat * Math.PI/180);
+            const r2 = Math.sqrt(R*R - y*y);
+            ctx.beginPath();
+            ctx.ellipse(0, y, r2, r2 * 0.25, 0, 0, Math.PI*2);
+            ctx.strokeStyle = `rgba(0,220,255,${lat === 0 ? 0.4 : 0.12})`;
+            ctx.lineWidth = lat === 0 ? 0.8 : 0.5;
+            ctx.stroke();
+        }
+
+        // longitude lines (rotate)
+        for (let lon = 0; lon < 180; lon += 30) {
+            const angle = (lon + rot) * Math.PI / 180;
+            ctx.beginPath();
+            for (let t = 0; t <= Math.PI; t += 0.05) {
+                const x = R * Math.sin(t) * Math.cos(angle);
+                const y2 = -R * Math.cos(t);
+                const vis = Math.cos(angle) > -0.1;
+                if (t === 0) ctx.moveTo(x, y2);
+                else ctx.lineTo(x, y2);
+            }
+            ctx.strokeStyle = `rgba(0,220,255,${Math.abs(Math.cos(angle)) * 0.25 + 0.05})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+        }
+
+        // dot markers (fake "cities")
+        const dots = [
+            [40, 20], [-20, 60], [10, -30], [60, 100], [-40, 150]
+        ];
+        dots.forEach(([lat, lon]) => {
+            const a = (lon + rot) * Math.PI/180;
+            const phi = lat * Math.PI/180;
+            const x = R * Math.cos(phi) * Math.cos(a);
+            const y2 = -R * Math.sin(phi);
+            const z = R * Math.cos(phi) * Math.sin(a);
+            if (z > -5) {
+                ctx.beginPath();
+                ctx.arc(x, y2, 1.5, 0, Math.PI*2);
+                ctx.fillStyle = '#00ff9d';
+                ctx.shadowColor = '#00ff9d';
+                ctx.shadowBlur = 4;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            }
+        });
+
+        ctx.restore();
+
+        // outer ring
+        ctx.beginPath();
+        ctx.arc(W/2, H/2, R, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(0,220,255,0.3)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // glow outer
+        ctx.beginPath();
+        ctx.arc(W/2, H/2, R+3, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(0,220,255,0.06)';
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        rot += 0.4;
+        requestAnimationFrame(drawGlobe);
+    }
+    drawGlobe();
+}
+
+// Init globe when admin panel opens
+const _origToggleAdmin = window.toggleAdminPanel;
+window.toggleAdminPanel = function() {
+    if (_origToggleAdmin) _origToggleAdmin();
+    setTimeout(initHudGlobe, 50);
+};
+
+
+// ══════════════════════════════════════════════════════════════
+// MODTOOLS — 30 new moderation functions
+// ══════════════════════════════════════════════════════════════
+
+let _annDuration = 0; // minutes, 0 = permanent
+let _annColor = '#ffd700';
+
+window.setAnnType = function(color, btn) {
+    _annColor = color;
+    document.getElementById('an-type').value = color;
+    document.querySelectorAll('.ann-type-btn').forEach(b => b.style.opacity = '0.4');
+    btn.style.opacity = '1';
+    btn.style.boxShadow = `0 0 12px ${color}40`;
+};
+window.setAnnDuration = function(mins, btn) {
+    _annDuration = mins;
+    document.querySelectorAll('.ann-dur-btn').forEach(b => b.style.opacity='0.4');
+    btn.style.opacity = '1';
+};
+
+// Override sendAnnouncement to use new color + save history
+const _origSendAnn = window.sendAnnouncement;
+window.sendAnnouncement = async function() {
+    const text = document.getElementById('an-text')?.value?.trim();
+    if (!text) { showFBToast('escribe algo primero 💀', '#ff4466'); return; }
+    await window._fbSetDoc(window._fbDoc(db,'lospapus','announcement'),{
+        active: true, text, color: _annColor,
+        expiresAt: _annDuration > 0 ? Date.now() + _annDuration*60000 : null
+    });
+    // Save to history
+    const hist = JSON.parse(localStorage.getItem('papus_ann_history')||'[]');
+    hist.unshift({ text, color: _annColor, time: Date.now() });
+    localStorage.setItem('papus_ann_history', JSON.stringify(hist.slice(0,10)));
+    renderAnnHistory();
+    addLog('ANNOUNCE', text.slice(0,40));
+    showFBToast('📣 Anuncio enviado!', _annColor);
+    document.getElementById('an-text').value = '';
+    document.getElementById('an-chars').textContent = '0/120';
+    if (_annDuration > 0) {
+        setTimeout(() => window.clearAnnouncement(), _annDuration*60000);
+    }
+};
+
+function renderAnnHistory() {
+    const el = document.getElementById('ann-history');
+    if (!el) return;
+    const hist = JSON.parse(localStorage.getItem('papus_ann_history')||'[]');
+    if (!hist.length) { el.innerHTML = '<span style="color:rgba(0,220,255,0.25)">sin historial</span>'; return; }
+    el.innerHTML = hist.map(h => `
+        <div onclick="document.getElementById('an-text').value='${h.text.replace(/'/g,"\'")}'" style="padding:5px 8px;border-left:2px solid ${h.color};margin-bottom:3px;cursor:pointer;background:rgba(0,0,0,0.3);border-radius:2px;font-size:10px;color:rgba(0,220,255,0.6);">
+            <span style="color:${h.color}">${h.text.slice(0,50)}${h.text.length>50?'...':''}</span>
+            <span style="color:rgba(0,220,255,0.25);font-size:9px;float:right">${new Date(h.time).toLocaleDateString('es')}</span>
+        </div>`).join('');
+}
+
+// Kick all guests (users with no loginCount or loginCount=1)
+window.kickAllGuests = async function() {
+    showFBToast('⚡ Esta función marca cuentas nuevas (1 login) como sospechosas', '#ff9900');
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    let count = 0;
+    for (const d of snap.docs) {
+        const u = d.data();
+        if ((u.loginCount||1) <= 1 && !u.admin) {
+            await window._fbUpdateDoc(d.ref, { tags: [...(u.tags||[]), 'sospechoso'] });
+            count++;
+        }
+    }
+    addLog('KICK_GUESTS', `${count} marcados`);
+    showFBToast(`🚨 ${count} usuarios nuevos marcados como sospechosos`, '#ff9900');
+};
+
+window.banAllWarned = async function() {
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    let count = 0;
+    for (const d of snap.docs) {
+        const u = d.data();
+        if ((u.warns||0) >= 3 && !u.banned && !u.admin) {
+            await window._fbUpdateDoc(d.ref, { banned: true, banReason: 'Auto-ban: 3 advertencias' });
+            count++;
+        }
+    }
+    addLog('BAN_WARNED', `${count} baneados`);
+    showFBToast(`🚫 ${count} usuarios baneados por warns`, '#ff4466');
+    loadUsers();
+};
+
+window.unbanAll = async function() {
+    const ok = await showConfirm('Se desbanerán TODOS los usuarios.','¿Desbanear todos?','✅','gold');
+    if (!ok) return;
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    let count = 0;
+    for (const d of snap.docs) {
+        if (d.data().banned) { await window._fbUpdateDoc(d.ref,{banned:false,banReason:''}); count++; }
+    }
+    addLog('UNBAN_ALL', `${count} desbaneados`);
+    showFBToast(`✅ ${count} usuarios desbaneados`, '#00ff9d');
+    loadUsers();
+};
+
+window.resetAllWarns = async function() {
+    const ok = await showConfirm('Se resetearán las advertencias de todos.','¿Reset warns?','⚠️','gold');
+    if (!ok) return;
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    for (const d of snap.docs) {
+        if ((d.data().warns||0) > 0) await window._fbUpdateDoc(d.ref,{warns:0});
+    }
+    addLog('RESET_WARNS','todos');
+    showFBToast('⚠️ Warns reseteados para todos', '#ffd700');
+    loadUsers();
+};
+
+window.unmuteAll = async function() {
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    let count = 0;
+    for (const d of snap.docs) {
+        if (d.data().muted) { await window._fbUpdateDoc(d.ref,{muted:false}); count++; }
+    }
+    addLog('UNMUTE_ALL',`${count}`);
+    showFBToast(`🔊 ${count} usuarios desmuteados`, '#00ff9d');
+    loadUsers();
+};
+
+window.muteAllExceptAdmin = async function() {
+    const ok = await showConfirm('Se mutearán todos los no-admins.','¿Mutear todos?','🔇');
+    if (!ok) return;
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    let count = 0;
+    for (const d of snap.docs) {
+        const u = d.data();
+        if (!u.admin && !u.muted) { await window._fbUpdateDoc(d.ref,{muted:true}); count++; }
+    }
+    addLog('MUTE_ALL',`${count}`);
+    showFBToast(`🔇 ${count} usuarios muteados`, '#ff9900');
+    loadUsers();
+};
+
+window.toggleLockdown = async function() {
+    const snap = await window._fbGetDoc(window._fbDoc(db,'lospapus','settings'));
+    const lock = snap.exists() ? !snap.data().lockdown : true;
+    await window._fbUpdateDoc(window._fbDoc(db,'lospapus','settings'),{lockdown:lock});
+    addLog('LOCKDOWN', lock?'ON':'OFF');
+    showFBToast(lock?'🔴 LOCKDOWN ACTIVADO — solo admins':'🟢 Lockdown desactivado', lock?'#ff4466':'#00ff9d');
+};
+
+window.sendPrivateMsg = async function() {
+    const nick = document.getElementById('mt-target')?.value?.trim();
+    const msg  = document.getElementById('mt-msg')?.value?.trim();
+    if (!nick || !msg) { showFBToast('falta nick o mensaje', '#ff4466'); return; }
+    const snap = await window._fbGetDoc(window._fbDoc(db,'users',nick.toLowerCase()));
+    if (!snap.exists()) { showFBToast('usuario no encontrado 💀', '#ff4466'); return; }
+    await window._fbUpdateDoc(window._fbDoc(db,'users',nick.toLowerCase()), {
+        privateMsg: { text: sanitize(msg), from: 'emilio', time: Date.now(), read: false }
+    });
+    addLog('PRIVMSG', `→ ${nick}: ${msg.slice(0,30)}`);
+    showFBToast(`📨 Mensaje enviado a ${nick}`, '#00dcff');
+    document.getElementById('mt-target').value='';
+    document.getElementById('mt-msg').value='';
+};
+
+window.scanSuspicious = async function() {
+    const el = document.getElementById('mt-suspicious');
+    if (el) el.innerHTML = '<span style="color:rgba(0,220,255,0.4)">escaneando...</span>';
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    const results = [];
+    snap.forEach(d => {
+        const u = d.data();
+        const issues = [];
+        if ((u.warns||0) >= 2) issues.push(`⚠️ ${u.warns} warns`);
+        if (u.muted) issues.push('🔇 muteado');
+        if ((u.loginCount||1) > 50) issues.push(`🔁 ${u.loginCount} logins`);
+        if ((u.tags||[]).includes('sospechoso')) issues.push('🚨 tag sospechoso');
+        if (issues.length) results.push({ nick: u.nick, issues });
+    });
+    if (el) {
+        if (!results.length) el.innerHTML = '<span style="color:#00ff9d">✅ sin actividad sospechosa</span>';
+        else el.innerHTML = results.map(r =>
+            `<div style="padding:4px 0;border-bottom:1px solid rgba(0,220,255,0.06)">
+                <span style="color:#ff9900;font-weight:700">${r.nick}</span>
+                <span style="color:rgba(0,220,255,0.5);font-size:10px"> — ${r.issues.join(', ')}</span>
+            </div>`).join('');
+    }
+    addLog('SCAN','suspicious users');
+};
+
+window.showMultiDeviceUsers = async function() {
+    const el = document.getElementById('mt-suspicious');
+    if (el) el.innerHTML = '<span style="color:rgba(0,220,255,0.4)">buscando...</span>';
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    const deviceMap = {};
+    snap.forEach(d => {
+        const u = d.data();
+        if (u.device) {
+            const key = u.device.slice(0,40);
+            if (!deviceMap[key]) deviceMap[key] = [];
+            deviceMap[key].push(u.nick);
+        }
+    });
+    const multi = Object.entries(deviceMap).filter(([,v])=>v.length>1);
+    if (el) {
+        if (!multi.length) el.innerHTML = '<span style="color:#00ff9d">✅ sin multi-cuentas detectadas</span>';
+        else el.innerHTML = multi.map(([dev,nicks]) =>
+            `<div style="padding:4px 0;border-bottom:1px solid rgba(0,220,255,0.06);font-size:10px">
+                <span style="color:#ff9900">${nicks.join(', ')}</span>
+                <div style="color:rgba(0,220,255,0.3);font-size:9px">${dev.slice(0,50)}</div>
+            </div>`).join('');
+    }
+};
+
+window.loadModSummary = async function() {
+    const el = document.getElementById('mt-summary');
+    if (!el) return;
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    let total=0,banned=0,muted=0,warned=0,admins=0,tagged=0;
+    snap.forEach(d => {
+        const u = d.data(); total++;
+        if (u.banned) banned++;
+        if (u.muted) muted++;
+        if ((u.warns||0)>0) warned++;
+        if (u.admin) admins++;
+        if ((u.tags||[]).length) tagged++;
+    });
+    el.innerHTML = `
+        👥 Total: <b style="color:#00dcff">${total}</b> usuarios<br>
+        👑 Admins: <b style="color:#ffd700">${admins}</b><br>
+        🚫 Baneados: <b style="color:#ff4466">${banned}</b><br>
+        🔇 Muteados: <b style="color:#ff9900">${muted}</b><br>
+        ⚠️ Con warns: <b style="color:#ff9900">${warned}</b><br>
+        🏷 Con tags: <b style="color:#c084fc">${tagged}</b>
+    `;
+};
+
+window.deleteGhostUsers = async function() {
+    const ok = await showConfirm('Se borrarán usuarios sin actividad en 60+ días.','¿Borrar fantasmas?','👻');
+    if (!ok) return;
+    const cutoff = Date.now() - 60*24*3600*1000;
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    let count = 0;
+    const { deleteDoc } = await import("https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js");
+    for (const d of snap.docs) {
+        const u = d.data();
+        if (!u.admin && (!u.lastLogin || new Date(u.lastLogin).getTime() < cutoff)) {
+            await deleteDoc(d.ref); count++;
+        }
+    }
+    addLog('DELETE_GHOSTS',`${count} borrados`);
+    showFBToast(`👻 ${count} fantasmas eliminados`, '#556677');
+    loadUsers();
+};
+
+window.clearAllTags = async function() {
+    const ok = await showConfirm('Se borrarán las etiquetas de todos.','¿Limpiar tags?','🏷','gold');
+    if (!ok) return;
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    for (const d of snap.docs) {
+        if ((d.data().tags||[]).length) await window._fbUpdateDoc(d.ref,{tags:[]});
+    }
+    addLog('CLEAR_ALL_TAGS','todos');
+    showFBToast('🏷 Tags limpiados', '#c084fc');
+    loadUsers();
+};
+
+window.resetAllLogins = async function() {
+    const ok = await showConfirm('Se resetearán los contadores de login.','¿Reset contadores?','🔄','gold');
+    if (!ok) return;
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    for (const d of snap.docs) await window._fbUpdateDoc(d.ref,{loginCount:0});
+    addLog('RESET_LOGINS','todos');
+    showFBToast('🔄 Contadores de login reseteados', '#00dcff');
+};
+
+window.wipeInactiveUsers = async function() {
+    const ok = await showConfirm('Se borrarán PERMANENTEMENTE usuarios inactivos 60+ días. Irreversible.','¿Borrar inactivos?','💣');
+    if (!ok) return;
+    await window.deleteGhostUsers();
+};
+
+window.addReservedNick = function() {
+    const nick = document.getElementById('mt-reserve-nick')?.value?.trim().toLowerCase();
+    if (!nick) return;
+    const reserved = JSON.parse(localStorage.getItem('papus_reserved_nicks')||'["jero","gabriel","sami","emilio","luciana","akiro","daniel","isabella","samuel"]');
+    if (!reserved.includes(nick)) {
+        reserved.push(nick);
+        localStorage.setItem('papus_reserved_nicks', JSON.stringify(reserved));
+        document.getElementById('mt-reserved').textContent = reserved.join(' · ');
+        showFBToast(`🔒 ${nick} reservado`, '#ffd700');
+        document.getElementById('mt-reserve-nick').value = '';
+    } else {
+        showFBToast('ese nick ya está reservado', '#ff4466');
+    }
+};
+
+window.loadModLog = function() {
+    const el = document.getElementById('mt-modlog');
+    if (!el) return;
+    const logs = JSON.parse(localStorage.getItem('papus_adminlog_v2')||'[]')
+        .filter(l => ['BAN','UNBAN','MUTE','UNMUTE','WARN','KICK','LOCKDOWN','TAG','DELETE'].some(k=>l.action?.startsWith(k)))
+        .slice(0,20);
+    if (!logs.length) { el.innerHTML = '<span style="color:rgba(0,220,255,0.25);font-size:10px">sin acciones de moderación</span>'; return; }
+    el.innerHTML = logs.map(l => `
+        <div style="padding:5px 8px;border-left:2px solid rgba(255,68,102,0.3);margin-bottom:3px;background:rgba(0,0,0,0.3);border-radius:2px;">
+            <span style="color:#ff6688;font-weight:700;font-size:10px">${l.action}</span>
+            <span style="color:rgba(0,220,255,0.5);font-size:10px"> ${l.detail||''}</span>
+            <div style="color:rgba(0,220,255,0.2);font-size:9px">${new Date(l.time).toLocaleString('es')}</div>
+        </div>`).join('');
+};
+
+// Auto-load mod tab when opened
+const _origAdminTab = window.adminTab;
+window.adminTab = function(btn, page) {
+    if (_origAdminTab) _origAdminTab(btn, page);
+    if (page === 'modtools') { loadModSummary(); loadModLog(); renderAnnHistory(); }
+    if (page === 'announce') renderAnnHistory();
+};
+
+
+// ══════════════════════════════════════════════════════════════
+// RANK SYSTEM — Owner Dev / Admin / Mod / Helper / User
+// ══════════════════════════════════════════════════════════════
+
+const RANKS = {
+    owner:  { label:'OWNER DEV', icon:'⚡', css:'rank-owner',  color:'#d946ef', level:5 },
+    admin:  { label:'ADMIN',     icon:'👑', css:'rank-admin',  color:'#ffd700', level:4 },
+    mod:    { label:'MOD',       icon:'🛡', css:'rank-mod',    color:'#00dcff', level:3 },
+    helper: { label:'HELPER',    icon:'🔧', css:'rank-helper', color:'#00ff9d', level:2 },
+    user:   { label:'USER',      icon:'👤', css:'rank-user',   color:'#6688aa', level:1 },
+};
+
+function getRankKey(u) {
+    if (!u) return 'user';
+    if (u.nick === 'emilio' || u.rank === 'owner') return 'owner';
+    if (u.rank === 'admin' || u.admin) return 'admin';
+    if (u.rank === 'mod')    return 'mod';
+    if (u.rank === 'helper') return 'helper';
+    return 'user';
+}
+
+function getRankBadgeHTML(rankKey) {
+    const r = RANKS[rankKey] || RANKS.user;
+    return `<span class="rank-badge ${r.css}">${r.icon} ${r.label}</span>`;
+}
+
+// ── Update user badge in navbar with rank ─────────────────────
+function updateUserBadgeWithRank(user) {
+    const badge = document.getElementById('userBadge');
+    if (!badge || !user) return;
+    const rk = getRankKey(user);
+    const r = RANKS[rk];
+    badge.innerHTML = `${getRankBadgeHTML(rk)} <span style="font-size:11px;margin-left:4px;color:${r.color};font-family:'Courier New',monospace">${user.nick}</span>`;
+    badge.style.borderColor = r.color + '40';
+    badge.style.boxShadow = `0 0 16px ${r.color}20, 0 4px 20px rgba(0,0,0,0.8)`;
+    badge.style.display = 'flex';
+    badge.style.alignItems = 'center';
+    badge.style.gap = '6px';
+    // Owner pulsing glow
+    if (rk === 'owner') {
+        badge.style.animation = 'ownerBadgePulse 2s ease infinite';
+    }
+}
+
+// ── Preview rank for nick input ───────────────────────────────
+window.previewRankUser = async function() {
+    const nick = document.getElementById('rk-nick')?.value?.trim().toLowerCase();
+    const el = document.getElementById('rk-preview');
+    if (!el) return;
+    if (!nick) { el.innerHTML = ''; return; }
+    const snap = await window._fbGetDoc(window._fbDoc(db,'users',nick));
+    if (!snap.exists()) {
+        el.innerHTML = `<span style="color:rgba(255,68,102,0.6);font-size:11px">usuario no encontrado</span>`;
+        return;
+    }
+    const u = snap.data();
+    const rk = getRankKey(u);
+    el.innerHTML = `<div style="display:flex;align-items:center;gap:8px;padding:8px;background:rgba(0,0,0,0.4);border-radius:4px;border:1px solid rgba(255,255,255,0.06)">
+        ${getRankBadgeHTML(rk)}
+        <span style="color:rgba(0,220,255,0.7);font-size:11px;font-family:monospace">${nick}</span>
+        <span style="color:rgba(0,220,255,0.3);font-size:10px;margin-left:auto">rango actual</span>
+    </div>`;
+};
+
+// ── Assign rank ───────────────────────────────────────────────
+window.assignRank = async function(rankKey) {
+    // Only owner can assign ranks
+    if (getRankKey(window.currentUser) !== 'owner') {
+        showFBToast('⚡ solo el Owner Dev puede asignar rangos', '#d946ef'); return;
+    }
+    const nick = document.getElementById('rk-nick')?.value?.trim().toLowerCase();
+    if (!nick) { showFBToast('escribe un nick primero 💀', '#ff4466'); return; }
+    if (nick === 'emilio' && rankKey !== 'owner') {
+        showFBToast('no puedes quitarle el rango al owner 💀', '#ff4466'); return;
+    }
+    const snap = await window._fbGetDoc(window._fbDoc(db,'users',nick));
+    if (!snap.exists()) { showFBToast('usuario no encontrado 💀', '#ff4466'); return; }
+
+    const r = RANKS[rankKey] || RANKS.user;
+    const updates = {
+        rank: rankKey,
+        admin: rankKey === 'admin' || rankKey === 'owner'
+    };
+    await window._fbUpdateDoc(window._fbDoc(db,'users',nick), updates);
+    addLog('RANK', `${nick} → ${r.label}`);
+    showFBToast(`${r.icon} ${nick} ahora es ${r.label}`, r.color);
+    window.previewRankUser();
+    loadStaffList();
+    loadUsers();
+};
+
+// ── Load staff list ───────────────────────────────────────────
+window.loadStaffList = async function() {
+    const el = document.getElementById('rk-staff-list');
+    if (!el) return;
+    el.innerHTML = '<span style="color:rgba(0,220,255,0.3);font-size:10px">cargando...</span>';
+    const snap = await window._fbGetDocs(window._fbCollection(db,'users'));
+    const staff = [];
+    snap.forEach(d => {
+        const u = d.data();
+        const rk = getRankKey(u);
+        if (rk !== 'user') staff.push({ ...u, _rk: rk });
+    });
+    staff.sort((a,b) => (RANKS[b._rk]?.level||1) - (RANKS[a._rk]?.level||1));
+    if (!staff.length) { el.innerHTML = '<span style="color:rgba(0,220,255,0.25);font-size:11px">sin staff asignado</span>'; return; }
+    el.innerHTML = staff.map(u => {
+        const r = RANKS[u._rk];
+        const canEdit = getRankKey(window.currentUser) === 'owner';
+        return `<div class="rank-row">
+            <div>
+                ${getRankBadgeHTML(u._rk)}
+                <span style="color:rgba(0,220,255,0.7);font-size:12px;margin-left:8px;font-family:monospace">${u.nick}</span>
+            </div>
+            ${canEdit ? `<select class="rank-select-inline" onchange="quickRankChange('${u.nick}',this.value)">
+                <option value="owner"  ${u._rk==='owner' ?'selected':''}>⚡ Owner</option>
+                <option value="admin"  ${u._rk==='admin' ?'selected':''}>👑 Admin</option>
+                <option value="mod"    ${u._rk==='mod'   ?'selected':''}>🛡 Mod</option>
+                <option value="helper" ${u._rk==='helper'?'selected':''}>🔧 Helper</option>
+                <option value="user"   ${u._rk==='user'  ?'selected':''}>👤 User</option>
+            </select>` : ''}
+        </div>`;
+    }).join('');
+};
+
+window.quickRankChange = async function(nick, rankKey) {
+    if (getRankKey(window.currentUser) !== 'owner') { showFBToast('solo el Owner Dev puede hacer esto','#d946ef'); return; }
+    const r = RANKS[rankKey]||RANKS.user;
+    await window._fbUpdateDoc(window._fbDoc(db,'users',nick),{rank:rankKey,admin:rankKey==='admin'||rankKey==='owner'});
+    addLog('RANK',`${nick} → ${r.label}`);
+    showFBToast(`${r.icon} ${nick} → ${r.label}`,r.color);
+    loadStaffList();
+    loadUsers();
+};
+
+// ── Check permissions ─────────────────────────────────────────
+function hasPermission(action) {
+    const u = window.currentUser;
+    if (!u) return false;
+    const rk = getRankKey(u);
+    const level = RANKS[rk]?.level || 1;
+    const perms = {
+        ban: 4, unban: 4, deleteUser: 5, assignRank: 5,
+        announce: 4, mute: 3, warn: 3, viewUsers: 3,
+        lockdown: 5, maintenance: 5, privMsg: 5, deleteGhosts: 5,
+        modtools: 4, tablero: 4, ranking: 4, fun: 4,
+        sitio: 4, datos: 5, log: 4,
+    };
+    return level >= (perms[action] || 5);
+}
+
+// ── Override badge update to use rank ─────────────────────────
+const _origBadgeUpdate = window._updateBadge;
+document.addEventListener('DOMContentLoaded', () => {
+    // Patch the badge after login
+    const originalAuthSuccess = window._onAuthSuccess;
+});
+
+// Override login success to update badge with rank
+const _origRenderSession = window.renderSession;
+window.renderSession = async function(nick) {
+    if (_origRenderSession) await _origRenderSession(nick);
+    const snap = await window._fbGetDoc(window._fbDoc(db,'users',nick));
+    if (snap.exists()) {
+        const u = snap.data();
+        window.currentUser = { ...window.currentUser, ...u };
+        updateUserBadgeWithRank(window.currentUser);
+        // If owner, show special welcome
+        if (getRankKey(window.currentUser) === 'owner') {
+            setTimeout(() => showFBToast('⚡ OWNER DEV conectado — acceso total', '#d946ef', 3500), 500);
+        }
+    }
+};
+
+// Tab load
+const _prevAdminTab = window.adminTab;
+window.adminTab = function(btn, page) {
+    if (_prevAdminTab) _prevAdminTab(btn, page);
+    if (page === 'ranks') { loadStaffList(); }
+};
+
+// Add ownerBadgePulse keyframe dynamically
+const ownerStyle = document.createElement('style');
+ownerStyle.textContent = `
+@keyframes ownerBadgePulse {
+    0%,100% { box-shadow: 0 0 12px rgba(168,85,247,0.2), 0 4px 20px rgba(0,0,0,0.8); }
+    50%      { box-shadow: 0 0 24px rgba(168,85,247,0.5), 0 4px 20px rgba(0,0,0,0.8); }
+}`;
+document.head.appendChild(ownerStyle);
+
 })(); // end IIFE
 
 </script>
 <div id="shortcutToast" class="shortcut-toast"></div>
 </body>
 </html>
+    <!-- ══ MODTOOLS ══════════════════════════════════════════ -->
+    <div class="admin-page" id="ap-modtools">
+
+      <div class="admin-section-title">🚨 acciones rápidas</div>
+      <div class="abtn-row">
+        <button class="abtn abtn-red" onclick="kickAllGuests()">💥 Kick invitados</button>
+        <button class="abtn abtn-red" onclick="banAllWarned()">🚫 Banear warned</button>
+      </div>
+      <div class="abtn-row">
+        <button class="abtn abtn-blue" onclick="unbanAll()">✅ Desbanear todos</button>
+        <button class="abtn abtn-blue" onclick="resetAllWarns()">⚠️ Reset warns</button>
+      </div>
+      <div class="abtn-row">
+        <button class="abtn abtn-gold" onclick="unmuteAll()">🔊 Desmutear todos</button>
+        <button class="abtn abtn-blue" onclick="muteAllExceptAdmin()">🔇 Mutear no-admins</button>
+      </div>
+
+      <div class="admin-section-title">🔒 acceso y control</div>
+      <button class="abtn abtn-blue" onclick="toggleFreezeRanking()">🧊 Congelar / Descongelar ranking</button>
+      <button class="abtn abtn-blue" onclick="toggleReadOnly()">📖 Modo solo lectura (global)</button>
+      <button class="abtn abtn-red" onclick="toggleLockdown()">🔴 LOCKDOWN — solo admins entran</button>
+      <button class="abtn abtn-gold" onclick="toggleMaintenanceMode()">🔧 Modo mantenimiento</button>
+
+      <div class="admin-section-title">💬 mensajes internos</div>
+      <input class="admin-input" id="mt-target" placeholder="nick del papu...">
+      <input class="admin-input" id="mt-msg" placeholder="mensaje privado..." maxlength="200">
+      <button class="abtn abtn-gold" onclick="sendPrivateMsg()">📨 Enviar msg privado</button>
+
+      <div class="admin-section-title">👁 vigilancia</div>
+      <div id="mt-suspicious" style="font-size:11px;color:rgba(0,220,255,0.6);line-height:1.8;"></div>
+      <button class="abtn abtn-blue" onclick="scanSuspicious()">🔍 Escanear actividad sospechosa</button>
+      <button class="abtn abtn-blue" onclick="showMultiDeviceUsers()">📱 Usuarios multi-dispositivo</button>
+
+      <div class="admin-section-title">📊 resumen de moderación</div>
+      <div id="mt-summary" style="font-size:11px;color:rgba(0,220,255,0.5);line-height:2;"></div>
+      <button class="abtn abtn-blue" onclick="loadModSummary()">🔄 Actualizar resumen</button>
+
+      <div class="admin-section-title">🧹 limpieza</div>
+      <div class="abtn-row">
+        <button class="abtn abtn-red" onclick="deleteGhostUsers()">👻 Borrar fantasmas</button>
+        <button class="abtn abtn-blue" onclick="clearAllTags()">🏷 Limpiar tags</button>
+      </div>
+      <div class="abtn-row">
+        <button class="abtn abtn-blue" onclick="resetAllLogins()">🔄 Reset login counts</button>
+        <button class="abtn abtn-red" onclick="wipeInactiveUsers()">🗑 Borrar inactivos 60d</button>
+      </div>
+
+      <div class="admin-section-title">📋 nick reservados</div>
+      <div id="mt-reserved" style="font-size:10px;color:rgba(0,220,255,0.4);margin-bottom:8px;line-height:1.8;">
+        jero · gabriel · sami · emilio · luciana · akiro · daniel · isabella · samuel
+      </div>
+      <input class="admin-input" id="mt-reserve-nick" placeholder="agregar nick reservado...">
+      <button class="abtn abtn-gold" onclick="addReservedNick()">🔒 Reservar nick</button>
+
+      <div class="admin-section-title">📝 log de moderación</div>
+      <div id="mt-modlog" style="max-height:140px;overflow-y:auto;"></div>
+      <button class="abtn abtn-blue" onclick="loadModLog()">🔄 Cargar mod-log</button>
+    </div>
+
+    <!-- ══ RANGOS ═══════════════════════════════════════════ -->
+    <div class="admin-page" id="ap-ranks">
+
+      <!-- Rank legend -->
+      <div class="admin-section-title">💎 jerarquía de rangos</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);border-radius:4px;">
+          <span class="rank-badge rank-owner">⚡ OWNER DEV</span>
+          <div class="rank-perms">
+            <div class="rank-perm-item allowed">✓ Acceso total al panel</div>
+            <div class="rank-perm-item allowed">✓ Cambiar rangos de todos</div>
+            <div class="rank-perm-item allowed">✓ LOCKDOWN / Mantenimiento</div>
+            <div class="rank-perm-item allowed">✓ Borrar usuarios / cuentas</div>
+            <div class="rank-perm-item allowed">✓ Mensajes privados</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(255,215,0,0.05);border:1px solid rgba(255,215,0,0.15);border-radius:4px;">
+          <span class="rank-badge rank-admin">👑 ADMIN</span>
+          <div class="rank-perms">
+            <div class="rank-perm-item allowed">✓ Panel admin completo</div>
+            <div class="rank-perm-item allowed">✓ Ban / Unban / Warn</div>
+            <div class="rank-perm-item allowed">✓ Anuncios globales</div>
+            <div class="rank-perm-item denied">✗ No puede cambiar rangos</div>
+            <div class="rank-perm-item denied">✗ No puede borrar cuentas</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,220,255,0.04);border:1px solid rgba(0,220,255,0.12);border-radius:4px;">
+          <span class="rank-badge rank-mod">🛡 MOD</span>
+          <div class="rank-perms">
+            <div class="rank-perm-item allowed">✓ Mute / Unmute</div>
+            <div class="rank-perm-item allowed">✓ Advertencias (warn)</div>
+            <div class="rank-perm-item allowed">✓ Ver usuarios</div>
+            <div class="rank-perm-item denied">✗ No puede banear</div>
+            <div class="rank-perm-item denied">✗ No puede anunciar</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(0,255,157,0.04);border:1px solid rgba(0,255,157,0.1);border-radius:4px;">
+          <span class="rank-badge rank-helper">🔧 HELPER</span>
+          <div class="rank-perms">
+            <div class="rank-perm-item allowed">✓ Ver lista de usuarios</div>
+            <div class="rank-perm-item allowed">✓ Reportar a mod/admin</div>
+            <div class="rank-perm-item denied">✗ Sin acciones de moderación</div>
+            <div class="rank-perm-item denied">✗ Sin acceso al panel</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assign ranks -->
+      <div class="admin-section-title">⚡ asignar rango</div>
+      <input class="admin-input" id="rk-nick" placeholder="nick del papu..." oninput="previewRankUser()">
+      <div id="rk-preview" style="margin-bottom:8px;min-height:20px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin-bottom:8px;">
+        <button onclick="assignRank('owner')" class="abtn" style="background:rgba(168,85,247,0.12);border:1px solid rgba(168,85,247,0.3);color:#d946ef;font-size:11px;padding:10px;letter-spacing:1px;">⚡ OWNER DEV</button>
+        <button onclick="assignRank('admin')" class="abtn abtn-gold" style="font-size:11px;letter-spacing:1px;">👑 ADMIN</button>
+        <button onclick="assignRank('mod')" class="abtn abtn-blue" style="font-size:11px;letter-spacing:1px;">🛡 MOD</button>
+        <button onclick="assignRank('helper')" class="abtn abtn-green" style="font-size:11px;letter-spacing:1px;">🔧 HELPER</button>
+        <button onclick="assignRank('user')" class="abtn" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#6688aa;font-size:11px;letter-spacing:1px;grid-column:span 2;">👤 QUITAR RANGO</button>
+      </div>
+
+      <!-- Current staff list -->
+      <div class="admin-section-title">👥 staff actual</div>
+      <div id="rk-staff-list"></div>
+      <button class="abtn abtn-blue" onclick="loadStaffList()">🔄 Actualizar lista</button>
+    </div>
