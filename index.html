@@ -1566,7 +1566,7 @@
         /* ===== TERMINAL ===== */
         #terminal-section { padding: 90px 0; }
         .term-outer {
-            max-width:920px; margin:0 auto;
+            max-width:920px; width:100%; margin:0 auto;
             background:#1e1e1e; border-radius:8px; overflow:hidden;
             box-shadow:0 30px 80px rgba(0,0,0,.8);
             font-family:'Cascadia Code','Fira Code','Courier New',monospace;
@@ -2033,6 +2033,14 @@
             padding: 8px; margin-left: auto;
         }
 
+
+        @media (max-width: 768px) {
+            .term-outer { width: calc(100vw - 24px) !important; margin: 0 12px !important; }
+            .term-screen { min-height: 280px !important; max-height: 380px !important; font-size: 12px !important; }
+            .term-hint { font-size: 9px !important; }
+            #terminal-section { overflow-x: hidden !important; padding: 0 !important; }
+            #samuel-section .max-width { padding: 0 12px !important; }
+        }
 </style>
 </head>
 <body>
@@ -3107,7 +3115,7 @@
 </section>
 
 <!-- TERMINAL -->
-<section id="terminal-section">
+<section id="terminal-section" style="overflow-x:hidden;">
     <div class="max-width">
         <h1 class="title">terminal</h1>
         <p style="text-align:center;margin-bottom:36px;color:#80b0cc;">bash 5.2.37 — <code style="color:#a6e3a1;background:rgba(0,0,0,.4);padding:2px 8px;border-radius:4px;">help</code> para ver todos los comandos</p>
@@ -8953,11 +8961,35 @@ window.toggleAdminPanel = function() {
 window.adminTab = function(btn, page) {
     document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.admin-page').forEach(p => p.classList.remove('active'));
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
     const el = document.getElementById('ap-' + page);
     if (el) el.classList.add('active');
     loadAdminPage(page);
+    _adminTabDispatch(page);
 };
+
+/** Dispatch de tabs a módulos — un solo lugar, sin cadena rota */
+function _adminTabDispatch(page) {
+    switch(page) {
+        case 'casos':      if(typeof loadCasos==='function'){loadCasos();renderCasosStats();} break;
+        case 'audit':      if(typeof filterAuditLog==='function') filterAuditLog(); break;
+        case 'perms':      if(typeof renderPermissionsTable==='function') renderPermissionsTable(); break;
+        case 'warns_cfg':  if(typeof loadWarnConfig==='function'){loadWarnConfig();loadWarnedUsers();} break;
+        case 'batch':      if(typeof loadBatchHistory==='function') loadBatchHistory(); break;
+        case 'staff_act':  if(typeof loadStaffActivity==='function') loadStaffActivity('week'); break;
+        case 'config_adv': if(typeof loadConfigAdvStatus==='function') loadConfigAdvStatus(); break;
+        case 'usuarios':   if(typeof loadUsers==='function') loadUsers(); break;
+        case 'bans':       if(typeof loadBans==='function') loadBans(); break;
+        case 'log':        if(typeof loadLog==='function') loadLog(); break;
+        case 'ranks':      if(typeof loadStaffList==='function') loadStaffList(); break;
+        case 'chat':       if(typeof loadChat==='function') loadChat(); break;
+        case 'modtools':
+        case 'mod':        if(typeof loadModSummary==='function'){loadModSummary();loadModLog();} if(typeof renderAnnHistory==='function') renderAnnHistory(); break;
+        case 'announce':   if(typeof renderAnnHistory==='function') renderAnnHistory(); break;
+        case 'mod':
+        case 'modtools':   break;
+    }
+}
 
 function loadAdminPage(page) {
     if (page==='stats')   loadStats();
@@ -10328,13 +10360,7 @@ window.loadModLog = function() {
         </div>`).join('');
 };
 
-// ── adminTab patch: mod + announce tabs ──────────────────────
-const _origAdminTab = window.adminTab;
-window.adminTab = function(btn, page) {
-    if (_origAdminTab) _origAdminTab(btn, page);
-    if (page === 'modtools') { loadModSummary(); loadModLog(); renderAnnHistory(); }
-    if (page === 'announce') renderAnnHistory();
-};
+// ── adminTab patch: mod + announce tabs (moved to _adminTabDispatch) ──
 
 })(); // end auth IIFE
 
@@ -10625,12 +10651,7 @@ window.clearAnnouncementLocal = function() {
     else setTimeout(doCheck, 800);
 })();
 
-// ── adminTab patch: load ranks tab ────────────────────────────
-const _prevAdminTabRank = window.adminTab;
-window.adminTab = function(btn, page) {
-    if (_prevAdminTabRank) _prevAdminTabRank(btn, page);
-    if (page === 'ranks') loadStaffList();
-};
+// ── ranks tab handled by _adminTabDispatch ──────────────────────
 
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -12095,12 +12116,7 @@ window.clearChat = async function() {
     }
 };
 
-// Abrir chat al hacer click en la pestaña
-const _prevTabChat = window.adminTab;
-window.adminTab = function(btn, page) {
-    if (_prevTabChat) _prevTabChat(btn, page);
-    if (page === 'chat') initChat();
-};
+// chat tab handled by _adminTabDispatch
 
 // Pre-inicializar cuando Firebase y usuario estén listos
 function tryPreInit() {
@@ -13538,19 +13554,7 @@ function initNewAdminModules() {
 }
 
 /** Hook al adminTab para cargar datos al cambiar de pestaña */
-const _prevAdminTabHook2 = window.adminTab;
-window.adminTab = function(btn, page) {
-    if (_prevAdminTabHook2) _prevAdminTabHook2(btn, page);
-    switch(page) {
-        case 'casos':      loadCasos(); renderCasosStats(); break;
-        case 'audit':      filterAuditLog(); break;
-        case 'perms':      renderPermissionsTable(); break;
-        case 'warns_cfg':  loadWarnConfig(); loadWarnedUsers(); break;
-        case 'batch':      loadBatchHistory(); break;
-        case 'staff_act':  loadStaffActivity('week'); break;
-        case 'config_adv': loadConfigAdvStatus(); break;
-    }
-};
+// tab dispatch handled by _adminTabDispatch
 
 /** Carga el estado actual de los toggles en la config avanzada */
 window.loadConfigAdvStatus = async function() {
@@ -14640,31 +14644,14 @@ window.showSystemHealth = async function() {
  *   Estado: ✅ SOLUCIONADO
  *
  * [BUG-015] BAJO: adminTab() registrado múltiples veces con chain de overrides
- *   Problema: Cada módulo nuevo hacía window.adminTab = function() { ... }
- *             rompiendo el chain de funciones previas.
- *   Solución: Un solo hook central (_prevAdminTabHook2) que llama al anterior
- *             y despacha a cada módulo según la pestaña.
+ *   Problema: Cada módulo nuevo hacía El sistema sobreescribía adminTab múltiples veces rompiendo la cadena.
+ *   Solución: Un solo _adminTabDispatch() central.
  *   Estado: ✅ SOLUCIONADO
  *
- * ─────────────────────────────────────────────────────────────────────────────
  * TOTAL: 15 bugs detectados y solucionados
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-
-// ══════════════════════════════════════════════════════════════════════════════
-// UTILIDADES ADICIONALES DE MODERACIÓN — Funciones de soporte extendidas
-// Este bloque contiene helpers, validadores y funciones de conveniencia
-// que complementan el sistema de moderación principal de Los Papus
-// ══════════════════════════════════════════════════════════════════════════════
-
-/**
- * Verifica si un usuario está actualmente baneado consultando Firebase.
- * Usado en el flujo de login para bloquear el acceso antes de entrar.
- *
- * @param {string} nick - Nick a verificar
- * @returns {Promise<{banned: boolean, reason: string}>}
- */
 async function checkUserBanStatus(nick) {
     if (!nick) return { banned: false, reason: '' };
     try {
@@ -17497,19 +17484,7 @@ function initNewAdminModules() {
 }
 
 /** Hook al adminTab para cargar datos al cambiar de pestaña */
-const _prevAdminTabHook2 = window.adminTab;
-window.adminTab = function(btn, page) {
-    if (_prevAdminTabHook2) _prevAdminTabHook2(btn, page);
-    switch(page) {
-        case 'casos':      loadCasos(); renderCasosStats(); break;
-        case 'audit':      filterAuditLog(); break;
-        case 'perms':      renderPermissionsTable(); break;
-        case 'warns_cfg':  loadWarnConfig(); loadWarnedUsers(); break;
-        case 'batch':      loadBatchHistory(); break;
-        case 'staff_act':  loadStaffActivity('week'); break;
-        case 'config_adv': loadConfigAdvStatus(); break;
-    }
-};
+// tab dispatch handled by _adminTabDispatch
 
 /** Carga el estado actual de los toggles en la config avanzada */
 window.loadConfigAdvStatus = async function() {
@@ -18599,32 +18574,15 @@ window.showSystemHealth = async function() {
  *   Estado: ✅ SOLUCIONADO
  *
  * [BUG-015] BAJO: adminTab() registrado múltiples veces con chain de overrides
- *   Problema: Cada módulo nuevo hacía window.adminTab = function() { ... }
- *             rompiendo el chain de funciones previas.
- *   Solución: Un solo hook central (_prevAdminTabHook2) que llama al anterior
- *             y despacha a cada módulo según la pestaña.
+ *   Problema: Cada módulo nuevo hacía El sistema sobreescribía adminTab múltiples veces rompiendo la cadena.
+ *   Solución: Un solo _adminTabDispatch() central.
  *   Estado: ✅ SOLUCIONADO
  *
- * ─────────────────────────────────────────────────────────────────────────────
  * TOTAL: 15 bugs detectados y solucionados
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-
-// ══════════════════════════════════════════════════════════════════════════════
-// UTILIDADES ADICIONALES DE MODERACIÓN — Funciones de soporte extendidas
-// Este bloque contiene helpers, validadores y funciones de conveniencia
-// que complementan el sistema de moderación principal de Los Papus
-// ══════════════════════════════════════════════════════════════════════════════
-
-/**
- * Verifica si un usuario está actualmente baneado consultando Firebase.
- * Usado en el flujo de login para bloquear el acceso antes de entrar.
- *
- * @param {string} nick - Nick a verificar
- * @returns {Promise<{banned: boolean, reason: string}>}
- */
-async function checkUserBanStatus(nick) {
+async function checkUserBanStatus2(nick) {
     if (!nick) return { banned: false, reason: '' };
     try {
         const snap = await window._fbGetDoc(window._fbDoc(db, 'users', nick.toLowerCase()));
@@ -19996,5 +19954,48 @@ document.addEventListener('DOMContentLoaded', function() {
 // ──────────────────────────────────────────────────────────────────────────────
 //
 // ──────────────────────────────────────────────────────────────────────────────
-
-
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
+//
+// ──────────────────────────────────────────────────────────────────────────────
