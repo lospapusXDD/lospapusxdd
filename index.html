@@ -32,6 +32,7 @@
             background: var(--dark);
             color: var(--light);
             overflow-x: hidden;
+            max-width: 100vw;
         }
 
         #particles-js { position:fixed; width:100%; height:100%; z-index:-1; }
@@ -2041,6 +2042,364 @@
             #terminal-section { overflow-x: hidden !important; padding: 0 !important; }
             #samuel-section .max-width { padding: 0 12px !important; }
         }
+
+        /* ══════════════════════════════════════════════════════════════════
+           SISTEMA DE PERSONALIZACIÓN — 20 temas, 30 colores
+           Cada tema aplica variables CSS globales que afectan todo el sitio
+           ══════════════════════════════════════════════════════════════════ */
+
+        /* Temas de fondo */
+        body.theme-matrix-purple { --theme-bg: #0a0015; --theme-primary: #9b30ff; --theme-secondary: #6a0dad; }
+        body.theme-matrix-cyan   { --theme-bg: #000d0d; --theme-primary: #00dcff; --theme-secondary: #008899; }
+        body.theme-matrix-green  { --theme-bg: #000d00; --theme-primary: #00ff41; --theme-secondary: #007a1f; }
+        body.theme-matrix-red    { --theme-bg: #0d0000; --theme-primary: #ff2244; --theme-secondary: #8b0000; }
+        body.theme-matrix-gold   { --theme-bg: #0d0a00; --theme-primary: #ffd700; --theme-secondary: #b8860b; }
+        body.theme-matrix-pink   { --theme-bg: #0d0010; --theme-primary: #ff69b4; --theme-secondary: #c2185b; }
+        body.theme-matrix-orange { --theme-bg: #0d0500; --theme-primary: #ff7700; --theme-secondary: #e65100; }
+        body.theme-matrix-white  { --theme-bg: #0a0a0a; --theme-primary: #ffffff; --theme-secondary: #aaaaaa; }
+        body.theme-matrix-ice    { --theme-bg: #000a14; --theme-primary: #a8d8ff; --theme-secondary: #4a90d9; }
+        body.theme-matrix-toxic  { --theme-bg: #050d00; --theme-primary: #aaff00; --theme-secondary: #558800; }
+
+        /* Fondos sólidos */
+        body.bg-deep-black    { background: #000000 !important; }
+        body.bg-navy          { background: #020818 !important; }
+        body.bg-dark-purple   { background: #0d001a !important; }
+        body.bg-dark-red      { background: #1a0000 !important; }
+        body.bg-dark-green    { background: #001a00 !important; }
+        body.bg-dark-blue     { background: #000d1a !important; }
+        body.bg-charcoal      { background: #1a1a1a !important; }
+        body.bg-midnight      { background: #060b1a !important; }
+        body.bg-deep-ocean    { background: #001014 !important; }
+        body.bg-obsidian      { background: #0d0d0d !important; }
+
+        /* Efectos de overlay de fondo */
+        body.overlay-scanlines::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent, transparent 2px,
+                rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px
+            );
+        }
+        body.overlay-vignette::after {
+            content: '';
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
+        }
+        body.overlay-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E") !important;
+        }
+        body.overlay-grid::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0,220,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,220,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Matrix rain canvas full-screen */
+        #matrix-canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
+            opacity: 0.13;
+            display: none;
+        }
+        body.matrix-on #matrix-canvas { display: block; }
+
+        /* Aurora colors personalizados */
+        body.aurora-purple  #aurora { filter: hue-rotate(240deg) !important; }
+        body.aurora-red     #aurora { filter: hue-rotate(160deg) !important; }
+        body.aurora-green   #aurora { filter: hue-rotate(60deg)  !important; }
+        body.aurora-gold    #aurora { filter: hue-rotate(30deg) saturate(2) !important; }
+        body.aurora-pink    #aurora { filter: hue-rotate(300deg) !important; }
+        body.aurora-white   #aurora { filter: grayscale(1) brightness(1.5) !important; }
+        body.aurora-orange  #aurora { filter: hue-rotate(10deg) saturate(1.5) !important; }
+        body.aurora-ice     #aurora { filter: hue-rotate(190deg) brightness(1.3) !important; }
+        body.aurora-toxic   #aurora { filter: hue-rotate(80deg) saturate(3) !important; }
+        body.aurora-off     #aurora { display: none !important; }
+
+        /* Accent colors — afectan links, bordes, títulos */
+        body.accent-purple  { --primary: #9b30ff; --cyan: #9b30ff; }
+        body.accent-red     { --primary: #ff2244; --cyan: #ff2244; }
+        body.accent-green   { --primary: #00ff9d; --cyan: #00ff9d; }
+        body.accent-gold    { --primary: #ffd700; --cyan: #ffd700; }
+        body.accent-pink    { --primary: #ff69b4; --cyan: #ff69b4; }
+        body.accent-orange  { --primary: #ff7700; --cyan: #ff7700; }
+        body.accent-white   { --primary: #ffffff; --cyan: #ffffff; }
+        body.accent-ice     { --primary: #a8d8ff; --cyan: #a8d8ff; }
+        body.accent-toxic   { --primary: #aaff00; --cyan: #aaff00; }
+        body.accent-cyan    { --primary: #00dcff; --cyan: #00dcff; }
+
+        /* Font styles */
+        body.font-mono    { font-family: 'Courier New', monospace !important; }
+        body.font-orbitron { font-family: 'Orbitron', sans-serif !important; }
+        body.font-poppins  { font-family: 'Poppins', sans-serif !important; }
+
+        /* Navbar custom colors */
+        body.nav-glass .navbar {
+            background: rgba(255,255,255,0.03) !important;
+            backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+        }
+        body.nav-solid .navbar {
+            background: rgba(0,0,0,0.95) !important;
+            backdrop-filter: none !important;
+        }
+        body.nav-purple .navbar { border-bottom-color: rgba(155,48,255,0.3) !important; }
+        body.nav-red    .navbar { border-bottom-color: rgba(255,34,68,0.3) !important; }
+        body.nav-gold   .navbar { border-bottom-color: rgba(255,215,0,0.3) !important; }
+
+        /* Card styles */
+        body.cards-neon .card {
+            box-shadow: 0 0 20px var(--primary, rgba(0,220,255,0.15)),
+                        0 0 40px var(--primary, rgba(0,220,255,0.05)) !important;
+        }
+        body.cards-flat .card {
+            box-shadow: none !important;
+            border-color: rgba(255,255,255,0.06) !important;
+        }
+        body.cards-glass .card {
+            background: rgba(255,255,255,0.03) !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        /* Cursor personalizado */
+        body.cursor-crosshair { cursor: crosshair !important; }
+        body.cursor-none      { cursor: none !important; }
+        body.cursor-default   { cursor: default !important; }
+
+        /* Partículas on/off */
+        body.particles-off .spark { display: none !important; }
+        body.particles-off canvas { display: none !important; }
+
+        /* ══ PANEL DE PERSONALIZACIÓN ══════════════════════════════════════ */
+        #personalization-panel {
+            position: fixed; top: 0; left: 0;
+            width: 360px; max-width: 100vw;
+            height: 100vh; z-index: 9997;
+            overflow: hidden;
+            will-change: transform;
+            background: linear-gradient(160deg, rgba(6,14,26,0.99), rgba(3,8,18,0.99));
+            border-right: 1px solid rgba(0,220,255,0.15);
+            box-shadow: 4px 0 40px rgba(0,0,0,0.8);
+            transform: translateX(-100%);
+            transition: transform .35s cubic-bezier(.4,0,.2,1);
+            overflow-y: auto; overflow-x: hidden;
+            padding: 0 0 80px 0;
+            display: flex; flex-direction: column;
+        }
+        #personalization-panel.open {
+            transform: translateX(0);
+        }
+        #personalization-panel::-webkit-scrollbar { width: 3px; }
+        #personalization-panel::-webkit-scrollbar-thumb { background: rgba(0,220,255,0.2); border-radius: 2px; }
+
+        .pers-header {
+            position: sticky; top: 0; z-index: 2;
+            background: rgba(4,10,22,0.98);
+            border-bottom: 1px solid rgba(0,220,255,0.1);
+            padding: 18px 20px 14px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .pers-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px; letter-spacing: 3px;
+            color: #00dcff;
+        }
+        .pers-close {
+            background: none; border: none;
+            color: rgba(0,220,255,0.4); font-size: 18px;
+            cursor: pointer; padding: 4px 8px;
+            transition: color .2s;
+        }
+        .pers-close:hover { color: #ff4466; }
+
+        .pers-section {
+            padding: 16px 20px 8px;
+        }
+        .pers-section-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px; letter-spacing: 3px;
+            color: rgba(0,220,255,0.35);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        /* Color swatches */
+        .pers-swatches {
+            display: grid; grid-template-columns: repeat(5, 1fr);
+            gap: 6px; margin-bottom: 4px;
+        }
+        .pers-swatch {
+            width: 100%; aspect-ratio: 1;
+            border-radius: 8px; cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform .15s, border-color .15s, box-shadow .15s;
+            position: relative;
+        }
+        .pers-swatch:hover {
+            transform: scale(1.12);
+        }
+        .pers-swatch.active {
+            border-color: rgba(255,255,255,0.8) !important;
+            box-shadow: 0 0 12px rgba(255,255,255,0.3);
+            transform: scale(1.08);
+        }
+        .pers-swatch .pers-swatch-tip {
+            position: absolute; bottom: -22px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9); color: #fff;
+            font-size: 9px; padding: 2px 6px;
+            border-radius: 3px; white-space: nowrap;
+            opacity: 0; pointer-events: none;
+            transition: opacity .15s; z-index: 10;
+        }
+        .pers-swatch:hover .pers-swatch-tip { opacity: 1; }
+
+        /* Style cards */
+        .pers-style-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        .pers-style-card {
+            padding: 10px 12px; border-radius: 8px; cursor: pointer;
+            border: 1px solid rgba(0,220,255,0.08);
+            background: rgba(0,0,0,0.3);
+            font-size: 10px; color: rgba(0,220,255,0.6);
+            transition: all .15s; text-align: center;
+        }
+        .pers-style-card:hover {
+            border-color: rgba(0,220,255,0.25);
+            background: rgba(0,220,255,0.05);
+        }
+        .pers-style-card.active {
+            border-color: rgba(0,220,255,0.5);
+            background: rgba(0,220,255,0.1);
+            color: #00dcff;
+        }
+        .pers-style-card .pers-style-icon {
+            font-size: 20px; display: block; margin-bottom: 4px;
+        }
+
+        /* Toggles */
+        .pers-toggle-row {
+            display: flex; align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0,220,255,0.05);
+        }
+        .pers-toggle-label {
+            font-size: 11px; color: rgba(0,220,255,0.6);
+        }
+        .pers-toggle-desc {
+            font-size: 9px; color: rgba(0,220,255,0.25);
+            margin-top: 2px;
+        }
+        .pers-toggle-btn {
+            width: 40px; height: 22px; border-radius: 11px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer; position: relative;
+            transition: background .2s;
+            flex-shrink: 0;
+        }
+        .pers-toggle-btn::after {
+            content: '';
+            position: absolute; top: 2px; left: 2px;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: transform .2s, background .2s;
+        }
+        .pers-toggle-btn.on {
+            background: rgba(0,220,255,0.3);
+            border-color: rgba(0,220,255,0.4);
+        }
+        .pers-toggle-btn.on::after {
+            transform: translateX(18px);
+            background: #00dcff;
+        }
+
+        /* Slider */
+        .pers-slider {
+            width: 100%; margin: 8px 0 4px;
+            -webkit-appearance: none;
+            height: 4px; border-radius: 2px;
+            background: rgba(0,220,255,0.15);
+            outline: none;
+        }
+        .pers-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: #00dcff;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0,220,255,0.5);
+        }
+
+        /* Open button */
+        #pers-open-btn {
+            position: fixed; left: 0; top: 50%;
+            transform: translateY(-50%);
+            z-index: 9994;
+            pointer-events: auto;
+            background: linear-gradient(135deg, rgba(0,220,255,0.15), rgba(0,180,220,0.08));
+            border: 1px solid rgba(0,220,255,0.25);
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+            color: #00dcff; cursor: pointer;
+            padding: 14px 10px;
+            font-size: 18px;
+            writing-mode: vertical-rl;
+            letter-spacing: 3px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 8px;
+            transition: all .2s;
+        }
+        #pers-open-btn:hover {
+            background: rgba(0,220,255,0.2);
+            padding-left: 14px;
+        }
+
+        /* Preview bar */
+        #pers-preview-bar {
+            position: fixed; bottom: 80px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9); border: 1px solid rgba(0,220,255,0.2);
+            border-radius: 20px; padding: 8px 20px;
+            font-size: 11px; color: #00dcff;
+            z-index: 9998; opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+        }
+        #pers-preview-bar.show { opacity: 1; }
+
+        @media (max-width: 768px) {
+            #personalization-panel { width: 100vw; }
+            .pers-swatches { grid-template-columns: repeat(6, 1fr); }
+        }
+
+
+        @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden !important;
+                max-width: 100vw !important;
+                width: 100% !important;
+            }
+            section, .features, #terminal-section, #samuel-section {
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
+            }
+            .max-width {
+                max-width: 100% !important;
+                padding: 0 14px !important;
+                box-sizing: border-box !important;
+            }
+        }
 </style>
 </head>
 <body>
@@ -2967,9 +3326,7 @@
 <button class="scroll-up-btn" id="scrollUpBtn"><i class="fas fa-angle-up"></i></button>
 
 
-<!-- YouTube iframe oculto -->
-    src="https://www.youtube.com/embed/9bZkp7q19f0?enablejsapi=1&autoplay=0&loop=1&playlist=9bZkp7q19f0"
-    allow="autoplay" frameborder="0"></iframe>
+<!-- YouTube iframe 
 
 <!-- Theme panel -->
 <button id="theme-toggle-btn" title="Personalizar colores">🎨</button>
@@ -3119,7 +3476,7 @@
     <div class="max-width">
         <h1 class="title">terminal</h1>
         <p style="text-align:center;margin-bottom:36px;color:#80b0cc;">bash 5.2.37 — <code style="color:#a6e3a1;background:rgba(0,0,0,.4);padding:2px 8px;border-radius:4px;">help</code> para ver todos los comandos</p>
-        <div class="term-outer">
+        <div class="term-outer" style="box-sizing:border-box;width:100%;">
             <div class="term-bar">
                 <div class="term-bar-dot r"></div>
                 <div class="term-bar-dot y"></div>
@@ -8353,9 +8710,9 @@ if ('serviceWorker' in navigator) {
         if (now - lastTime >= 1000) {
             const fps = frames;
             frames = 0; lastTime = now;
-            if (fps < 30) {
+            if (fps < 15) {
                 slow++;
-                if (slow >= 2 && !document.body.classList.contains('minimal-mode')) {
+                if (slow >= 6 && !document.body.classList.contains('minimal-mode')) {
                     document.body.classList.add('minimal-mode');
                     const t = document.getElementById('shortcutToast');
                     if (t) {
@@ -19815,14 +20172,4665 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 <div id="shortcutToast" class="shortcut-toast"></div>
+
+<!-- ══ PERSONALIZACIÓN PANEL ═══════════════════════════════════════════════ -->
+
+<!-- Botón flotante para abrir el panel -->
+<button id="pers-open-btn" onclick="togglePersPanel()" title="Personalización" style="display:none;">
+    🎨 PERSONALIZAR
+</button>
+<script>setTimeout(function(){var b=document.getElementById("pers-open-btn");if(b)b.style.display="";},11000);</script>
+
+<!-- Preview bar -->
+<div id="pers-preview-bar">✅ tema aplicado</div>
+
+<!-- Canvas para matrix rain -->
+<canvas id="matrix-canvas"></canvas>
+
+<!-- Panel principal -->
+<div id="personalization-panel">
+    <div class="pers-header">
+        <span class="pers-title">🎨 PERSONALIZAR</span>
+        <button class="pers-close" onclick="togglePersPanel()">✕</button>
+    </div>
+
+    <!-- ══ ACCENT COLOR ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">🎨 Color principal (30 colores)</div>
+        <div class="pers-swatches" id="accent-swatches">
+            <!-- generado por JS -->
+        </div>
+    </div>
+
+    <!-- ══ FONDO ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">🌌 Estilo de fondo (20 estilos)</div>
+        <div class="pers-style-grid" id="bg-styles">
+            <!-- generado por JS -->
+        </div>
+    </div>
+
+    <!-- ══ AURORA ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">🌠 Color de aurora boreal</div>
+        <div class="pers-swatches" id="aurora-swatches">
+            <!-- generado por JS -->
+        </div>
+    </div>
+
+    <!-- ══ MATRIX RAIN ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">💻 Matrix rain</div>
+        <div class="pers-style-grid" id="matrix-styles">
+            <!-- generado por JS -->
+        </div>
+        <div style="margin-top:10px;">
+            <div style="font-size:10px;color:rgba(0,220,255,0.4);margin-bottom:6px;">Velocidad</div>
+            <input type="range" class="pers-slider" id="matrix-speed" min="10" max="120" value="50"
+                   oninput="setMatrixSpeed(this.value)">
+            <div style="font-size:9px;color:rgba(0,220,255,0.25);display:flex;justify-content:space-between;">
+                <span>Lento</span><span>Rápido</span>
+            </div>
+        </div>
+        <div style="margin-top:10px;">
+            <div style="font-size:10px;color:rgba(0,220,255,0.4);margin-bottom:6px;">Opacidad del rain</div>
+            <input type="range" class="pers-slider" id="matrix-opacity" min="5" max="40" value="13"
+                   oninput="setMatrixOpacity(this.value)">
+        </div>
+    </div>
+
+    <!-- ══ NAVBAR ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">📌 Estilo de navbar</div>
+        <div class="pers-style-grid" id="navbar-styles">
+            <!-- generado por JS -->
+        </div>
+    </div>
+
+    <!-- ══ CARDS ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">🃏 Estilo de cards</div>
+        <div class="pers-style-grid" id="card-styles">
+            <!-- generado por JS -->
+        </div>
+    </div>
+
+    <!-- ══ EFECTOS ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">✨ Efectos visuales</div>
+
+        <div class="pers-toggle-row">
+            <div>
+                <div class="pers-toggle-label">Scanlines CRT</div>
+                <div class="pers-toggle-desc">Líneas de TV retro sobre el fondo</div>
+            </div>
+            <button class="pers-toggle-btn" id="tog-scanlines" onclick="toggleEffect('scanlines')"></button>
+        </div>
+
+        <div class="pers-toggle-row">
+            <div>
+                <div class="pers-toggle-label">Viñeta oscura</div>
+                <div class="pers-toggle-desc">Bordes del fondo más oscuros</div>
+            </div>
+            <button class="pers-toggle-btn" id="tog-vignette" onclick="toggleEffect('vignette')"></button>
+        </div>
+
+        <div class="pers-toggle-row">
+            <div>
+                <div class="pers-toggle-label">Grid cyberpunk</div>
+                <div class="pers-toggle-desc">Rejilla de fondo sutil</div>
+            </div>
+            <button class="pers-toggle-btn" id="tog-grid" onclick="toggleEffect('grid')"></button>
+        </div>
+
+        <div class="pers-toggle-row">
+            <div>
+                <div class="pers-toggle-label">Aurora boreal</div>
+                <div class="pers-toggle-desc">Desactiva las nubes de fondo</div>
+            </div>
+            <button class="pers-toggle-btn on" id="tog-aurora" onclick="toggleEffect('aurora')"></button>
+        </div>
+
+        <div class="pers-toggle-row">
+            <div>
+                <div class="pers-toggle-label">Partículas flotantes</div>
+                <div class="pers-toggle-desc">Chispas y polvo animado</div>
+            </div>
+            <button class="pers-toggle-btn on" id="tog-particles" onclick="toggleEffect('particles')"></button>
+        </div>
+
+        <div class="pers-toggle-row">
+            <div>
+                <div class="pers-toggle-label">Cursor neón</div>
+                <div class="pers-toggle-desc">Efecto de cursor personalizado</div>
+            </div>
+            <button class="pers-toggle-btn on" id="tog-cursor" onclick="toggleEffect('cursor')"></button>
+        </div>
+    </div>
+
+    <!-- ══ TIPOGRAFÍA ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">🔤 Tipografía</div>
+        <div class="pers-style-grid" id="font-styles">
+            <!-- generado por JS -->
+        </div>
+    </div>
+
+    <!-- ══ OPACIDAD GENERAL ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">💡 Brillo del sitio</div>
+        <input type="range" class="pers-slider" id="brightness-slider" min="60" max="130" value="100"
+               oninput="setSiteBrightness(this.value)">
+        <div style="font-size:9px;color:rgba(0,220,255,0.25);display:flex;justify-content:space-between;">
+            <span>Oscuro</span><span id="brightness-val">100%</span><span>Brillante</span>
+        </div>
+
+        <div style="margin-top:14px;">
+        <div class="pers-section-label">🌊 Saturación</div>
+        <input type="range" class="pers-slider" id="saturation-slider" min="0" max="200" value="100"
+               oninput="setSiteSaturation(this.value)">
+        <div style="font-size:9px;color:rgba(0,220,255,0.25);display:flex;justify-content:space-between;">
+            <span>Gris</span><span id="saturation-val">100%</span><span>Intenso</span>
+        </div>
+        </div>
+    </div>
+
+    <!-- ══ PRESETS COMPLETOS ══ -->
+    <div class="pers-section">
+        <div class="pers-section-label">⭐ Presets completos</div>
+        <div style="display:flex;flex-direction:column;gap:5px;" id="preset-list">
+            <!-- generado por JS -->
+        </div>
+    </div>
+
+    <!-- ══ ACCIONES ══ -->
+    <div class="pers-section">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button onclick="savePersConfig()"
+                style="flex:1;padding:11px;border-radius:8px;cursor:pointer;font-size:10px;
+                       background:rgba(0,220,255,0.12);border:1px solid rgba(0,220,255,0.3);
+                       color:#00dcff;font-family:'Orbitron',sans-serif;letter-spacing:1px;">
+                💾 GUARDAR
+            </button>
+            <button onclick="resetPersConfig()"
+                style="flex:1;padding:11px;border-radius:8px;cursor:pointer;font-size:10px;
+                       background:rgba(255,68,102,0.08);border:1px solid rgba(255,68,102,0.2);
+                       color:#ff4466;font-family:'Orbitron',sans-serif;letter-spacing:1px;">
+                🔄 RESET
+            </button>
+        </div>
+        <div id="pers-status" style="font-size:10px;color:rgba(0,220,255,0.4);
+             text-align:center;margin-top:10px;font-family:'Courier New',monospace;min-height:16px;"></div>
+    </div>
+</div>
+
+
+<script>
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SISTEMA DE PERSONALIZACIÓN COMPLETO — 20 estilos, 30 colores
+// Permite personalizar toda la apariencia del sitio en tiempo real
+// Configuración persistida en localStorage bajo 'papus_theme_v1'
+// ══════════════════════════════════════════════════════════════════════════════
+
+(function() {
+'use strict';
+
+// ─── CATÁLOGO DE COLORES (30 colores) ──────────────────────────────────────
+
+const ACCENT_COLORS = [
+    // Neones fríos
+    { id:'cyan',        name:'Cyan',          hex:'#00dcff', glow:'rgba(0,220,255,0.4)'  },
+    { id:'electric',    name:'Eléctrico',     hex:'#00aaff', glow:'rgba(0,170,255,0.4)'  },
+    { id:'ice',         name:'Hielo',         hex:'#a8d8ff', glow:'rgba(168,216,255,0.4)'},
+    { id:'sky',         name:'Cielo',         hex:'#87ceeb', glow:'rgba(135,206,235,0.4)'},
+    { id:'aqua',        name:'Aqua',          hex:'#00ffcc', glow:'rgba(0,255,204,0.4)'  },
+    // Neones cálidos
+    { id:'gold',        name:'Dorado',        hex:'#ffd700', glow:'rgba(255,215,0,0.4)'  },
+    { id:'amber',       name:'Ámbar',         hex:'#ffbf00', glow:'rgba(255,191,0,0.4)'  },
+    { id:'orange',      name:'Naranja',       hex:'#ff7700', glow:'rgba(255,119,0,0.4)'  },
+    { id:'coral',       name:'Coral',         hex:'#ff6b6b', glow:'rgba(255,107,107,0.4)'},
+    { id:'fire',        name:'Fuego',         hex:'#ff4500', glow:'rgba(255,69,0,0.4)'   },
+    // Rojos / rosas
+    { id:'red',         name:'Rojo',          hex:'#ff2244', glow:'rgba(255,34,68,0.4)'  },
+    { id:'crimson',     name:'Carmesí',       hex:'#dc143c', glow:'rgba(220,20,60,0.4)'  },
+    { id:'pink',        name:'Rosa',          hex:'#ff69b4', glow:'rgba(255,105,180,0.4)'},
+    { id:'hotpink',     name:'Rosa hot',      hex:'#ff1493', glow:'rgba(255,20,147,0.4)' },
+    { id:'magenta',     name:'Magenta',       hex:'#ff00ff', glow:'rgba(255,0,255,0.4)'  },
+    // Púrpuras
+    { id:'purple',      name:'Púrpura',       hex:'#9b30ff', glow:'rgba(155,48,255,0.4)' },
+    { id:'violet',      name:'Violeta',       hex:'#7f00ff', glow:'rgba(127,0,255,0.4)'  },
+    { id:'lavender',    name:'Lavanda',       hex:'#c084fc', glow:'rgba(192,132,252,0.4)'},
+    { id:'indigo',      name:'Índigo',        hex:'#6366f1', glow:'rgba(99,102,241,0.4)' },
+    { id:'lilac',       name:'Lila',          hex:'#b57bee', glow:'rgba(181,123,238,0.4)'},
+    // Verdes
+    { id:'green',       name:'Verde',         hex:'#00ff9d', glow:'rgba(0,255,157,0.4)'  },
+    { id:'lime',        name:'Lima',          hex:'#aaff00', glow:'rgba(170,255,0,0.4)'  },
+    { id:'neongreen',   name:'Verde neón',    hex:'#39ff14', glow:'rgba(57,255,20,0.4)'  },
+    { id:'forest',      name:'Bosque',        hex:'#228b22', glow:'rgba(34,139,34,0.4)'  },
+    { id:'mint',        name:'Menta',         hex:'#98ff98', glow:'rgba(152,255,152,0.4)'},
+    // Neutros / especiales
+    { id:'white',       name:'Blanco',        hex:'#ffffff', glow:'rgba(255,255,255,0.3)'},
+    { id:'silver',      name:'Plata',         hex:'#c0c0c0', glow:'rgba(192,192,192,0.3)'},
+    { id:'toxic',       name:'Tóxico',        hex:'#ccff00', glow:'rgba(204,255,0,0.4)'  },
+    { id:'roblox',      name:'Roblox',        hex:'#ff2222', glow:'rgba(255,34,34,0.4)'  },
+    { id:'rainbow',     name:'Rainbow',       hex:'linear-gradient(90deg,#ff0000,#ff7700,#ffff00,#00ff00,#00ffff,#0000ff,#ff00ff)', glow:'rgba(255,255,255,0.3)' },
+];
+
+// ─── ESTILOS DE FONDO (20 estilos) ────────────────────────────────────────
+
+const BG_STYLES = [
+    { id:'default',       name:'Original',        icon:'🌌', desc:'El fondo original del sitio', bg:'' },
+    { id:'deep-black',    name:'Negro puro',       icon:'⬛', desc:'Fondo negro total', bg:'#000000' },
+    { id:'navy',          name:'Navy',             icon:'🌊', desc:'Azul marino profundo', bg:'#020818' },
+    { id:'dark-purple',   name:'Púrpura oscuro',   icon:'🟣', desc:'Fondo púrpura profundo', bg:'#0d001a' },
+    { id:'dark-red',      name:'Rojo oscuro',      icon:'🔴', desc:'Fondo rojo sangre', bg:'#1a0000' },
+    { id:'dark-green',    name:'Verde oscuro',     icon:'🟢', desc:'Fondo selva nocturna', bg:'#001a00' },
+    { id:'dark-blue',     name:'Azul profundo',    icon:'🔵', desc:'Fondo océano profundo', bg:'#000d1a' },
+    { id:'charcoal',      name:'Carbón',           icon:'🌫', desc:'Gris carbón oscuro', bg:'#1a1a1a' },
+    { id:'midnight',      name:'Medianoche',       icon:'🌙', desc:'Azul noche', bg:'#060b1a' },
+    { id:'deep-ocean',    name:'Océano profundo',  icon:'🐋', desc:'Fondo agua oscura', bg:'#001014' },
+    { id:'obsidian',      name:'Obsidiana',        icon:'🗿', desc:'Negro volcánico', bg:'#0d0d0d' },
+    { id:'matrix-purple', name:'Matrix púrpura',   icon:'💜', desc:'Matrix effect morado', bg:'#0a0015', matrix:true, matrixColor:'#9b30ff' },
+    { id:'matrix-cyan',   name:'Matrix cyan',      icon:'💙', desc:'Matrix effect cyan', bg:'#000d0d', matrix:true, matrixColor:'#00dcff' },
+    { id:'matrix-green',  name:'Matrix verde',     icon:'💚', desc:'Matrix effect verde', bg:'#000d00', matrix:true, matrixColor:'#00ff41' },
+    { id:'matrix-red',    name:'Matrix rojo',      icon:'❤️', desc:'Matrix effect rojo', bg:'#0d0000', matrix:true, matrixColor:'#ff2244' },
+    { id:'matrix-gold',   name:'Matrix dorado',    icon:'💛', desc:'Matrix effect dorado', bg:'#0d0a00', matrix:true, matrixColor:'#ffd700' },
+    { id:'matrix-pink',   name:'Matrix rosa',      icon:'🩷', desc:'Matrix effect rosa', bg:'#0d0010', matrix:true, matrixColor:'#ff69b4' },
+    { id:'matrix-white',  name:'Matrix blanco',    icon:'🤍', desc:'Matrix effect blanco', bg:'#050505', matrix:true, matrixColor:'#ffffff' },
+    { id:'matrix-toxic',  name:'Matrix tóxico',    icon:'☣️', desc:'Matrix effect tóxico', bg:'#050d00', matrix:true, matrixColor:'#aaff00' },
+    { id:'gradient-dark', name:'Gradiente',        icon:'🌈', desc:'Gradiente oscuro personalizado',
+        bg:'linear-gradient(135deg, #060b1a 0%, #0d001a 50%, #060b1a 100%)' },
+];
+
+// ─── PRESETS COMPLETOS ────────────────────────────────────────────────────
+
+const PRESETS = [
+    {
+        id: 'original',
+        name: '🌌 Original Los Papus',
+        desc: 'El diseño original',
+        config: { accent:'cyan', bg:'default', aurora:'default', matrix:false, effects:['aurora','particles','cursor'] }
+    },
+    {
+        id: 'purple-matrix',
+        name: '💜 Matrix Púrpura',
+        desc: 'Fondo matrix morado intenso',
+        config: { accent:'purple', bg:'matrix-purple', aurora:'aurora-purple', matrix:true, matrixColor:'#9b30ff', effects:['particles'] }
+    },
+    {
+        id: 'toxic-hacker',
+        name: '☣️ Tóxico Hacker',
+        desc: 'Verde tóxico estilo hacker',
+        config: { accent:'lime', bg:'matrix-green', aurora:'aurora-green', matrix:true, matrixColor:'#00ff41', effects:['particles','scanlines'] }
+    },
+    {
+        id: 'blood-red',
+        name: '🔴 Sangre Roja',
+        desc: 'Rojo oscuro e intenso',
+        config: { accent:'red', bg:'matrix-red', aurora:'aurora-red', matrix:true, matrixColor:'#ff2244', effects:['particles','vignette'] }
+    },
+    {
+        id: 'gold-luxury',
+        name: '👑 Lujo Dorado',
+        desc: 'Dorado lujoso sin matrix',
+        config: { accent:'gold', bg:'midnight', aurora:'aurora-gold', matrix:false, effects:['aurora','particles','cursor','grid'] }
+    },
+    {
+        id: 'cyberpunk',
+        name: '🌆 Cyberpunk 2077',
+        desc: 'Rosa y cyan neon',
+        config: { accent:'pink', bg:'navy', aurora:'aurora-pink', matrix:false, effects:['aurora','particles','cursor','scanlines','grid'] }
+    },
+    {
+        id: 'ice-cold',
+        name: '🧊 Hielo Frío',
+        desc: 'Azul hielo minimalista',
+        config: { accent:'ice', bg:'dark-blue', aurora:'aurora-ice', matrix:false, effects:['aurora','vignette'] }
+    },
+    {
+        id: 'void',
+        name: '🕳️ El Vacío',
+        desc: 'Todo negro, sin efectos',
+        config: { accent:'white', bg:'deep-black', aurora:'aurora-off', matrix:false, effects:[] }
+    },
+];
+
+// ─── ESTADO ACTUAL ────────────────────────────────────────────────────────
+
+const DEFAULT_CONFIG = {
+    accent:       'cyan',
+    bg:           'default',
+    aurora:       'default',
+    matrixColor:  '#00dcff',
+    matrixSpeed:  50,
+    matrixOpacity: 13,
+    brightness:   100,
+    saturation:   100,
+    navbar:       'default',
+    cards:        'default',
+    font:         'default',
+    effects:      ['aurora', 'particles', 'cursor'],
+};
+
+let _persConfig = Object.assign({}, DEFAULT_CONFIG);
+let _matrixInterval = null;
+let _matrixCtx = null;
+let _matrixDrops = [];
+let _matrixColor = '#00dcff';
+
+// ─── INICIALIZACIÓN ───────────────────────────────────────────────────────
+
+function initPersonalization() {
+    loadPersConfig();
+    renderAccentSwatches();
+    renderBgStyles();
+    renderAuroraSwatches();
+    renderMatrixStyles();
+    renderNavbarStyles();
+    renderCardStyles();
+    renderFontStyles();
+    renderPresets();
+    applyConfig(_persConfig);
+    initMatrixCanvas();
+    console.log('[Pers] Sistema de personalización listo ✅');
+}
+
+// ─── PANEL TOGGLE ─────────────────────────────────────────────────────────
+
+window.togglePersPanel = function() {
+    const panel = document.getElementById('personalization-panel');
+    if (!panel) return;
+    panel.classList.toggle('open');
+    const btn = document.getElementById('pers-open-btn');
+    if (btn) btn.style.display = panel.classList.contains('open') ? 'none' : '';
+};
+
+// ─── RENDER DE SWATCHES Y OPCIONES ───────────────────────────────────────
+
+function renderAccentSwatches() {
+    const el = document.getElementById('accent-swatches');
+    if (!el) return;
+    el.innerHTML = ACCENT_COLORS.map(color => {
+        const isGradient = color.hex.startsWith('linear');
+        const bgStyle    = isGradient ? color.hex : color.hex;
+        const active     = _persConfig.accent === color.id;
+        return `
+            <button class="pers-swatch ${active?'active':''}"
+                    id="swatch-accent-${color.id}"
+                    onclick="applyAccentColor('${color.id}')"
+                    style="background:${bgStyle};border-color:${active?'white':'transparent'};"
+                    title="${color.name}">
+                <span class="pers-swatch-tip">${color.name}</span>
+            </button>`;
+    }).join('');
+}
+
+function renderBgStyles() {
+    const el = document.getElementById('bg-styles');
+    if (!el) return;
+    el.innerHTML = BG_STYLES.map(style => {
+        const active = _persConfig.bg === style.id;
+        return `
+            <button class="pers-style-card ${active?'active':''}"
+                    id="bg-card-${style.id}"
+                    onclick="applyBgStyle('${style.id}')"
+                    title="${style.desc}">
+                <span class="pers-style-icon">${style.icon}</span>
+                ${style.name}
+            </button>`;
+    }).join('');
+}
+
+function renderAuroraSwatches() {
+    const el = document.getElementById('aurora-swatches');
+    if (!el) return;
+    const auroraOpts = [
+        { id:'default',       name:'Original', hex:'linear-gradient(90deg,#00b4d8,#9b5de5)', cls:'' },
+        { id:'aurora-purple', name:'Púrpura',  hex:'#9b30ff', cls:'aurora-purple' },
+        { id:'aurora-red',    name:'Rojo',     hex:'#ff2244', cls:'aurora-red'    },
+        { id:'aurora-green',  name:'Verde',    hex:'#00ff9d', cls:'aurora-green'  },
+        { id:'aurora-gold',   name:'Dorado',   hex:'#ffd700', cls:'aurora-gold'   },
+        { id:'aurora-pink',   name:'Rosa',     hex:'#ff69b4', cls:'aurora-pink'   },
+        { id:'aurora-white',  name:'Blanco',   hex:'#eeeeee', cls:'aurora-white'  },
+        { id:'aurora-orange', name:'Naranja',  hex:'#ff7700', cls:'aurora-orange' },
+        { id:'aurora-ice',    name:'Hielo',    hex:'#a8d8ff', cls:'aurora-ice'    },
+        { id:'aurora-toxic',  name:'Tóxico',   hex:'#aaff00', cls:'aurora-toxic'  },
+        { id:'aurora-off',    name:'Apagada',  hex:'#222222', cls:'aurora-off'    },
+    ];
+    el.innerHTML = auroraOpts.map(opt => {
+        const active = (_persConfig.aurora || 'default') === opt.id;
+        return `
+            <button class="pers-swatch ${active?'active':''}"
+                    onclick="applyAuroraColor('${opt.id}')"
+                    style="background:${opt.hex};"
+                    title="${opt.name}">
+                <span class="pers-swatch-tip">${opt.name}</span>
+            </button>`;
+    }).join('');
+}
+
+function renderMatrixStyles() {
+    const el = document.getElementById('matrix-styles');
+    if (!el) return;
+    const matrixOpts = [
+        { id:'off',     name:'OFF',             icon:'🚫' },
+        { id:'cyan',    name:'Cyan',            icon:'🔵', color:'#00dcff' },
+        { id:'purple',  name:'Púrpura',         icon:'💜', color:'#9b30ff' },
+        { id:'green',   name:'Verde',           icon:'💚', color:'#00ff41' },
+        { id:'red',     name:'Rojo',            icon:'❤️', color:'#ff2244' },
+        { id:'gold',    name:'Dorado',          icon:'💛', color:'#ffd700' },
+        { id:'pink',    name:'Rosa',            icon:'🩷', color:'#ff69b4' },
+        { id:'white',   name:'Blanco',          icon:'🤍', color:'#ffffff' },
+        { id:'toxic',   name:'Tóxico',          icon:'☣️', color:'#aaff00' },
+        { id:'rainbow', name:'Rainbow',         icon:'🌈', color:'rainbow'  },
+    ];
+    el.innerHTML = matrixOpts.map(opt => `
+        <button class="pers-style-card"
+                id="matrix-btn-${opt.id}"
+                onclick="applyMatrixColor('${opt.id}','${opt.color||''}')"
+                title="Matrix ${opt.name}">
+            <span class="pers-style-icon">${opt.icon}</span>
+            ${opt.name}
+        </button>
+    `).join('');
+}
+
+function renderNavbarStyles() {
+    const el = document.getElementById('navbar-styles');
+    if (!el) return;
+    const opts = [
+        { id:'default', name:'Original', icon:'🔲' },
+        { id:'glass',   name:'Glass',    icon:'🪟'  },
+        { id:'solid',   name:'Sólido',   icon:'⬛'  },
+        { id:'purple',  name:'Púrpura',  icon:'💜'  },
+        { id:'red',     name:'Rojo',     icon:'🔴'  },
+        { id:'gold',    name:'Dorado',   icon:'⭐'  },
+    ];
+    el.innerHTML = opts.map(opt => `
+        <button class="pers-style-card ${_persConfig.navbar===opt.id?'active':''}"
+                onclick="applyNavbarStyle('${opt.id}')">
+            <span class="pers-style-icon">${opt.icon}</span>
+            ${opt.name}
+        </button>
+    `).join('');
+}
+
+function renderCardStyles() {
+    const el = document.getElementById('card-styles');
+    if (!el) return;
+    const opts = [
+        { id:'default', name:'Original', icon:'🃏' },
+        { id:'neon',    name:'Neón',     icon:'✨'  },
+        { id:'flat',    name:'Flat',     icon:'📄'  },
+        { id:'glass',   name:'Glass',    icon:'🪟'  },
+    ];
+    el.innerHTML = opts.map(opt => `
+        <button class="pers-style-card ${_persConfig.cards===opt.id?'active':''}"
+                onclick="applyCardStyle('${opt.id}')">
+            <span class="pers-style-icon">${opt.icon}</span>
+            ${opt.name}
+        </button>
+    `).join('');
+}
+
+function renderFontStyles() {
+    const el = document.getElementById('font-styles');
+    if (!el) return;
+    const opts = [
+        { id:'default',  name:'Poppins',   icon:'Pp' },
+        { id:'mono',     name:'Monospace', icon:'>_' },
+        { id:'orbitron', name:'Orbitron',  icon:'⊙'  },
+    ];
+    el.innerHTML = opts.map(opt => `
+        <button class="pers-style-card ${_persConfig.font===opt.id?'active':''}"
+                onclick="applyFontStyle('${opt.id}')">
+            <span class="pers-style-icon" style="font-size:14px;font-weight:700;">${opt.icon}</span>
+            ${opt.name}
+        </button>
+    `).join('');
+}
+
+function renderPresets() {
+    const el = document.getElementById('preset-list');
+    if (!el) return;
+    el.innerHTML = PRESETS.map(preset => `
+        <button onclick="applyPreset('${preset.id}')"
+                style="display:flex;align-items:center;gap:10px;padding:10px 14px;
+                       border-radius:8px;cursor:pointer;text-align:left;
+                       background:rgba(0,0,0,0.3);border:1px solid rgba(0,220,255,0.08);
+                       transition:.15s;width:100%;"
+                onmouseover="this.style.borderColor='rgba(0,220,255,0.25)'"
+                onmouseout="this.style.borderColor='rgba(0,220,255,0.08)'">
+            <span style="font-size:20px;">${preset.name.split(' ')[0]}</span>
+            <div>
+                <div style="font-size:11px;color:#ddeeff;">${preset.name.replace(/^\S+\s/,'')}</div>
+                <div style="font-size:9px;color:rgba(0,220,255,0.35);">${preset.desc}</div>
+            </div>
+        </button>
+    `).join('');
+}
+
+// ─── APLICAR CONFIGURACIÓN ────────────────────────────────────────────────
+
+function applyConfig(cfg) {
+    if (!cfg) return;
+    applyAccentColor(cfg.accent || 'cyan', true);
+    applyBgStyle(cfg.bg || 'default', true);
+    applyAuroraColor(cfg.aurora || 'default', true);
+    applyNavbarStyle(cfg.navbar || 'default', true);
+    applyCardStyle(cfg.cards || 'default', true);
+    applyFontStyle(cfg.font || 'default', true);
+
+    // Effects
+    const effectToggles = ['scanlines','vignette','grid','aurora','particles','cursor'];
+    effectToggles.forEach(eff => {
+        const on = (cfg.effects || []).includes(eff);
+        applyEffect(eff, on, true);
+        const btn = document.getElementById('tog-' + eff);
+        if (btn) {
+            btn.classList.toggle('on', on);
+        }
+    });
+
+    // Brightness / saturation
+    if (cfg.brightness !== undefined) setSiteBrightness(cfg.brightness, true);
+    if (cfg.saturation !== undefined) setSiteSaturation(cfg.saturation, true);
+
+    // Matrix
+    if (cfg.matrixColor && document.body.classList.toString().includes('matrix')) {
+        _matrixColor = cfg.matrixColor;
+    }
+
+    // Sliders
+    const bSlider = document.getElementById('brightness-slider');
+    if (bSlider) bSlider.value = cfg.brightness || 100;
+    const sSlider = document.getElementById('saturation-slider');
+    if (sSlider) sSlider.value = cfg.saturation || 100;
+    const mSpeed = document.getElementById('matrix-speed');
+    if (mSpeed) mSpeed.value = cfg.matrixSpeed || 50;
+    const mOpac = document.getElementById('matrix-opacity');
+    if (mOpac) mOpac.value = cfg.matrixOpacity || 13;
+}
+
+// ─── ACCENT COLOR ─────────────────────────────────────────────────────────
+
+window.applyAccentColor = function(colorId, silent) {
+    const color = ACCENT_COLORS.find(c => c.id === colorId);
+    if (!color) return;
+    _persConfig.accent = colorId;
+
+    const isGradient = color.hex.startsWith('linear');
+
+    if (!isGradient) {
+        document.documentElement.style.setProperty('--primary', color.hex);
+        document.documentElement.style.setProperty('--cyan', color.hex);
+        document.documentElement.style.setProperty('--accent-glow', color.glow);
+    } else {
+        // Rainbow — cycle through hues
+        document.documentElement.style.setProperty('--primary', '#ff69b4');
+        document.documentElement.style.setProperty('--cyan', '#00dcff');
+    }
+
+    // Update active swatch
+    document.querySelectorAll('[id^="swatch-accent-"]').forEach(el => el.classList.remove('active'));
+    const activeEl = document.getElementById('swatch-accent-' + colorId);
+    if (activeEl) activeEl.classList.add('active');
+
+    if (!silent) {
+        showPersPreview('Color: ' + color.name);
+        savePersConfig();
+    }
+};
+
+// ─── BACKGROUND STYLE ─────────────────────────────────────────────────────
+
+window.applyBgStyle = function(styleId, silent) {
+    const style = BG_STYLES.find(s => s.id === styleId);
+    if (!style) return;
+    _persConfig.bg = styleId;
+
+    // Don't apply bg during intro animation
+    const intro = document.getElementById('intro');
+    if (intro && intro.style.display !== 'none' && getComputedStyle(intro).opacity !== '0') {
+        // Queue for after intro
+        setTimeout(function() { applyBgStyle(styleId, silent); }, 800);
+        return;
+    }
+
+    // Remove all bg classes
+    const body = document.body;
+    BG_STYLES.forEach(s => {
+        body.classList.remove('bg-' + s.id);
+        body.classList.remove('theme-matrix-' + s.id.replace('matrix-',''));
+    });
+
+    // Stop matrix if switching away from matrix bg
+    if (!style.matrix) {
+        stopMatrix();
+    }
+
+    if (styleId === 'default') {
+        body.style.background = '';
+    } else if (style.matrix) {
+        body.style.background = style.bg;
+        _matrixColor = style.matrixColor || '#00dcff';
+        startMatrix(_matrixColor);
+    } else {
+        body.style.background = style.bg;
+    }
+
+    // Update cards
+    document.querySelectorAll('[id^="bg-card-"]').forEach(el => el.classList.remove('active'));
+    const activeEl = document.getElementById('bg-card-' + styleId);
+    if (activeEl) activeEl.classList.add('active');
+
+    if (!silent) {
+        showPersPreview('Fondo: ' + style.name);
+        savePersConfig();
+    }
+};
+
+// ─── AURORA COLOR ─────────────────────────────────────────────────────────
+
+window.applyAuroraColor = function(auroraId, silent) {
+    _persConfig.aurora = auroraId;
+    const body = document.body;
+    // Remove all aurora classes
+    ['aurora-purple','aurora-red','aurora-green','aurora-gold','aurora-pink',
+     'aurora-white','aurora-orange','aurora-ice','aurora-toxic','aurora-off'].forEach(cls => {
+        body.classList.remove(cls);
+    });
+    if (auroraId !== 'default') body.classList.add(auroraId);
+
+    // Update swatches
+    document.querySelectorAll('#aurora-swatches .pers-swatch').forEach(el => el.classList.remove('active'));
+    const auroraEls = document.querySelectorAll('#aurora-swatches .pers-swatch');
+    const opts = ['default','aurora-purple','aurora-red','aurora-green','aurora-gold',
+                  'aurora-pink','aurora-white','aurora-orange','aurora-ice','aurora-toxic','aurora-off'];
+    const idx = opts.indexOf(auroraId);
+    if (idx >= 0 && auroraEls[idx]) auroraEls[idx].classList.add('active');
+
+    if (!silent) { showPersPreview('Aurora: ' + auroraId); savePersConfig(); }
+};
+
+// ─── MATRIX RAIN ENGINE ───────────────────────────────────────────────────
+
+function initMatrixCanvas() {
+    const canvas = document.getElementById('matrix-canvas');
+    if (!canvas) return;
+    _matrixCtx = canvas.getContext('2d');
+    resizeMatrixCanvas();
+    window.addEventListener('resize', resizeMatrixCanvas);
+}
+
+function resizeMatrixCanvas() {
+    const canvas = document.getElementById('matrix-canvas');
+    if (!canvas || !_matrixCtx) return;
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const cols   = Math.floor(canvas.width / 16);
+    _matrixDrops = new Array(cols).fill(1);
+}
+
+let _matrixSpeed = 50;
+let _matrixOpacity = 0.13;
+let _matrixRainbow = false;
+
+function startMatrix(color) {
+    stopMatrix();
+    const canvas = document.getElementById('matrix-canvas');
+    if (!canvas) return;
+    canvas.style.display = 'block';
+    _matrixRainbow = (color === 'rainbow');
+    _matrixColor   = _matrixRainbow ? '#00ff41' : (color || '#00dcff');
+
+    const CHARS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ{}[]<>/\|';
+
+    function drawMatrix() {
+        if (!_matrixCtx) return;
+        const canvas = document.getElementById('matrix-canvas');
+        if (!canvas || canvas.style.display === 'none') return;
+
+        _matrixCtx.fillStyle = `rgba(0,0,0,0.05)`;
+        _matrixCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const fontSize = 14;
+        _matrixCtx.font = fontSize + 'px Courier New';
+
+        for (let i = 0; i < _matrixDrops.length; i++) {
+            const char = CHARS[Math.floor(Math.random() * CHARS.length)];
+
+            if (_matrixRainbow) {
+                const hue = (Date.now() / 20 + i * 10) % 360;
+                _matrixCtx.fillStyle = `hsla(${hue},100%,60%,0.9)`;
+            } else {
+                // First char brighter (white flash)
+                if (Math.random() > 0.95) {
+                    _matrixCtx.fillStyle = '#ffffff';
+                } else {
+                    _matrixCtx.fillStyle = _matrixColor;
+                }
+            }
+
+            _matrixCtx.fillText(char, i * 16, _matrixDrops[i] * 16);
+
+            if (_matrixDrops[i] * 16 > canvas.height && Math.random() > 0.975) {
+                _matrixDrops[i] = 0;
+            }
+            _matrixDrops[i]++;
+        }
+    }
+
+    const interval = Math.max(20, 120 - _matrixSpeed);
+    _matrixInterval = setInterval(drawMatrix, interval);
+}
+
+function stopMatrix() {
+    if (_matrixInterval) { clearInterval(_matrixInterval); _matrixInterval = null; }
+    const canvas = document.getElementById('matrix-canvas');
+    if (canvas) {
+        canvas.style.display = 'none';
+        if (_matrixCtx) _matrixCtx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+window.applyMatrixColor = function(colorId, colorHex) {
+    // Update active button
+    document.querySelectorAll('[id^="matrix-btn-"]').forEach(el => el.classList.remove('active'));
+    const btn = document.getElementById('matrix-btn-' + colorId);
+    if (btn) btn.classList.add('active');
+
+    if (colorId === 'off') {
+        stopMatrix();
+        _persConfig.matrixActive = false;
+        showPersPreview('Matrix: OFF');
+    } else {
+        _persConfig.matrixActive = true;
+        _persConfig.matrixColor  = colorHex || '#00dcff';
+        startMatrix(colorHex === 'rainbow' ? 'rainbow' : colorHex);
+        showPersPreview('Matrix: ' + colorId);
+    }
+    savePersConfig();
+};
+
+window.setMatrixSpeed = function(val) {
+    _matrixSpeed = parseInt(val);
+    _persConfig.matrixSpeed = _matrixSpeed;
+    // Restart matrix if active
+    if (_matrixInterval) {
+        startMatrix(_matrixColor);
+    }
+};
+
+window.setMatrixOpacity = function(val) {
+    _matrixOpacity = parseInt(val) / 100;
+    _persConfig.matrixOpacity = parseInt(val);
+    const canvas = document.getElementById('matrix-canvas');
+    if (canvas) canvas.style.opacity = _matrixOpacity;
+};
+
+// ─── NAVBAR / CARD / FONT STYLES ─────────────────────────────────────────
+
+window.applyNavbarStyle = function(styleId, silent) {
+    _persConfig.navbar = styleId;
+    const body = document.body;
+    ['nav-glass','nav-solid','nav-purple','nav-red','nav-gold'].forEach(c => body.classList.remove(c));
+    if (styleId !== 'default') body.classList.add('nav-' + styleId);
+    document.querySelectorAll('#navbar-styles .pers-style-card').forEach(el => el.classList.remove('active'));
+    const navOpts = ['default','glass','solid','purple','red','gold'];
+    const navCards = document.querySelectorAll('#navbar-styles .pers-style-card');
+    const idx = navOpts.indexOf(styleId);
+    if (navCards[idx]) navCards[idx].classList.add('active');
+    if (!silent) { showPersPreview('Navbar: ' + styleId); savePersConfig(); }
+};
+
+window.applyCardStyle = function(styleId, silent) {
+    _persConfig.cards = styleId;
+    const body = document.body;
+    ['cards-neon','cards-flat','cards-glass'].forEach(c => body.classList.remove(c));
+    if (styleId !== 'default') body.classList.add('cards-' + styleId);
+    document.querySelectorAll('#card-styles .pers-style-card').forEach(el => el.classList.remove('active'));
+    const cardOpts = ['default','neon','flat','glass'];
+    const cardCards = document.querySelectorAll('#card-styles .pers-style-card');
+    const idx = cardOpts.indexOf(styleId);
+    if (cardCards[idx]) cardCards[idx].classList.add('active');
+    if (!silent) { showPersPreview('Cards: ' + styleId); savePersConfig(); }
+};
+
+window.applyFontStyle = function(styleId, silent) {
+    _persConfig.font = styleId;
+    const body = document.body;
+    ['font-mono','font-orbitron','font-poppins'].forEach(c => body.classList.remove(c));
+    if (styleId !== 'default') body.classList.add('font-' + styleId);
+    document.querySelectorAll('#font-styles .pers-style-card').forEach(el => el.classList.remove('active'));
+    const fontOpts = ['default','mono','orbitron'];
+    const fontCards = document.querySelectorAll('#font-styles .pers-style-card');
+    const idx = fontOpts.indexOf(styleId);
+    if (fontCards[idx]) fontCards[idx].classList.add('active');
+    if (!silent) { showPersPreview('Fuente: ' + styleId); savePersConfig(); }
+};
+
+// ─── EFECTOS ──────────────────────────────────────────────────────────────
+
+window.toggleEffect = function(effectName) {
+    const btn = document.getElementById('tog-' + effectName);
+    const isOn = btn ? btn.classList.contains('on') : false;
+    applyEffect(effectName, !isOn);
+    if (btn) btn.classList.toggle('on', !isOn);
+    if (!isOn) {
+        if (!_persConfig.effects) _persConfig.effects = [];
+        if (!_persConfig.effects.includes(effectName)) _persConfig.effects.push(effectName);
+    } else {
+        _persConfig.effects = (_persConfig.effects || []).filter(e => e !== effectName);
+    }
+    showPersPreview(effectName + ': ' + (!isOn ? 'ON' : 'OFF'));
+    savePersConfig();
+};
+
+function applyEffect(name, on, silent) {
+    const body = document.body;
+    switch(name) {
+        case 'scanlines':
+            body.classList.toggle('overlay-scanlines', on);
+            break;
+        case 'vignette':
+            body.classList.toggle('overlay-vignette', on);
+            break;
+        case 'grid':
+            body.classList.toggle('overlay-grid', on);
+            break;
+        case 'aurora':
+            body.classList.toggle('aurora-off', !on);
+            break;
+        case 'particles':
+            body.classList.toggle('particles-off', !on);
+            break;
+        case 'cursor':
+            body.classList.toggle('cursor-none', !on);
+            break;
+    }
+}
+
+// ─── BRILLO / SATURACIÓN ─────────────────────────────────────────────────
+
+window.setSiteBrightness = function(val, silent) {
+    _persConfig.brightness = parseInt(val);
+    const intro = document.getElementById('intro');
+    if (intro && intro.style.display !== 'none') return; // don't filter during intro
+    document.body.style.filter = `brightness(${val}%) saturate(${_persConfig.saturation||100}%)`;
+    const valEl = document.getElementById('brightness-val');
+    if (valEl) valEl.textContent = val + '%';
+    if (!silent) savePersConfig();
+};
+
+window.setSiteSaturation = function(val, silent) {
+    _persConfig.saturation = parseInt(val);
+    document.body.style.filter = `brightness(${_persConfig.brightness||100}%) saturate(${val}%)`;
+    const valEl = document.getElementById('saturation-val');
+    if (valEl) valEl.textContent = val + '%';
+    if (!silent) savePersConfig();
+};
+
+// ─── PRESETS ──────────────────────────────────────────────────────────────
+
+window.applyPreset = function(presetId) {
+    const preset = PRESETS.find(p => p.id === presetId);
+    if (!preset) return;
+    const cfg = preset.config;
+
+    applyAccentColor(cfg.accent || 'cyan');
+    applyBgStyle(cfg.bg || 'default');
+    applyAuroraColor(cfg.aurora || 'default');
+
+    // Effects
+    const allEffects = ['scanlines','vignette','grid','aurora','particles','cursor'];
+    allEffects.forEach(eff => {
+        const on = (cfg.effects || []).includes(eff);
+        applyEffect(eff, on);
+        const btn = document.getElementById('tog-' + eff);
+        if (btn) btn.classList.toggle('on', on);
+    });
+    _persConfig.effects = cfg.effects || [];
+
+    if (cfg.matrix && cfg.matrixColor) {
+        startMatrix(cfg.matrixColor);
+        _persConfig.matrixActive = true;
+        _persConfig.matrixColor  = cfg.matrixColor;
+    } else {
+        stopMatrix();
+        _persConfig.matrixActive = false;
+    }
+
+    showPersPreview('Preset: ' + preset.name);
+    savePersConfig();
+};
+
+// ─── GUARDAR / CARGAR CONFIG ──────────────────────────────────────────────
+
+window.savePersConfig = function() {
+    try {
+        localStorage.setItem('papus_theme_v1', JSON.stringify(_persConfig));
+        const statusEl = document.getElementById('pers-status');
+        if (statusEl) {
+            statusEl.textContent = '> configuración guardada ✅';
+            setTimeout(() => { if (statusEl) statusEl.textContent = ''; }, 2000);
+        }
+    } catch(e) {
+        console.warn('[Pers] Error guardando config:', e);
+    }
+};
+
+function loadPersConfig() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('papus_theme_v1') || 'null');
+        if (saved) {
+            _persConfig = Object.assign({}, DEFAULT_CONFIG, saved);
+            // Sync sliders
+            const bSlider = document.getElementById('brightness-slider');
+            if (bSlider) bSlider.value = _persConfig.brightness || 100;
+            const sSlider = document.getElementById('saturation-slider');
+            if (sSlider) sSlider.value = _persConfig.saturation || 100;
+        }
+    } catch(e) {
+        _persConfig = Object.assign({}, DEFAULT_CONFIG);
+    }
+}
+
+window.resetPersConfig = function() {
+    localStorage.removeItem('papus_theme_v1');
+    _persConfig = Object.assign({}, DEFAULT_CONFIG);
+    stopMatrix();
+    // Reset body classes and styles
+    document.body.style.background = '';
+    document.body.style.filter = '';
+    ['overlay-scanlines','overlay-vignette','overlay-grid','aurora-off',
+     'particles-off','cursor-none','nav-glass','nav-solid','nav-purple',
+     'nav-red','nav-gold','cards-neon','cards-flat','cards-glass',
+     'font-mono','font-orbitron','font-poppins','aurora-purple','aurora-red',
+     'aurora-green','aurora-gold','aurora-pink','aurora-white','aurora-orange',
+     'aurora-ice','aurora-toxic'].forEach(cls => document.body.classList.remove(cls));
+    document.documentElement.style.removeProperty('--primary');
+    document.documentElement.style.removeProperty('--cyan');
+    applyConfig(_persConfig);
+    renderAccentSwatches();
+    renderBgStyles();
+    showPersPreview('✅ Reset completo');
+};
+
+// ─── PREVIEW BAR ─────────────────────────────────────────────────────────
+
+let _previewTimeout = null;
+function showPersPreview(msg) {
+    const bar = document.getElementById('pers-preview-bar');
+    if (!bar) return;
+    bar.textContent = msg;
+    bar.classList.add('show');
+    clearTimeout(_previewTimeout);
+    _previewTimeout = setTimeout(() => bar.classList.remove('show'), 1800);
+}
+
+// ─── ARRANQUE ─────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Wait for intro to finish before applying theme
+    // Intro lasts ~10s — check if intro is done, else wait
+    function waitForIntroThenInit() {
+        const intro = document.getElementById('intro');
+        if (!intro || intro.style.display === 'none' || getComputedStyle(intro).opacity === '0') {
+            initPersonalization();
+        } else {
+            // Intro still running — wait a bit more
+            setTimeout(waitForIntroThenInit, 800);
+        }
+    }
+    setTimeout(waitForIntroThenInit, 1200);
+});
+
+})(); // end personalization IIFE
+
+</script>
+
+<script>
+// ══════════════════════════════════════════════════════════════════════════════
+// PERSONALIZACIÓN EXTENDIDA — Funciones avanzadas de customización
+// Helpers, animaciones, sincronización con Firebase y utilidades visuales
+// ══════════════════════════════════════════════════════════════════════════════
+
+(function() {
+'use strict';
+
+// ─── SINCRONIZACIÓN DE TEMA CON FIREBASE ─────────────────────────────────
+/**
+ * Sincroniza el tema del usuario con Firebase.
+ * Permite que al iniciar sesión en otro dispositivo, el tema se restaure.
+ * Solo para usuarios logueados.
+ */
+async function syncThemeToFirebase() {
+    if (!window.currentUser?.nick) return;
+    try {
+        const cfg = JSON.parse(localStorage.getItem('papus_theme_v1') || '{}');
+        if (!cfg || !Object.keys(cfg).length) return;
+        await window._fbUpdateDoc(
+            window._fbDoc(db, 'users', window.currentUser.nick),
+            { theme: cfg }
+        );
+        console.log('[Theme] Tema sincronizado con Firebase ✅');
+    } catch(e) {
+        console.warn('[Theme] No se pudo sincronizar:', e);
+    }
+}
+
+/**
+ * Carga el tema del usuario desde Firebase al iniciar sesión.
+ * Si existe un tema guardado en Firebase, lo aplica.
+ */
+async function loadThemeFromFirebase(nick) {
+    if (!nick) return;
+    try {
+        const snap = await window._fbGetDoc(window._fbDoc(db, 'users', nick));
+        if (!snap.exists() || !snap.data().theme) return;
+        const savedTheme = snap.data().theme;
+        // Merge con defaults
+        const merged = Object.assign(
+            { accent:'cyan', bg:'default', aurora:'default',
+              effects:['aurora','particles','cursor'], brightness:100, saturation:100 },
+            savedTheme
+        );
+        localStorage.setItem('papus_theme_v1', JSON.stringify(merged));
+        console.log('[Theme] Tema cargado desde Firebase:', merged.accent);
+    } catch(e) {
+        console.warn('[Theme] Error cargando tema:', e);
+    }
+}
+
+// Exportar para uso externo
+window.syncThemeToFirebase   = syncThemeToFirebase;
+window.loadThemeFromFirebase = loadThemeFromFirebase;
+
+// ─── COLORES PERSONALIZADOS HEX ───────────────────────────────────────────
+/**
+ * Permite al usuario ingresar un color HEX personalizado
+ * que no esté en la paleta predefinida.
+ */
+window.applyCustomHexColor = function(hex) {
+    if (!hex || !hex.match(/^#[0-9a-fA-F]{6}$/)) {
+        showPersPreviewMsg('Color inválido — usa formato #RRGGBB');
+        return;
+    }
+    document.documentElement.style.setProperty('--primary', hex);
+    document.documentElement.style.setProperty('--cyan', hex);
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    document.documentElement.style.setProperty(
+        '--accent-glow', `rgba(${r},${g},${b},0.4)`
+    );
+    showPersPreviewMsg('Color personalizado: ' + hex);
+    savePersConfigExt();
+};
+
+function showPersPreviewMsg(msg) {
+    const bar = document.getElementById('pers-preview-bar');
+    if (!bar) return;
+    bar.textContent = msg;
+    bar.classList.add('show');
+    setTimeout(() => bar && bar.classList.remove('show'), 1800);
+}
+
+function savePersConfigExt() {
+    if (typeof savePersConfig === 'function') savePersConfig();
+}
+
+// ─── ANIMACIONES DE TRANSICIÓN DE TEMA ───────────────────────────────────
+/**
+ * Aplica una transición suave al cambiar de tema.
+ * Hace un fade out / fade in del contenido.
+ */
+function smoothThemeTransition(callback) {
+    const body = document.body;
+    body.style.transition = 'filter 0.4s ease, background 0.4s ease';
+    body.style.filter = 'brightness(0.2) blur(2px)';
+    setTimeout(() => {
+        if (typeof callback === 'function') callback();
+        body.style.filter = '';
+        setTimeout(() => {
+            body.style.transition = '';
+        }, 400);
+    }, 200);
+}
+
+window.smoothThemeTransition = smoothThemeTransition;
+
+// ─── DETECCIÓN DE PREFERENCIAS DEL SISTEMA ───────────────────────────────
+/**
+ * Detecta si el usuario prefiere modo oscuro o claro
+ * y ajusta el brillo automáticamente.
+ */
+function detectSystemPreferences() {
+    const prefersDark  = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    const lowMotion    = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const highContrast = window.matchMedia('(prefers-contrast: high)').matches;
+
+    console.log('[Theme] Sistema:', {
+        dark: prefersDark,
+        light: prefersLight,
+        lowMotion,
+        highContrast
+    });
+
+    if (lowMotion) {
+        // Desactivar animaciones pesadas
+        document.body.classList.add('particles-off');
+        const tog = document.getElementById('tog-particles');
+        if (tog) tog.classList.remove('on');
+        console.log('[Theme] Reduced motion detectado — partículas desactivadas');
+    }
+
+    if (highContrast) {
+        document.documentElement.style.setProperty('--primary', '#ffffff');
+        document.documentElement.style.setProperty('--cyan', '#ffffff');
+    }
+}
+
+// ─── GENERADOR DE GRADIENTES PERSONALIZADOS ───────────────────────────────
+/**
+ * Genera un fondo de gradiente personalizado con dos colores.
+ *
+ * @param {string} color1 - Color de inicio (hex)
+ * @param {string} color2 - Color de fin (hex)
+ * @param {number} angle  - Ángulo del gradiente (0-360)
+ */
+window.applyCustomGradient = function(color1, color2, angle) {
+    color1 = color1 || '#060b1a';
+    color2 = color2 || '#0d001a';
+    angle  = angle  || 135;
+    document.body.style.background = `linear-gradient(${angle}deg, ${color1} 0%, ${color2} 100%)`;
+    showPersPreviewMsg('Gradiente personalizado aplicado');
+    savePersConfigExt();
+};
+
+// ─── TEMA ROBLOX ESPECIAL ─────────────────────────────────────────────────
+/**
+ * Tema especial inspirado en Roblox — rojo y gris oscuro.
+ */
+window.applyRobloxTheme = function() {
+    document.body.style.background = '#1a0000';
+    document.documentElement.style.setProperty('--primary', '#ff2222');
+    document.documentElement.style.setProperty('--cyan', '#ff2222');
+    document.documentElement.style.setProperty('--accent-glow', 'rgba(255,34,34,0.4)');
+    const aurora = document.getElementById('aurora');
+    if (aurora) aurora.style.filter = 'hue-rotate(160deg)';
+    showPersPreviewMsg('🎮 Tema Roblox activado');
+    savePersConfigExt();
+};
+
+// ─── MODO CONCENTRACIÓN ───────────────────────────────────────────────────
+/**
+ * Modo concentración: reduce al mínimo los efectos visuales
+ * para un sitio más limpio y sin distracciones.
+ */
+window.applyFocusMode = function() {
+    document.body.classList.add('particles-off');
+    document.body.classList.add('aurora-off');
+    document.body.classList.remove('overlay-scanlines');
+    document.body.classList.remove('overlay-grid');
+    const canvas = document.getElementById('matrix-canvas');
+    if (canvas) canvas.style.display = 'none';
+    document.body.style.filter = 'brightness(80%)';
+    showPersPreviewMsg('🎯 Modo concentración ON');
+    savePersConfigExt();
+};
+
+// ─── MODO FIESTA ──────────────────────────────────────────────────────────
+/**
+ * Modo fiesta: colores al máximo, efectos activados, todo brillante.
+ */
+let _partyInterval = null;
+window.applyPartyMode = function() {
+    if (_partyInterval) {
+        clearInterval(_partyInterval);
+        _partyInterval = null;
+        showPersPreviewMsg('🎉 Modo fiesta OFF');
+        return;
+    }
+    document.body.classList.remove('particles-off');
+    document.body.classList.remove('aurora-off');
+    let hue = 0;
+    _partyInterval = setInterval(() => {
+        hue = (hue + 3) % 360;
+        document.documentElement.style.setProperty(
+            '--primary', `hsl(${hue},100%,60%)`
+        );
+        document.documentElement.style.setProperty(
+            '--cyan', `hsl(${hue},100%,60%)`
+        );
+        const aurora = document.getElementById('aurora');
+        if (aurora) aurora.style.filter = `hue-rotate(${hue}deg) brightness(1.2)`;
+    }, 50);
+    showPersPreviewMsg('🎉 Modo fiesta ON — vuelve a clickear para apagar');
+};
+
+// ─── SCREENSHOT / EXPORT DEL TEMA ────────────────────────────────────────
+/**
+ * Exporta la configuración actual del tema como JSON descargable.
+ */
+window.exportThemeConfig = function() {
+    try {
+        const cfg  = JSON.parse(localStorage.getItem('papus_theme_v1') || '{}');
+        const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `papus_tema_${cfg.accent||'default'}_${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        showPersPreviewMsg('💾 Tema exportado');
+    } catch(e) {
+        showPersPreviewMsg('Error exportando tema');
+    }
+};
+
+/**
+ * Importa una configuración de tema desde un archivo JSON.
+ */
+window.importThemeConfig = function() {
+    const input  = document.createElement('input');
+    input.type   = 'file';
+    input.accept = '.json';
+    input.onchange = async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        try {
+            const text = await file.text();
+            const cfg  = JSON.parse(text);
+            localStorage.setItem('papus_theme_v1', JSON.stringify(cfg));
+            location.reload();
+        } catch(ex) {
+            showPersPreviewMsg('Error: archivo inválido');
+        }
+    };
+    input.click();
+};
+
+// ─── PALETA DE COLORES DINÁMICA ───────────────────────────────────────────
+/**
+ * Genera una paleta de colores armónica a partir de un color base.
+ * Usa la rueda de colores para calcular complementarios, análogos y tríadas.
+ *
+ * @param {string} baseHex - Color base en hex
+ * @returns {Object} - { complementary, analogous1, analogous2, triadic1, triadic2 }
+ */
+function generateColorPalette(baseHex) {
+    if (!baseHex || !baseHex.match(/^#[0-9a-fA-F]{6}$/)) return null;
+
+    const r = parseInt(baseHex.slice(1,3),16);
+    const g = parseInt(baseHex.slice(3,5),16);
+    const b = parseInt(baseHex.slice(5,7),16);
+
+    // Convertir a HSL
+    const rn = r/255, gn = g/255, bn = b/255;
+    const max = Math.max(rn,gn,bn), min = Math.min(rn,gn,bn);
+    let h = 0, s = 0, l = (max+min)/2;
+
+    if (max !== min) {
+        const d = max - min;
+        s = l > 0.5 ? d/(2-max-min) : d/(max+min);
+        switch(max) {
+            case rn: h = ((gn-bn)/d + (gn<bn?6:0))/6; break;
+            case gn: h = ((bn-rn)/d + 2)/6; break;
+            case bn: h = ((rn-gn)/d + 4)/6; break;
+        }
+    }
+
+    h = Math.round(h*360);
+    s = Math.round(s*100);
+    l = Math.round(l*100);
+
+    return {
+        base:          `hsl(${h},${s}%,${l}%)`,
+        complementary: `hsl(${(h+180)%360},${s}%,${l}%)`,
+        analogous1:    `hsl(${(h+30) %360},${s}%,${l}%)`,
+        analogous2:    `hsl(${(h-30+360)%360},${s}%,${l}%)`,
+        triadic1:      `hsl(${(h+120)%360},${s}%,${l}%)`,
+        triadic2:      `hsl(${(h+240)%360},${s}%,${l}%)`,
+        split1:        `hsl(${(h+150)%360},${s}%,${l}%)`,
+        split2:        `hsl(${(h+210)%360},${s}%,${l}%)`,
+    };
+}
+
+window.generateColorPalette = generateColorPalette;
+
+// ─── CURSOR PERSONALIZADO AVANZADO ───────────────────────────────────────
+/**
+ * Aplica un cursor personalizado con diferentes estilos.
+ *
+ * @param {string} style - 'neon' | 'crosshair' | 'dot' | 'ring' | 'default'
+ */
+window.applyCursorStyle = function(style) {
+    const body = document.body;
+    ['cursor-crosshair','cursor-none','cursor-default'].forEach(c => body.classList.remove(c));
+
+    switch(style) {
+        case 'crosshair':
+            body.classList.add('cursor-crosshair');
+            break;
+        case 'none':
+            body.classList.add('cursor-none');
+            break;
+        case 'default':
+        default:
+            body.style.cursor = '';
+            break;
+    }
+    showPersPreviewMsg('Cursor: ' + style);
+    savePersConfigExt();
+};
+
+// ─── ANIMACIÓN DE CARGA DEL PANEL ────────────────────────────────────────
+/**
+ * Anima los elementos del panel de personalización al abrirse.
+ * Aplica un efecto de entrada staggered a cada sección.
+ */
+function animatePanelEntrance() {
+    const sections = document.querySelectorAll('#personalization-panel .pers-section');
+    sections.forEach((section, i) => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateX(-20px)';
+        section.style.transition = `opacity 0.3s ${i*0.04}s, transform 0.3s ${i*0.04}s`;
+        setTimeout(() => {
+            section.style.opacity = '1';
+            section.style.transform = 'translateX(0)';
+        }, 50 + i * 40);
+    });
+}
+
+// Hook al open del panel
+const _origTogglePanel = window.togglePersPanel;
+window.togglePersPanel = function() {
+    if (_origTogglePanel) _origTogglePanel();
+    const panel = document.getElementById('personalization-panel');
+    if (panel && panel.classList.contains('open')) {
+        setTimeout(animatePanelEntrance, 50);
+    }
+};
+
+// ─── ESTADÍSTICAS DE TEMA ─────────────────────────────────────────────────
+/**
+ * Muestra en consola las estadísticas del tema actual.
+ * Útil para debugging y para ver cuántos cambios se han hecho.
+ */
+window.getThemeStats = function() {
+    const cfg = JSON.parse(localStorage.getItem('papus_theme_v1') || '{}');
+    const stats = {
+        accentColor:    cfg.accent || 'cyan (default)',
+        background:     cfg.bg || 'original',
+        auroraColor:    cfg.aurora || 'original',
+        effectsActive:  (cfg.effects || []).join(', ') || 'ninguno',
+        brightness:     (cfg.brightness || 100) + '%',
+        saturation:     (cfg.saturation || 100) + '%',
+        matrixActive:   cfg.matrixActive ? 'SÍ — ' + cfg.matrixColor : 'NO',
+        navbar:         cfg.navbar || 'original',
+        cards:          cfg.cards || 'original',
+        font:           cfg.font || 'original',
+    };
+    console.table(stats);
+    return stats;
+};
+
+// ─── ATAJOS DE PERSONALIZACIÓN ────────────────────────────────────────────
+/**
+ * Atajos rápidos para cambiar el tema sin abrir el panel.
+ * Alt+P: abrir/cerrar panel de personalización
+ */
+document.addEventListener('keydown', function(e) {
+    if (e.altKey && e.key === 'p') {
+        e.preventDefault();
+        if (typeof togglePersPanel === 'function') togglePersPanel();
+    }
+    // Alt+R: reset rápido del tema
+    if (e.altKey && e.key === 'r') {
+        e.preventDefault();
+        if (typeof resetPersConfig === 'function') resetPersConfig();
+        showPersPreviewMsg('🔄 Tema reseteado (Alt+R)');
+    }
+    // Alt+M: toggle matrix
+    if (e.altKey && e.key === 'm') {
+        e.preventDefault();
+        const canvas = document.getElementById('matrix-canvas');
+        if (canvas && canvas.style.display !== 'none') {
+            if (typeof stopMatrix === 'function') stopMatrix();
+            showPersPreviewMsg('Matrix OFF');
+        } else {
+            if (typeof startMatrix === 'function') startMatrix('#00dcff');
+            showPersPreviewMsg('Matrix ON — cyan');
+        }
+    }
+});
+
+// ─── BOTONES EXTRAS EN EL PANEL ──────────────────────────────────────────
+/**
+ * Inicializa los botones extra del panel que no están en el HTML estático.
+ * Se ejecuta después de que el panel es creado.
+ */
+function initExtraPanelButtons() {
+    const statusEl = document.getElementById('pers-status');
+    if (!statusEl) return;
+
+    // Agregar sección de botones extras al panel
+    const persPanel = document.getElementById('personalization-panel');
+    if (!persPanel) return;
+
+    const extraSection = document.createElement('div');
+    extraSection.className = 'pers-section';
+    extraSection.innerHTML = `
+        <div class="pers-section-label">🎮 Modos especiales</div>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+            <button onclick="applyRobloxTheme()"
+                style="padding:10px 14px;border-radius:8px;cursor:pointer;
+                       background:rgba(255,34,34,0.1);border:1px solid rgba(255,34,34,0.25);
+                       color:#ff2222;font-size:11px;text-align:left;transition:.15s;"
+                onmouseover="this.style.background='rgba(255,34,34,0.18)'"
+                onmouseout="this.style.background='rgba(255,34,34,0.1)'">
+                🎮 Tema Roblox
+            </button>
+            <button onclick="applyFocusMode()"
+                style="padding:10px 14px;border-radius:8px;cursor:pointer;
+                       background:rgba(0,220,255,0.06);border:1px solid rgba(0,220,255,0.15);
+                       color:#00dcff;font-size:11px;text-align:left;transition:.15s;"
+                onmouseover="this.style.background='rgba(0,220,255,0.12)'"
+                onmouseout="this.style.background='rgba(0,220,255,0.06)'">
+                🎯 Modo concentración
+            </button>
+            <button onclick="applyPartyMode()"
+                style="padding:10px 14px;border-radius:8px;cursor:pointer;
+                       background:rgba(255,105,180,0.08);border:1px solid rgba(255,105,180,0.2);
+                       color:#ff69b4;font-size:11px;text-align:left;transition:.15s;"
+                onmouseover="this.style.background='rgba(255,105,180,0.15)'"
+                onmouseout="this.style.background='rgba(255,105,180,0.08)'">
+                🎉 Modo fiesta (rainbow)
+            </button>
+        </div>
+
+        <div class="pers-section-label" style="margin-top:14px;">💾 Import / Export</div>
+        <div style="display:flex;gap:6px;">
+            <button onclick="exportThemeConfig()"
+                style="flex:1;padding:9px;border-radius:7px;cursor:pointer;font-size:10px;
+                       background:rgba(0,220,255,0.07);border:1px solid rgba(0,220,255,0.15);
+                       color:#00dcff;">
+                📤 Exportar tema
+            </button>
+            <button onclick="importThemeConfig()"
+                style="flex:1;padding:9px;border-radius:7px;cursor:pointer;font-size:10px;
+                       background:rgba(0,220,255,0.07);border:1px solid rgba(0,220,255,0.15);
+                       color:#00dcff;">
+                📥 Importar tema
+            </button>
+        </div>
+
+        <div style="margin-top:12px;">
+            <div class="pers-section-label">🎨 Color HEX personalizado</div>
+            <div style="display:flex;gap:6px;align-items:center;">
+                <input type="color" id="custom-hex-input" value="#00dcff"
+                       style="width:44px;height:36px;border:1px solid rgba(0,220,255,0.2);
+                              border-radius:6px;cursor:pointer;background:none;padding:2px;">
+                <button onclick="applyCustomHexColor(document.getElementById('custom-hex-input').value)"
+                        style="flex:1;padding:9px;border-radius:7px;cursor:pointer;font-size:10px;
+                               background:rgba(0,220,255,0.07);border:1px solid rgba(0,220,255,0.15);
+                               color:#00dcff;">
+                    Aplicar
+                </button>
+            </div>
+        </div>
+
+        <div style="margin-top:10px;font-size:9px;color:rgba(0,220,255,0.2);
+                    text-align:center;font-family:'Courier New',monospace;">
+            Alt+P = abrir panel &nbsp;·&nbsp; Alt+R = reset &nbsp;·&nbsp; Alt+M = matrix toggle
+        </div>
+    `;
+
+    // Insertar antes del último div de acciones
+    const actionSection = persPanel.querySelectorAll('.pers-section');
+    const lastSection   = actionSection[actionSection.length - 1];
+    if (lastSection) {
+        persPanel.insertBefore(extraSection, lastSection);
+    } else {
+        persPanel.appendChild(extraSection);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        initExtraPanelButtons();
+        detectSystemPreferences();
+    }, 1500);
+});
+
+// ─── OBSERVERS — Auto-guardar en Firebase cuando el usuario hace cambios ──
+/**
+ * MutationObserver que detecta cambios de clase en el body
+ * y los sincroniza con Firebase automáticamente.
+ * Con debounce para no hacer demasiadas escrituras.
+ */
+let _themeFirebaseSyncTimeout = null;
+function initThemeFirebaseSync() {
+    const observer = new MutationObserver(function() {
+        clearTimeout(_themeFirebaseSyncTimeout);
+        _themeFirebaseSyncTimeout = setTimeout(syncThemeToFirebase, 3000);
+    });
+    observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style']
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initThemeFirebaseSync, 4000);
+});
+
+})(); // end personalization-extended IIFE
+</script>
+
+
+<style>
+/* ══════════════════════════════════════════════════════════════════════════════
+   PERSONALIZACIÓN AVANZADA — Estilos adicionales y temas completos
+   Estas clases son aplicadas por el sistema de personalización en tiempo real
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ─── ANIMACIONES ESPECÍFICAS DEL SISTEMA DE TEMAS ─────────────────────── */
+
+@keyframes persSlideIn {
+    from { transform: translateX(-100%); opacity: 0; }
+    to   { transform: translateX(0);     opacity: 1; }
+}
+@keyframes persSlideOut {
+    from { transform: translateX(0);     opacity: 1; }
+    to   { transform: translateX(-100%); opacity: 0; }
+}
+@keyframes persFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0);   }
+}
+@keyframes swatchPop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.3); }
+    100% { transform: scale(1.08); }
+}
+@keyframes previewBarSlide {
+    from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
+}
+@keyframes matrixFadeIn {
+    from { opacity: 0; }
+    to   { opacity: var(--matrix-opacity, 0.13); }
+}
+@keyframes panelGlow {
+    0%, 100% { box-shadow: 4px 0 40px rgba(0,0,0,0.8), 0 0 20px rgba(0,220,255,0.05); }
+    50%       { box-shadow: 4px 0 40px rgba(0,0,0,0.8), 0 0 40px rgba(0,220,255,0.1);  }
+}
+@keyframes swatchHover {
+    0%   { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+    100% { box-shadow: 0 0 12px 3px rgba(255,255,255,0.3); }
+}
+@keyframes themeTransition {
+    0%   { filter: brightness(1) blur(0px); }
+    30%  { filter: brightness(0.3) blur(4px); }
+    70%  { filter: brightness(0.3) blur(4px); }
+    100% { filter: brightness(1) blur(0px); }
+}
+
+/* ─── TEMA 1: CYBERPUNK NIGHT ────────────────────────────────────────────── */
+body.preset-cyberpunk-night {
+    background: linear-gradient(135deg, #0a001a 0%, #001a1a 50%, #000d00 100%) !important;
+}
+body.preset-cyberpunk-night .navbar {
+    background: rgba(10,0,26,0.9) !important;
+    border-bottom: 1px solid rgba(255,0,255,0.2) !important;
+}
+body.preset-cyberpunk-night .card {
+    border-color: rgba(255,0,255,0.15) !important;
+    box-shadow: 0 0 20px rgba(255,0,255,0.08) !important;
+}
+
+/* ─── TEMA 2: BLOOD MOON ─────────────────────────────────────────────────── */
+body.preset-blood-moon {
+    background: radial-gradient(ellipse at 50% 0%, rgba(180,0,0,0.3) 0%, #0d0000 60%) !important;
+}
+body.preset-blood-moon .navbar {
+    border-bottom-color: rgba(255,0,0,0.2) !important;
+}
+body.preset-blood-moon .card {
+    border-color: rgba(255,34,68,0.12) !important;
+}
+
+/* ─── TEMA 3: DEEP SPACE ─────────────────────────────────────────────────── */
+body.preset-deep-space {
+    background: radial-gradient(ellipse at center, #060d1a 0%, #000000 100%) !important;
+}
+body.preset-deep-space .card {
+    background: rgba(6,13,26,0.7) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+/* ─── TEMA 4: TOXIC WASTE ────────────────────────────────────────────────── */
+body.preset-toxic-waste {
+    background: linear-gradient(180deg, #010d00 0%, #050500 100%) !important;
+}
+body.preset-toxic-waste .navbar {
+    border-bottom: 1px solid rgba(170,255,0,0.15) !important;
+}
+body.preset-toxic-waste .card {
+    border-color: rgba(170,255,0,0.1) !important;
+    box-shadow: 0 0 20px rgba(170,255,0,0.06) !important;
+}
+
+/* ─── TEMA 5: GOLD ROYALTY ───────────────────────────────────────────────── */
+body.preset-gold-royalty {
+    background: linear-gradient(145deg, #0a0800 0%, #1a1200 50%, #0a0600 100%) !important;
+}
+body.preset-gold-royalty .card {
+    border-color: rgba(255,215,0,0.12) !important;
+    box-shadow: 0 0 20px rgba(255,215,0,0.07) !important;
+}
+
+/* ─── TEMA 6: ROBLOX CLASSIC ─────────────────────────────────────────────── */
+body.preset-roblox {
+    background: #0d0000 !important;
+}
+body.preset-roblox .navbar {
+    border-bottom: 2px solid rgba(255,34,34,0.3) !important;
+}
+body.preset-roblox .card {
+    border-color: rgba(255,34,34,0.15) !important;
+}
+
+/* ─── TEMA 7: ARCTIC BLUE ────────────────────────────────────────────────── */
+body.preset-arctic {
+    background: linear-gradient(180deg, #00050f 0%, #000814 100%) !important;
+}
+body.preset-arctic .card {
+    background: rgba(0,60,120,0.1) !important;
+    border-color: rgba(168,216,255,0.1) !important;
+}
+
+/* ─── TEMA 8: CHERRY BLOSSOM ─────────────────────────────────────────────── */
+body.preset-cherry {
+    background: linear-gradient(135deg, #0d0010 0%, #100005 100%) !important;
+}
+body.preset-cherry .card {
+    border-color: rgba(255,105,180,0.12) !important;
+    box-shadow: 0 0 20px rgba(255,20,147,0.06) !important;
+}
+
+/* ─── TEMA 9: MINECRAFT NIGHT ────────────────────────────────────────────── */
+body.preset-minecraft {
+    background: #050f00 !important;
+    image-rendering: pixelated;
+}
+body.preset-minecraft .card {
+    border-radius: 2px !important;
+    border-color: rgba(0,200,50,0.2) !important;
+}
+
+/* ─── TEMA 10: SUNSET VAPORWAVE ──────────────────────────────────────────── */
+body.preset-vaporwave {
+    background: linear-gradient(180deg, #0d0020 0%, #1a0010 50%, #000a1a 100%) !important;
+}
+body.preset-vaporwave .navbar {
+    border-bottom: 1px solid rgba(255,0,128,0.2) !important;
+}
+body.preset-vaporwave .card {
+    border-image: linear-gradient(135deg, #ff006688, #00ffff88) 1 !important;
+}
+
+/* ─── TEMA 11: MIDNIGHT OCEAN ────────────────────────────────────────────── */
+body.preset-midnight-ocean {
+    background: radial-gradient(ellipse at bottom, #001040 0%, #000020 70%, #000000 100%) !important;
+}
+body.preset-midnight-ocean .card {
+    background: rgba(0,20,80,0.15) !important;
+    border-color: rgba(0,150,255,0.1) !important;
+}
+
+/* ─── TEMA 12: LAVA LAMP ─────────────────────────────────────────────────── */
+body.preset-lava {
+    background: radial-gradient(ellipse at 30% 70%, rgba(255,50,0,0.2) 0%, #0d0000 60%) !important;
+}
+body.preset-lava .card {
+    border-color: rgba(255,80,0,0.15) !important;
+}
+
+/* ─── TEMA 13: HACKER TERMINAL ───────────────────────────────────────────── */
+body.preset-hacker {
+    background: #000000 !important;
+    font-family: 'Courier New', monospace !important;
+}
+body.preset-hacker .card {
+    background: rgba(0,30,0,0.4) !important;
+    border-color: rgba(0,255,0,0.15) !important;
+    border-radius: 2px !important;
+}
+body.preset-hacker .navbar {
+    border-bottom: 1px solid rgba(0,255,0,0.2) !important;
+}
+
+/* ─── TEMA 14: GALAXY PURPLE ─────────────────────────────────────────────── */
+body.preset-galaxy {
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(100,0,200,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(0,50,200,0.12) 0%, transparent 50%),
+        #04000d !important;
+}
+body.preset-galaxy .card {
+    border-color: rgba(150,0,255,0.12) !important;
+    box-shadow: 0 0 20px rgba(100,0,200,0.07) !important;
+}
+
+/* ─── TEMA 15: NEON CITY ─────────────────────────────────────────────────── */
+body.preset-neon-city {
+    background: #000208 !important;
+}
+body.preset-neon-city .card {
+    border-color: rgba(0,220,255,0.15) !important;
+    box-shadow:
+        0 0 10px rgba(0,220,255,0.08),
+        0 0 30px rgba(255,0,128,0.05) !important;
+}
+body.preset-neon-city .navbar {
+    border-bottom: 1px solid rgba(0,220,255,0.2) !important;
+    box-shadow: 0 0 20px rgba(0,220,255,0.05) !important;
+}
+
+/* ─── TEMA 16: DESERT STORM ──────────────────────────────────────────────── */
+body.preset-desert {
+    background: linear-gradient(180deg, #0d0800 0%, #1a0d00 100%) !important;
+}
+body.preset-desert .card {
+    border-color: rgba(255,140,0,0.12) !important;
+    background: rgba(26,13,0,0.4) !important;
+}
+
+/* ─── TEMA 17: DEEP SEA ──────────────────────────────────────────────────── */
+body.preset-deep-sea {
+    background: linear-gradient(180deg, #00050f 0%, #000208 50%, #000000 100%) !important;
+}
+body.preset-deep-sea .card {
+    background: rgba(0,5,20,0.6) !important;
+    border-color: rgba(0,80,160,0.15) !important;
+}
+
+/* ─── TEMA 18: SAKURA NIGHT ──────────────────────────────────────────────── */
+body.preset-sakura {
+    background: linear-gradient(180deg, #0d0008 0%, #080005 100%) !important;
+}
+body.preset-sakura .card {
+    border-color: rgba(255,150,200,0.1) !important;
+}
+
+/* ─── TEMA 19: ELECTRIC STORM ────────────────────────────────────────────── */
+body.preset-electric {
+    background: linear-gradient(135deg, #000510 0%, #000008 100%) !important;
+}
+body.preset-electric .card {
+    border-color: rgba(100,100,255,0.15) !important;
+    box-shadow: 0 0 20px rgba(80,80,255,0.07) !important;
+}
+
+/* ─── TEMA 20: CHRISTMAS NIGHT ───────────────────────────────────────────── */
+body.preset-christmas {
+    background: linear-gradient(135deg, #0a0000 0%, #000a00 100%) !important;
+}
+body.preset-christmas .card {
+    border-color: rgba(220,50,50,0.12) !important;
+}
+
+/* ─── EFECTOS HOVER EN SWATCHES ─────────────────────────────────────────── */
+.pers-swatch:active { transform: scale(0.95) !important; }
+.pers-swatch.active { animation: swatchPop .2s ease forwards; }
+
+/* ─── PANEL ANIMADO ──────────────────────────────────────────────────────── */
+#personalization-panel.open {
+    animation: persSlideIn .35s cubic-bezier(.4,0,.2,1) forwards;
+    box-shadow: 4px 0 40px rgba(0,0,0,0.8), 0 0 30px rgba(0,220,255,0.08);
+}
+#personalization-panel {
+    animation-fill-mode: forwards;
+}
+
+/* ─── PREVIEW BAR ANIMADA ────────────────────────────────────────────────── */
+#pers-preview-bar.show {
+    animation: previewBarSlide .25s ease forwards;
+}
+
+/* ─── MATRIX CANVAS FADE IN ──────────────────────────────────────────────── */
+#matrix-canvas[style*="block"] {
+    animation: matrixFadeIn .5s ease forwards;
+}
+
+/* ─── RESPONSIVE DEL PANEL ───────────────────────────────────────────────── */
+@media (max-width: 480px) {
+    #personalization-panel { width: 100vw !important; max-width: 100vw !important; }
+    .pers-swatches { grid-template-columns: repeat(6, 1fr) !important; gap: 4px !important; }
+    .pers-style-grid { grid-template-columns: 1fr 1fr !important; }
+    .pers-title { font-size: 11px !important; letter-spacing: 2px !important; }
+    #pers-open-btn { font-size: 7px !important; padding: 12px 8px !important; }
+}
+
+@media (max-width: 360px) {
+    .pers-swatches { grid-template-columns: repeat(5, 1fr) !important; }
+    #personalization-panel { padding-bottom: 100px !important; }
+}
+
+/* ─── ACCESIBILIDAD ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    #personalization-panel { transition: none !important; }
+    .pers-swatch { transition: none !important; }
+    .pers-toggle-btn::after { transition: none !important; }
+    #matrix-canvas { display: none !important; }
+}
+
+/* ─── PRINT ──────────────────────────────────────────────────────────────── */
+@media print {
+    #personalization-panel,
+    #pers-open-btn,
+    #pers-preview-bar,
+    #matrix-canvas { display: none !important; }
+}
+
+</style>
+
+
+<!--  Los Papus v4.0 — personalización completa — línea 22186 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22206 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22226 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22246 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22266 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22286 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22306 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22326 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22346 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22366 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22386 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22406 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22426 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22446 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22466 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22486 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22506 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22526 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22546 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22566 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22586 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22606 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22626 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22646 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22666 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22686 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22706 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22726 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22746 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22766 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22786 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22806 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22826 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22846 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22866 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22886 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22906 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22926 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22946 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22966 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 22986 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23006 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23026 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23046 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23066 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23086 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23106 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23126 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23146 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23166 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23186 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23206 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23226 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23246 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23266 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23286 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23306 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23326 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23346 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23366 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23386 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23406 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23426 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23446 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23466 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23486 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23506 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23526 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23546 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23566 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23586 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23606 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23626 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23646 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23666 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23686 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23706 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23726 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23746 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23766 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23786 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23806 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23826 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23846 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23866 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23886 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23906 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23926 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23946 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23966 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 23986 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24006 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24026 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24046 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24066 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24086 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24106 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24126 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24146 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24166 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24186 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24206 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24226 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24246 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24266 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24286 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24306 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24326 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24346 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24366 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24386 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24406 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24426 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24446 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24466 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24486 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24506 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24526 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24546 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24566 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24586 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24606 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24626 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24646 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24666 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24686 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24706 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24726 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24746 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24766 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24786 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24806 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24826 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24846 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24866 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24886 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24906 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24926 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24946 -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24966 -->
+<!--  padding -->
+<!--  Los Papus v4.0 — personalización completa — línea 24986 -->
 </body>
 </html>
-
 <!--
 ╔══════════════════════════════════════════════════════════════════╗
 ║         ERRORES CORREGIDOS Y MEJORAS DE CALIDAD — v14          ║
 ╚══════════════════════════════════════════════════════════════════╝
-
 1.  ANNOUNCEMENT BANNER → position:fixed + top:72px
     — Ya no desplaza la navbar ni el contenido
     — Animación slide-in desde arriba (annSlideIn)
@@ -19830,20 +24838,16 @@ document.addEventListener('DOMContentLoaded', function() {
     — .visible class para mostrar/ocultar sin dejar ningún hueco
     — clearAnnouncementLocal() remueve la clase + escribe a Firebase
     — checkAnnouncementOnLoad() recupera anuncios activos al cargar
-
 2.  TABS DUPLICADOS → eliminados
     — Había 2x "🛡 Mod" y 2x "💎 Rangos" en .admin-tabs
     — Quedó exactamente uno de cada uno
-
 3.  #ap-modtools Y #ap-ranks FUERA DE </body></html> → corregidos
     — Ambos divs estaban sueltos después del cierre del documento
     — Ahora están correctamente dentro del .admin-body del adminPanel
-
 4.  IIFE VIEJO DE RANGOS → eliminado (era código duplicado)
     — El IIFE anterior con RANKS, getRankKey, getRankBadgeHTML etc.
       fue removido completamente
     — Solo existe el nuevo IIFE limpio (RANK SYSTEM COMPLETE)
-
 5.  EFECTOS VISUALES DE RANGOS → completamente reimplementados
     — OWNER DEV (.rank-owner): glitchOwner 1.8s — 3 capas RGB
       (cyan -3px, magenta +3px, amarillo) con clip-path inset()
@@ -19858,7 +24862,6 @@ document.addEventListener('DOMContentLoaded', function() {
       border: 1px dashed rgba(0,255,157,0.5) + tilt 3D en hover
       (perspective(200px) rotateX(8deg) rotateY(-4deg) scale(1.05))
     — USER (.rank-user): tilt 3D suave en hover + cyan glow
-
 6.  SISTEMA DE RANGOS JS → nuevo IIFE limpio
     — window.getRankKey(u) expuesto globalmente
     — window.updateUserBadgeWithRank(u) actualiza navbar badge
@@ -19878,23 +24881,19 @@ document.addEventListener('DOMContentLoaded', function() {
     — refreshProfileRankSection(nick, rankKey) inyecta en #aup-rank-badge
       y #aup-rank-buttons (5 botones coloreados, deshabilitados si
       no es OWNER)
-
 7.  SECCIÓN DE RANGO EN PERFIL → agregada al #au-profile
     — Después de "nota privada"
     — Muestra badge actual del usuario con nivel numérico
     — 5 botones con colores del rango para asignar directamente
     — Si el viewer no es OWNER → botones con opacity:0.3 + disabled
-
 8.  CAMPO rank EN FIRESTORE
     — assignRank() escribe .rank:"owner"|"admin"|"mod"|"helper"|"user"
     — Y .admin:true/false según corresponda
     — Compatible con lógica preexistente de .admin:boolean
-
 9.  renderSession OVERRIDE → actualiza badge al iniciar sesión
     — Después de login exitoso, lee .rank de Firestore
     — Llama updateUserBadgeWithRank() automáticamente
     — Toast especial para OWNER DEV al conectarse
-
 10. adminTab PATCHES corregidos
     — Solo un patch para modtools+announce (evita acumulación)
     — Solo un patch para ranks (loadStaffList)
@@ -19998,4 +24997,5 @@ document.addEventListener('DOMContentLoaded', function() {
 //
 // ──────────────────────────────────────────────────────────────────────────────
 //
+// ──────────────────────────────────────────────────────────────────────────────
 // ──────────────────────────────────────────────────────────────────────────────
