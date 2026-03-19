@@ -3940,20 +3940,26 @@ window._fbLimit      = limit;
 window._fbAddDoc     = addDoc;
 window._fbServerTimestamp = serverTimestamp;
 window._fbDeleteDoc  = deleteDoc;
+    // expose doc references too
+    window._DEATHS_DOC = doc(db, 'lospapus', 'deaths');
+    window._VOTES_DOC  = doc(db, 'lospapus', 'votes');
+    window._ONLINE_DOC = doc(db, 'lospapus', 'online');
+
 } catch(e) {
-    console.error('Firebase error:', e);
+    console.error('Firebase init error:', e);
     window._fbError = e;
     const errDiv = document.getElementById('debug-error');
     if(errDiv) {
         errDiv.style.display = 'block';
-        errDiv.innerHTML = '<b>FIREBASE ERROR:</b> ' + e.message + '<br>La app funcionara sin base de datos';
+        errDiv.innerHTML = '<b>FIREBASE ERROR:</b> ' + e.message;
     }
 }
 
 try {
-const DEATHS_DOC = window._fbDoc ? window._fbDoc(window._db, 'lospapus', 'deaths') : null;
-const VOTES_DOC  = doc(db, 'lospapus', 'votes');
-const ONLINE_DOC = doc(db, 'lospapus', 'online');
+const DEATHS_DOC = window._DEATHS_DOC || (window._fbDoc ? window._fbDoc(window._db, 'lospapus', 'deaths') : null);
+const VOTES_DOC  = window._VOTES_DOC  || (window._fbDoc ? window._fbDoc(window._db, 'lospapus', 'votes')  : null);
+const ONLINE_DOC = window._ONLINE_DOC || (window._fbDoc ? window._fbDoc(window._db, 'lospapus', 'online') : null);
+if (!DEATHS_DOC || !VOTES_DOC || !ONLINE_DOC) throw new Error('Firebase docs not ready');
 
 // ── Utility ──────────────────────────────────────────────────
 function showFBToast(msg, color='#00d4ff') {
