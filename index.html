@@ -25005,41 +25005,37 @@ tryInit();
 /* Ocultar menú horizontal en desktop */
 @media (min-width: 901px) {
     #pc-sidebar {
-        display: flex;
+        display: flex !important;
     }
 
-    .navbar .menu {
+    /* Ocultar navbar top en PC — sidebar lo reemplaza */
+    .navbar {
         display: none !important;
     }
 
-    .navbar .max-width {
-        padding-left: 270px;
+    /* Todo el body se desplaza a la derecha del sidebar */
+    body {
+        padding-left: 270px !important;
     }
 
-    .home,
-    .features,
-    #ruleta-section,
-    #ranking-section,
-    #excusas-section,
-    #muertes-section,
-    #minecraft-section,
-    #terminal-section,
-    #linux-section,
-    #nicks,
-    #cumples,
-    #comida,
-    #personajes,
-    #chat-section,
-    #optiroblox-section,
-    #anime-section,
-    #sugerencias-section {
-        padding-left: 270px;
+    /* El admin panel también */
+    #adminPanel {
+        left: 270px !important;
     }
 }
 
 @media (max-width: 900px) {
     #pc-sidebar {
         display: none !important;
+    }
+
+    /* Restaurar navbar normal en móvil/tablet */
+    .navbar {
+        display: block !important;
+    }
+
+    body {
+        padding-left: 0 !important;
     }
 }
 </style>
