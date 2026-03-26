@@ -10593,10 +10593,8 @@ function loginSuccess(nick, data) {
             }
         }
 
-        // Mostrar panel a owner/admin/mod/helper
+        // Panel disponible para admins — se abre solo con click en el badge
         if (hasAdminAccess(currentUser)) {
-            const panel = document.getElementById('adminPanel');
-            if (panel) { panel.style.display = 'block'; setTimeout(() => panel.classList.add('open'), 10); }
             initAdminPanel();
         }
 
