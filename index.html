@@ -912,7 +912,8 @@ escribe un comando (help para ver)</div>
         }
 
         const headers = { 'Content-Type': 'application/json' };
-        if (window._apiToken) headers['Authorization'] = 'Bearer ' + window._apiToken;
+        const token = window._apiToken || localStorage.getItem('papus_jwt');
+        if (token) headers['Authorization'] = 'Bearer ' + token;
         const opts = { method, headers };
         if (body) opts.body = JSON.stringify(body);
 

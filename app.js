@@ -104,6 +104,7 @@ function applySessionUI(nick) {
 function restoreSession() {
     const session = JSON.parse(localStorage.getItem('papus_session') || 'null');
     if (session && session.nick) {
+        if (localStorage.getItem('papus_jwt')) window._apiToken = localStorage.getItem('papus_jwt');
         applySessionUI(session.nick);
         closeAuthOverlay();
         syncUsersFromFB();
@@ -278,7 +279,12 @@ async function saveOnboarding() {
         syncUsersFromFB();
         renderAllContent();
     } catch (e) {
-        if (err) err.innerText = (e.message || 'Error al guardar.') + ' ¿Antigravity ya agregó los campos de perfil?';
+        const msg = (e.message || 'Error al guardar.');
+        if (msg.includes('401') || /unauthor|token|sesi/.test(msg)) {
+            if (err) err.innerText = 'Sesión expirada. Volvé a iniciar sesión y reintentá.';
+        } else {
+            if (err) err.innerText = msg + ' ¿Antigravity ya agregó los campos de perfil?';
+        }
     }
 }
 
@@ -474,7 +480,7 @@ function renderAdminStats() {
     if (!gate || !body) return;
 
     if (!authed && clanMembers.length === 0 && getSessionNick()) {
-        syncUsersFromFB().then(() => renderAdminStats());
+        syncUsersFromFB().then(members => { if (members.length) renderAdminStats(); });
     }
 
     if (!authed) {
@@ -507,22 +513,27 @@ function renderAdminStats() {
 }
 
 let clanMembers = []; // [{nick, data}]
+let _syncingMembers = null;
 
 async function syncUsersFromFB() {
-    if (!fbReady()) return [];
-    try {
-        const snap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
-        const members = [];
-        snap.forEach(d => {
-            const data = d.data() || {};
-            const nick = data.nick || d.id || '';
-            if (!nick) return;
-            members.push({ nick, data });
-        });
-        clanMembers = members;
-        renderAllContent();
-        return members;
-    } catch (e) { console.warn('[syncUsersFromFB] Error:', e); return []; }
+    if (_syncingMembers) return _syncingMembers;
+    _syncingMembers = (async () => {
+        if (!fbReady()) return [];
+        try {
+            const snap = await window._fbGetDocs(window._fbCollection(window._db, 'users'));
+            const members = [];
+            snap.forEach(d => {
+                const data = d.data() || {};
+                const nick = data.nick || d.id || '';
+                if (!nick) return;
+                members.push({ nick, data });
+            });
+            clanMembers = members;
+            renderAllContent();
+            return members;
+        } catch (e) { console.warn('[syncUsersFromFB] Error:', e); return []; }
+    })();
+    try { return await _syncingMembers; } finally { _syncingMembers = null; }
 }
 
 function adminTab(btn, tabId) {
@@ -706,7 +717,7 @@ function generarExcusa() {
 
 // ===== RANKING DE TOXICIDAD (VOTOS REALES EN POLLS DEL BACKEND) =====
 const rankIconos = { 'Emilio': '<i class="fa-solid fa-crown"></i>', 'Jero': '<i class="fa-solid fa-skull"></i>', 'Gabriel': '<i class="fa-solid fa-keyboard"></i>', 'Sami': '<i class="fa-solid fa-heart"></i>', 'Isabella': '<i class="fa-solid fa-shield-halved"></i>', 'Juan Alejandro': '<i class="fa-solid fa-bolt"></i>' };
-const TOXIC_POLL_ID = 'toxicidad-clan';
+const TOXIC_POLL_QUESTION = 'Quien es el mas toxico del clan?';
 
 function rankPapus() {
     const members = getMembersWithInfo();
@@ -715,18 +726,21 @@ function rankPapus() {
 
 async function getToxicPoll() {
     try {
-        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'polls', TOXIC_POLL_ID));
-        if (snap.exists()) return snap.data();
+        const list = await apiFetch('GET', '/polls');
+        const arr = Array.isArray(list) ? list : (list.items || Object.values(list));
+        const found = arr.find(p => p && p.question === TOXIC_POLL_QUESTION);
+        if (found) return found;
     } catch (e) {}
-    try {
-        const created = await apiFetch('POST', '/polls', {
-            id: TOXIC_POLL_ID,
-            question: '¿Quién es el más tóxico del clan?',
-            options: rankPapus(),
-            created_by: 'system'
-        });
-        return created;
-    } catch (e) { return null; }
+    if (isCurrentUserAdmin()) {
+        try {
+            return await apiFetch('POST', '/polls', {
+                question: TOXIC_POLL_QUESTION,
+                options: rankPapus(),
+                created_by: 'system'
+            });
+        } catch (e) { return null; }
+    }
+    return null;
 }
 
 function hasVotedPoll(poll) {
@@ -743,7 +757,7 @@ async function renderRanking() {
     grid.innerHTML = '<div class="card" style="grid-column:1/-1;text-align:center;padding:30px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--primary);"></i> Cargando votos...</div>';
     const poll = await getToxicPoll();
     if (!poll) {
-        grid.innerHTML = '<div class="card" style="grid-column:1/-1;text-align:center;padding:30px;"><p style="font-size:12px;color:var(--danger);">No se pudo conectar con la base de votos.</p></div>';
+        grid.innerHTML = '<div class="card" style="grid-column:1/-1;text-align:center;padding:30px;"><p style="font-size:12px;color:var(--danger);">La encuesta de toxicidad aún no existe. Pedile a un admin del clan (jero o gabriel) que abra esta página para crearla automáticamente.</p></div>';
         return;
     }
     const voted = hasVotedPoll(poll);
@@ -791,7 +805,7 @@ async function votarToxico(name) {
     const option = (poll.options || []).indexOf(name);
     if (option < 0) return;
     try {
-        await apiFetch('POST', '/polls/' + TOXIC_POLL_ID + '/vote', { nick: nick, option: option });
+        await apiFetch('POST', '/polls/' + poll.id + '/vote', { nick: nick, option: option });
         renderRanking();
     } catch (e) {
         if (/ya vot|conflict|409/i.test(String((e && e.message) || ''))) { renderRanking(); return; }
@@ -801,7 +815,7 @@ async function votarToxico(name) {
 
 function resetVotos() {
     if (!confirm('¿Resetear todos los votos de toxicidad?')) return;
-    alert('Los votos viven en la base de datos compartida. Si querés empezar de cero, pedile al backend que elimine la encuesta ' + TOXIC_POLL_ID + '.');
+    alert('Los votos viven en la base de datos compartida. Si querés empezar de cero, pedile al backend que elimine la encuesta del clan (o resetee sus votos).');
 }
 
 // ===== BITÃCORA DE MUERTES (CAMPO deaths EN USERS — SOLO ADMIN EDITA) =====
