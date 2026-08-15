@@ -166,6 +166,23 @@ async function doLogin() {
 
     try {
         const res = await apiFetch('POST', '/auth/login', { nick: nick.toLowerCase(), password: pass });
+        if (res.twofaRequired || res.twofa_required) {
+            if (err) err.innerText = 'Tu cuenta tiene verificación de 2 pasos activada.';
+            const code = prompt('Ingresá el código de 6 dígitos de tu app autenticadora:');
+            if (!code) return;
+            try {
+                const conf = await apiFetch('POST', '/auth/2fa/confirm', { tempToken: res.tempToken, code: String(code).trim() });
+                const token = conf && (conf.accessToken || conf.token);
+                if (!token) { if (err) err.innerText = 'Código incorrecto.'; return; }
+                window._apiToken = token;
+                localStorage.setItem('papus_jwt', token);
+                saveSession(nick.toLowerCase(), res.hash || hashPass(pass, nick.toLowerCase()));
+                checkOnboarding(nick.toLowerCase());
+            } catch (e2) {
+                if (err) err.innerText = 'Código 2FA incorrecto o expirado.';
+            }
+            return;
+        }
         const token = res && (res.accessToken || res.token);
         if (!token) { if (err) err.innerText = 'Credenciales incorrectas.'; return; }
         window._apiToken = token;
@@ -224,6 +241,13 @@ async function checkOnboarding(nick) {
             showAuthOverlay();
             return;
         }
+        if (snap.status === 404) {
+            localStorage.removeItem('papus_session');
+            localStorage.removeItem('papus_jwt');
+            window._apiToken = null;
+            showAuthOverlay();
+            return;
+        }
         const data = snap.exists() ? snap.data() : null;
         if (data && data.onboarded) {
             syncUsersFromFB();
@@ -239,6 +263,7 @@ async function openOnboarding(editing, userData) {
     const overlay = document.getElementById('onboarding-overlay');
     if (!overlay) return;
     const nick = getSessionNick();
+    if (!nick) return;
     if (editing && !userData) {
         const m = memberByNick(nick);
         if (m) {
