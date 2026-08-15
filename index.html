@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>Los Papus • El Grupo Más Tóxico de Roblox</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6.5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="debug-error" style="display:none;position:fixed;bottom:10px;left:10px;background:rgba(255,0,0,0.9);color:white;padding:10px 15px;border-radius:8px;z-index:9999999;font-family:monospace;font-size:12px;max-width:90vw;"></div>
+
+    <div id="app-container">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-logo">
+                    <i class="fa-solid fa-skull-crossbones"></i>
+                    <span>LOS PAPUS</span>
+                </div>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item"><a class="sidebar-link" data-page="home" onclick="switchPage('home',this);"><i class="fa-solid fa-house"></i> <span>Inicio</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="nosotros" onclick="switchPage('nosotros',this);"><i class="fa-solid fa-users"></i> <span>Nosotros</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="scripts" onclick="switchPage('scripts',this);"><i class="fa-solid fa-code"></i> <span>Scripts</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="chat" onclick="switchPage('chat',this);"><i class="fa-solid fa-comments"></i> <span>Chat en Vivo</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="nicks" onclick="switchPage('nicks',this);"><i class="fa-solid fa-address-card"></i> <span>Nicks</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="cumples" onclick="switchPage('cumples',this);"><i class="fa-solid fa-cake-candles"></i> <span>Cumpleaños</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="comida" onclick="switchPage('comida',this);"><i class="fa-solid fa-utensils"></i> <span>Comida</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="personajes" onclick="switchPage('personajes',this);"><i class="fa-solid fa-mask"></i> <span>Personajes</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="terminal" onclick="switchPage('terminal',this);"><i class="fa-solid fa-terminal"></i> <span>Terminal</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="ranking" onclick="switchPage('ranking',this);"><i class="fa-solid fa-ranking-star"></i> <span>Ranking</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="excusas" onclick="switchPage('excusas',this);"><i class="fa-solid fa-comment-dots"></i> <span>Excusas</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="muertes" onclick="switchPage('muertes',this);"><i class="fa-solid fa-skull"></i> <span>Muertes</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="linux" onclick="switchPage('linux',this);"><i class="fa-brands fa-linux"></i> <span>Linux OS</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="anime" onclick="switchPage('anime',this);"><i class="fa-solid fa-tv"></i> <span>Anime Hub</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="sugerencias" onclick="switchPage('sugerencias',this);"><i class="fa-solid fa-lightbulb"></i> <span>Sugerencias</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="optiroblox" onclick="switchPage('optiroblox',this);"><i class="fa-solid fa-desktop"></i> <span>Roblox PC</span></a></li>
+                <li class="sidebar-item"><a class="sidebar-link" data-page="admin" onclick="switchPage('admin',this);"><i class="fa-solid fa-user-shield"></i> <span>Admin Panel</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <span>© 2026 Los Papus Clan</span>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main id="main-content">
+            
+            <!-- HEADER BAR -->
+            <header id="main-header">
+                <div class="header-left">
+                    <button class="menu-toggle-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                    <span style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;color:var(--primary);">SISTEMA DEL CLAN</span>
+                </div>
+                <div class="header-right">
+                    <div class="user-widget" onclick="showAuthOverlay()" id="user-widget">
+                        <div style="width:28px;height:28px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#000;font-weight:bold;font-size:12px;"><i class="fa-solid fa-user"></i></div>
+                        <span class="user-widget-name" id="nav-user-name">Ingresar</span>
+                        <span class="user-widget-balance"><i class="fa-solid fa-right-to-bracket"></i></span>
+                    </div>
+                    <button id="profile-btn" style="display:none; background:rgba(0,212,255,0.12); border:1px solid rgba(0,212,255,0.35); color:var(--primary); padding:8px 14px; border-radius:10px; cursor:pointer; font-size:12px; margin-right:8px;" onclick="openOnboarding(true)"><i class="fa-solid fa-id-card"></i> Mi Perfil</button>
+                    <button id="logout-btn" style="display:none; background:rgba(255,68,102,0.15); border:1px solid rgba(255,68,102,0.4); color:var(--danger); padding:8px 14px; border-radius:10px; cursor:pointer; font-size:12px;" onclick="logout()"><i class="fa-solid fa-power-off"></i> Salir</button>
+                </div>
+            </header>
+
+            <!-- GLOBAL ANNOUNCEMENT -->
+            <div id="global-announcement" style="display:none; background:linear-gradient(135deg, rgba(0,212,255,0.15), rgba(217,70,239,0.15)); border-bottom:1px solid var(--dark-border); padding:10px 30px; font-size:13px; color:#fff;">
+                <i class="fa-solid fa-bullhorn" style="color:var(--secondary); margin-right:10px;"></i><span></span>
+            </div>
+
+            <!-- GLOBAL MAINTENANCE -->
+            <div id="global-maint" style="display:none; background:linear-gradient(135deg, rgba(255,68,102,0.18), rgba(255,180,0,0.12)); border-bottom:1px solid rgba(255,68,102,0.35); padding:10px 30px; font-size:13px; color:#fff;">
+                <i class="fa-solid fa-wrench" style="color:var(--danger); margin-right:10px;"></i><span></span>
+            </div>
+
+            <!-- PAGE 1: HOME -->
+            <div id="page-home" class="page active">
+                <div class="home-content" style="text-align:center; padding: 40px 0 20px;">
+                    <div style="font-size:14px; color:var(--secondary); font-weight:700; text-transform:uppercase; letter-spacing:4px; margin-bottom:10px;">COMMUNITY SYSTEM v2.5</div>
+                    <h1 style="font-size:56px; font-weight:900; font-family:'Orbitron',sans-serif; background:linear-gradient(135deg,#fff 0%,var(--primary) 50%,var(--secondary) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin:10px 0;">LOS PAPUS CLAN</h1>
+                    <div style="font-size:18px; color:var(--text-muted); margin-bottom:40px;">El centro oficial de mando y desarrollo <span class="typing"></span></div>
+                </div>
+
+                <div class="grid-container" style="margin-bottom:30px;">
+                    <div class="card" style="display:flex; align-items:center; gap:20px;">
+                        <i class="fa-solid fa-users-gear" style="font-size:36px;"></i>
+                        <div>
+                            <div style="font-size:24px; font-weight:900; color:#fff; font-family:'Orbitron';" id="home-member-count">—</div>
+                            <div style="font-size:12px; color:var(--text-muted);">Integrantes con perfil (Los Papus)</div>
+                        </div>
+                    </div>
+                    <div class="card" style="display:flex; align-items:center; gap:20px;">
+                        <i class="fa-solid fa-code" style="font-size:36px; color:var(--secondary);"></i>
+                        <div>
+                            <div style="font-size:24px; font-weight:900; color:#fff; font-family:'Orbitron';">100%</div>
+                            <div style="font-size:12px; color:var(--text-muted);">Scripts Keyless</div>
+                        </div>
+                    </div>
+                    <div class="card" style="display:flex; align-items:center; gap:20px;">
+                        <i class="fa-solid fa-fire" style="font-size:36px; color:var(--danger);"></i>
+                        <div>
+                            <div style="font-size:24px; font-weight:900; color:#fff; font-family:'Orbitron';">MAX</div>
+                            <div style="font-size:12px; color:var(--text-muted);">Nivel de Toxicidad</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-container">
+                    <div class="card" onclick="switchPage('chat')" style="cursor:pointer;">
+                        <i class="fa-solid fa-comments" style="color:var(--secondary);"></i>
+                        <div class="text">Chat en Vivo</div>
+                        <p>Únete a la conversación del clan en tiempo real.</p>
+                    </div>
+                    <div class="card" onclick="switchPage('scripts')" style="cursor:pointer;">
+                        <i class="fa-solid fa-terminal"></i>
+                        <div class="text">Librería de Scripts</div>
+                        <p>Accede a la colección de scripts ejecutables probados para Blox Fruits y Rivals.</p>
+                    </div>
+                    <div class="card" onclick="switchPage('anime')" style="cursor:pointer;">
+                        <i class="fa-solid fa-tv" style="color:var(--purple);"></i>
+                        <div class="text">Catálogo de Anime</div>
+                        <p>Las mejores recomendaciones de Isekai, Dark Fantasy y Acción.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 2: NOSOTROS (6 INTEGRANTES ACTIVOS) -->
+            <div id="page-nosotros" class="page">
+                <div class="page-title"><i class="fa-solid fa-users"></i> Integrantes del Clan</div>
+                <div class="grid-container" id="nosotros-grid"></div>
+            </div>
+
+            <!-- PAGE CHAT (CHAT EN VIVO COMPLETO E INTERACTIVO) -->
+            <div id="page-chat" class="page">
+                <div class="page-title"><i class="fa-solid fa-comments"></i> Chat del Clan en Vivo</div>
+                <div class="card" style="padding:0; overflow:hidden; display:flex; flex-direction:column; height:500px; background:rgba(3, 9, 20, 0.9);">
+
+                    <!-- Chat Header -->
+                    <div style="background:rgba(0, 212, 255, 0.1); border-bottom:1px solid var(--dark-border); padding:15px 20px; display:flex; align-items:center; justify-content:space-between;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="width:10px; height:10px; border-radius:50%; background:#00ffaa; box-shadow:0 0 8px #00ffaa;"></span>
+                            <span style="font-family:'Orbitron'; font-size:14px; font-weight:700; color:#fff;">CANAL GLOBAL (#general)</span>
+                        </div>
+                        <span style="font-size:12px; color:var(--text-muted);"><span id="chat-online-count">1</span> miembro en línea</span>
+                    </div>
+
+                    <!-- Chat Messages List -->
+                    <div id="chat-messages-container" style="flex-grow:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:15px;"></div>
+
+                    <!-- Chat Input Box -->
+                    <div style="padding:15px; border-top:1px solid var(--dark-border); background:rgba(4, 10, 22, 0.95); display:flex; gap:10px;">
+                        <input id="chat-input" type="text" placeholder="Escribe un mensaje en el chat..." maxlength="200" style="flex-grow:1; background:rgba(0,0,0,0.6); border:1px solid var(--dark-border); color:#fff; padding:12px 16px; border-radius:12px; outline:none; font-size:13px;" onkeydown="if(event.key==='Enter') sendChatMessage();">
+                        <button class="btn-submit" style="width:auto; padding:0 25px;" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- PAGE SCRIPTS (EXPANDIDO CON MÁS SCRIPTS) -->
+            <div id="page-scripts" class="page">
+                <div class="page-title"><i class="fa-solid fa-code"></i> Scripts & Ejecutores Keyless</div>
+                <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:25px;">
+                    <button onclick="filterScripts('all')" class="filter-btn active" id="sf-all"><i class="fa-solid fa-layer-group"></i> Todos</button>
+                    <button onclick="filterScripts('bloxfruits')" class="filter-btn" id="sf-bloxfruits"><i class="fa-solid fa-lemon"></i> Blox Fruits</button>
+                    <button onclick="filterScripts('rivals')" class="filter-btn" id="sf-rivals"><i class="fa-solid fa-crosshair"></i> Rivals</button>
+                    <button onclick="filterScripts('99nights')" class="filter-btn" id="sf-99nights"><i class="fa-solid fa-moon"></i> 99 Nights</button>
+                    <button onclick="filterScripts('campos')" class="filter-btn" id="sf-campos"><i class="fa-solid fa-fist-raised"></i> Campos</button>
+                </div>
+                <div class="grid-container">
+                    <div class="card script-card" data-game="99nights">
+                        <i class="fa-solid fa-shield-cat" style="color:var(--purple);"></i>
+                        <div class="text">Foxname Hub (99 Nights)</div>
+                        <p>Godmode, Fast Auto Farm y teletransporte instantáneo.</p>
+                        <div class="script-text" style="background:rgba(0,0,0,0.5); padding:10px; border-radius:8px; margin-top:10px; font-family:monospace; font-size:11px; word-break:break-all;">
+                            loadstring(game:HttpGet("https://raw.githubusercontent.com/caomod2077/Script/main/FoxnameHub.lua"))()
+                        </div>
+                        <button class="btn-submit" style="margin-top:10px; padding:8px;" onclick="copyScriptText(this)"><i class="fa-solid fa-copy"></i> Copiar Script</button>
+                    </div>
+                    <div class="card script-card" data-game="bloxfruits">
+                        <i class="fa-solid fa-bolt" style="color:var(--gold);"></i>
+                        <div class="text">QuantumOnyx (Blox Fruits)</div>
+                        <p>Auto farm, stats y gestión de frutas automatizada.</p>
+                        <div class="script-text" style="background:rgba(0,0,0,0.5); padding:10px; border-radius:8px; margin-top:10px; font-family:monospace; font-size:11px; word-break:break-all;">
+                            loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/main/QuantumOnyx.lua"))()
+                        </div>
+                        <button class="btn-submit" style="margin-top:10px; padding:8px;" onclick="copyScriptText(this)"><i class="fa-solid fa-copy"></i> Copiar Script</button>
+                    </div>
+                    <div class="card script-card" data-game="bloxfruits">
+                        <i class="fa-solid fa-gauge-high" style="color:var(--secondary);"></i>
+                        <div class="text">Speed Hub X (Blox Fruits)</div>
+                        <p>ESP, Speed Hack, auto farm. 100% keyless de alta estabilidad.</p>
+                        <div class="script-text" style="background:rgba(0,0,0,0.5); padding:10px; border-radius:8px; margin-top:10px; font-family:monospace; font-size:11px; word-break:break-all;">
+                            loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/SpeedHub.lua"))()
+                        </div>
+                        <button class="btn-submit" style="margin-top:10px; padding:8px;" onclick="copyScriptText(this)"><i class="fa-solid fa-copy"></i> Copiar Script</button>
+                    </div>
+                    <div class="card script-card" data-game="bloxfruits">
+                        <i class="fa-solid fa-gem" style="color:var(--danger);"></i>
+                        <div class="text">Redz Hub (Blox Fruits 2026)</div>
+                        <p>Auto Boss, Teleport instantáneo y auto quest sin keys.</p>
+                        <div class="script-text" style="background:rgba(0,0,0,0.5); padding:10px; border-radius:8px; margin-top:10px; font-family:monospace; font-size:11px; word-break:break-all;">
+                            loadstring(game:HttpGet("https://raw.githubusercontent.com/huy384/redzHub/main/redzHub.lua"))()
+                        </div>
+                        <button class="btn-submit" style="margin-top:10px; padding:8px;" onclick="copyScriptText(this)"><i class="fa-solid fa-copy"></i> Copiar Script</button>
+                    </div>
+                    <div class="card script-card" data-game="rivals">
+                        <i class="fa-solid fa-crosshair" style="color:var(--danger);"></i>
+                        <div class="text">Z3US Hub (Rivals)</div>
+                        <p>Aimbot dinámico, Silent aim y ESP completo. Keyless.</p>
+                        <div class="script-text" style="background:rgba(0,0,0,0.5); padding:10px; border-radius:8px; margin-top:10px; font-family:monospace; font-size:11px; word-break:break-all;">
+                            loadstring(game:HttpGet("https://raw.githubusercontent.com/LookP/Roblox/main/ZenithHUB"))()
+                        </div>
+                        <button class="btn-submit" style="margin-top:10px; padding:8px;" onclick="copyScriptText(this)"><i class="fa-solid fa-copy"></i> Copiar Script</button>
+                    </div>
+                    <div class="card script-card" data-game="campos">
+                        <i class="fa-solid fa-fist-raised" style="color:var(--primary);"></i>
+                        <div class="text">Arc (Campos de Batalla)</div>
+                        <p>Auto combo, Aimbot y evasión de bloqueos.</p>
+                        <div class="script-text" style="background:rgba(0,0,0,0.5); padding:10px; border-radius:8px; margin-top:10px; font-family:monospace; font-size:11px; word-break:break-all;">
+                            loadstring(game:HttpGet("https://raw.githubusercontent.com/Mikasuru/Arc/main/Arc.lua"))()
+                        </div>
+                        <button class="btn-submit" style="margin-top:10px; padding:8px;" onclick="copyScriptText(this)"><i class="fa-solid fa-copy"></i> Copiar Script</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE ANIME (CATÁLOGO MASIVO) -->
+            <div id="page-anime" class="page">
+                <div class="page-title"><i class="fa-solid fa-tv"></i> Catálogo Completo de Anime</div>
+                <div class="grid-container">
+                    <div class="card">
+                        <i class="fa-solid fa-hat-wizard" style="color:var(--purple);"></i>
+                        <div class="text">Mushoku Tensei</div>
+                        <span style="background:rgba(0,212,255,0.1); color:var(--primary); font-size:10px; padding:2px 8px; border-radius:10px;">ISEKAI</span>
+                        <p style="margin-top:8px;">Un hikikomori reencarna en un mundo de fantasía con sus memorias intactas.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--gold);"></i>
+                        <div class="text">Frieren: Beyond Journey</div>
+                        <span style="background:rgba(255,215,0,0.1); color:var(--gold); font-size:10px; padding:2px 8px; border-radius:10px;">OBRA MAESTRA</span>
+                        <p style="margin-top:8px;">Una elfa maga reflexiona sobre el tiempo y las conexiones humanas.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-fire" style="color:var(--danger);"></i>
+                        <div class="text">Jujutsu Kaisen</div>
+                        <span style="background:rgba(255,68,102,0.1); color:var(--danger); font-size:10px; padding:2px 8px; border-radius:10px;">DARK ACTION</span>
+                        <p style="margin-top:8px;">Estudiantes de hechicería luchan contra maldiciones en un mundo brutal.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-arrow-up-right-dots" style="color:var(--secondary);"></i>
+                        <div class="text">Solo Leveling</div>
+                        <span style="background:rgba(0,255,170,0.1); color:var(--secondary); font-size:10px; padding:2px 8px; border-radius:10px;">POWER FANTASY</span>
+                        <p style="margin-top:8px;">El cazador más débil recibe un sistema único para subir de nivel.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-shield" style="color:#aaa;"></i>
+                        <div class="text">Berserk</div>
+                        <span style="background:rgba(255,255,255,0.1); color:#aaa; font-size:10px; padding:2px 8px; border-radius:10px;">DARK FANTASY</span>
+                        <p style="margin-top:8px;">Guts sobrevive en un mundo medieval oscuro lleno de demonios.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-rotate" style="color:var(--primary);"></i>
+                        <div class="text">Re:Zero</div>
+                        <span style="background:rgba(0,212,255,0.1); color:var(--primary); font-size:10px; padding:2px 8px; border-radius:10px;">ISEKAI</span>
+                        <p style="margin-top:8px;">Subaru vuelve a un punto de guardado al morir en otro mundo.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-skull" style="color:var(--danger);"></i>
+                        <div class="text">Overlord</div>
+                        <span style="background:rgba(255,68,102,0.1); color:var(--danger); font-size:10px; padding:2px 8px; border-radius:10px;">ANTAGONIST</span>
+                        <p style="margin-top:8px;">Un jugador domina el mundo como un esqueleto todopoderoso.</p>
+                    </div>
+                    <div class="card">
+                        <i class="fa-solid fa-gears" style="color:var(--gold);"></i>
+                        <div class="text">Chainsaw Man</div>
+                        <span style="background:rgba(255,215,0,0.1); color:var(--gold); font-size:10px; padding:2px 8px; border-radius:10px;">ACTION</span>
+                        <p style="margin-top:8px;">Denji se fusiona con su demonio motosierra para cazar monstruos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE SUGERENCIAS (CON MURO Y VOTOS INTERACTIVOS) -->
+            <div id="page-sugerencias" class="page">
+                <div class="page-title"><i class="fa-solid fa-lightbulb"></i> Muro de Sugerencias del Clan</div>
+                
+                <div class="card" style="margin-bottom:25px;">
+                    <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-plus"></i> Publicar Nueva Sugerencia</h3>
+                    <textarea id="sug-input-text" style="width:100%; height:80px; background:rgba(0,0,0,0.6); border:1px solid var(--dark-border); color:#fff; padding:12px; border-radius:8px; outline:none;" placeholder="Escribe tu sugerencia para el clan..."></textarea>
+                    <button class="btn-submit" style="margin-top:10px; max-width:200px;" onclick="submitSugerencia()"><i class="fa-solid fa-paper-plane"></i> Publicar Sugerencia</button>
+                </div>
+
+                <div class="grid-container" id="sugerencias-wall-container">
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <span style="font-size:11px; background:rgba(0,255,170,0.1); color:var(--secondary); padding:2px 8px; border-radius:10px; font-weight:bold;">ACEPTADA</span>
+                            <span style="font-size:11px; color:var(--text-muted);">por Emilio</span>
+                        </div>
+                        <p style="font-size:13px; color:#fff; font-weight:600;">"Cambiar la GUI del sitio por la de PapusBank y quitar la intro"</p>
+                        <div style="display:flex; align-items:center; gap:15px; margin-top:15px;">
+                            <button class="filter-btn" onclick="upvoteSugerencia(this)"><i class="fa-solid fa-thumbs-up"></i> <span>14</span></button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <span style="font-size:11px; background:rgba(0,212,255,0.1); color:var(--primary); padding:2px 8px; border-radius:10px; font-weight:bold;">EN REVISIÓN</span>
+                            <span style="font-size:11px; color:var(--text-muted);">por Gabriel</span>
+                        </div>
+                        <p style="font-size:13px; color:#fff; font-weight:600;">"Organizar un torneo interno de Blox Fruits 1v1 el fin de semana"</p>
+                        <div style="display:flex; align-items:center; gap:15px; margin-top:15px;">
+                            <button class="filter-btn" onclick="upvoteSugerencia(this)"><i class="fa-solid fa-thumbs-up"></i> <span>9</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESTO DE PÁGINAS -->
+            <div id="page-nicks" class="page">
+                <div class="page-title"><i class="fa-solid fa-address-card"></i> Directorio de Nicks</div>
+                <p style="color:var(--text-muted); margin-bottom:25px;">Nicks de Roblox de los integrantes con perfil completo.</p>
+                <div class="grid-container" id="nicks-grid"></div>
+            </div>
+            <!-- CUMPLEAÑOS -->
+            <div id="page-cumples" class="page">
+                <div class="page-title"><i class="fa-solid fa-cake-candles"></i> Cumpleaños del Clan</div>
+                <div class="grid-container" id="cumples-grid"></div>
+            </div>
+            <!-- COMIDA -->
+            <div id="page-comida" class="page">
+                <div class="page-title"><i class="fa-solid fa-utensils"></i> Comida Favorita</div>
+                <div class="grid-container" id="comida-grid"></div>
+            </div>
+            <!-- PERSONAJES -->
+            <div id="page-personajes" class="page">
+                <div class="page-title"><i class="fa-solid fa-mask"></i> Personajes Favoritos</div>
+                <div class="grid-container" id="personajes-grid"></div>
+            </div>
+            <!-- TERMINAL -->
+            <div id="page-terminal" class="page">
+                <div class="page-title"><i class="fa-solid fa-terminal"></i> Terminal Hacker</div>
+                <div class="card" style="background:#030914; font-family:'Courier New',monospace; font-size:12px; line-height:1.7;">
+                    <div id="terminal-output" style="white-space:pre-wrap; word-break:break-word; min-height:200px; color:#1abc9c;">bienvenido al terminal del clan
+escribe un comando (help para ver)</div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-top:10px; border-top:1px solid var(--dark-border); padding-top:12px;">
+                        <span style="color:var(--primary);">papu@losepus:~$</span>
+                        <input id="terminal-input" type="text" style="flex:1; background:transparent; border:none; outline:none; color:#fff; font-family:'Courier New',monospace; font-size:12px;" onkeydown="if(event.key==='Enter') runTerminalCommand();">
+                    </div>
+                </div>
+            </div>
+            <!-- RANKING -->
+            <div id="page-ranking" class="page">
+                <div class="page-title"><i class="fa-solid fa-ranking-star"></i> Ranking de Toxicidad</div>
+                <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Vota por el mas tóxico del clan. <span id="total-votos" style="color:var(--danger); font-weight:700;">0</span> votos totales · un voto por usuario (guardado en la base del clan).</p>
+                <div class="grid-container" id="ranking-grid"></div>
+                <div style="margin-top:20px; text-align:center;">
+                    <button class="admin-danger-btn" onclick="resetVotos()"><i class="fa-solid fa-rotate-left"></i> Resetear Votos</button>
+                </div>
+            </div>
+            <!-- EXCUSAS -->
+            <div id="page-excusas" class="page">
+                <div class="page-title"><i class="fa-solid fa-comment-dots"></i> Generador de Excusas</div>
+                <div class="card" style="max-width:480px; margin:0 auto; text-align:center;">
+                    <p id="excusa-text" style="font-size:16px; color:#fff; font-weight:600; min-height:50px; margin-bottom:15px;">"Se me fue el internet justo cuando iba a ganar..."</p>
+                    <button class="btn-submit" style="max-width:260px; margin:0 auto; cursor:pointer;" onclick="generarExcusa()"><i class="fa-solid fa-dice"></i> Generar excusa</button>
+                </div>
+            </div>
+            <!-- MUERTES -->
+            <div id="page-muertes" class="page">
+                <div class="page-title"><i class="fa-solid fa-skull"></i> Bitácora de Bajas</div>
+                <p style="color:var(--text-muted); font-size:13px; margin-bottom:20px;">Contador de muertes del clan en Roblox. Solo el admin puede registrar bajas.</p>
+                <div class="grid-container" id="muertes-grid"></div>
+                <div style="margin-top:20px; text-align:center;">
+                    <button class="admin-danger-btn" onclick="resetMuertes()"><i class="fa-solid fa-rotate-left"></i> Resetear Muertes</button>
+                </div>
+            </div>
+            <!-- LINUX -->
+            <div id="page-linux" class="page">
+                <div class="page-title"><i class="fa-brands fa-linux"></i> Linux OS · Distros y Familias</div>
+                <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Catálogo de distribuciones oficiales con sus ventajas y desventajas, ordenadas por familia.</p>
+
+                <h3 style="font-size:15px; color:var(--primary); margin-bottom:15px; display:flex; align-items:center; gap:8px;"><i class="fa-brands fa-archlinux"></i> Familia Arch (rolling release)</h3>
+                <div class="grid-container">
+                    <div class="card"><i class="fa-brands fa-archlinux" style="color:#1793d1;"></i><div class="text">Arch Linux</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Siempre actualizado, total control, la wiki más completa (Arch Wiki).</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Instalación manual, fácil de romper si no sabés qué hacés.</p>
+                        <p style="margin-top:10px;"><a href="https://archlinux.org" target="_blank" style="color:var(--primary); font-weight:700;">archlinux.org</a></p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-shield-halved" style="color:#1793d1;"></i><div class="text">Manjaro</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Estable, fácil de instalar, trae todo listo para usar.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Estable pero se demora mucho en actualizar los paquetes.</p>
+                        <p style="margin-top:10px;"><a href="https://manjaro.org" target="_blank" style="color:var(--primary); font-weight:700;">manjaro.org</a></p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-rocket" style="color:#1793d1;"></i><div class="text">EndeavourOS</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Arch sin instalación difícil, comunidad amigable.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Sigue siendo rolling, podés romperla actualizando.</p>
+                        <p style="margin-top:10px;"><a href="https://endeavouros.com" target="_blank" style="color:var(--primary); font-weight:700;">endeavouros.com</a></p>
+                    </div>
+                </div>
+
+                <h3 style="font-size:15px; color:var(--secondary); margin:30px 0 15px; display:flex; align-items:center; gap:8px;"><i class="fa-brands fa-debian"></i> Familia Debian (estable)</h3>
+                <div class="grid-container">
+                    <div class="card"><i class="fa-brands fa-debian" style="color:#a81d33;"></i><div class="text">Debian</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Ultra estable, base de casi todo, funciona en cualquier máquina.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Paquetes viejos, software poco actualizado.</p>
+                        <p style="margin-top:10px;"><a href="https://debian.org" target="_blank" style="color:var(--primary); font-weight:700;">debian.org</a></p>
+                    </div>
+                    <div class="card"><i class="fa-brands fa-ubuntu" style="color:#e95420;"></i><div class="text">Ubuntu</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> La más popular, soporte largo (LTS), millones de tutoriales.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Snap obligado, más pesada que otras distros.</p>
+                        <p style="margin-top:10px;"><a href="https://ubuntu.com" target="_blank" style="color:var(--primary); font-weight:700;">ubuntu.com</a></p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-leaf" style="color:#67c23a;"></i><div class="text">Linux Mint</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Perfecta para empezar, interfaz tipo Windows, ligera.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Menos personalizable que otras, basada en Ubuntu.</p>
+                        <p style="margin-top:10px;"><a href="https://linuxmint.com" target="_blank" style="color:var(--primary); font-weight:700;">linuxmint.com</a></p>
+                    </div>
+                </div>
+
+                <h3 style="font-size:15px; color:var(--gold); margin:30px 0 15px; display:flex; align-items:center; gap:8px;"><i class="fa-brands fa-redhat"></i> Familia Red Hat (empresarial)</h3>
+                <div class="grid-container">
+                    <div class="card"><i class="fa-brands fa-fedora" style="color:#51a2da;"></i><div class="text">Fedora</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Tecnología nueva siempre, la usa Red Hat, muy estable.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Ciclos cortos, hay que actualizar cada 6 meses.</p>
+                        <p style="margin-top:10px;"><a href="https://getfedora.org" target="_blank" style="color:var(--primary); font-weight:700;">getfedora.org</a></p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-building-shield" style="color:#ee0000;"></i><div class="text">Red Hat Enterprise (RHEL)</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Estándar empresarial, soporte oficial, súper estable.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Pago/licencia, pensada para empresas grandes.</p>
+                        <p style="margin-top:10px;"><a href="https://redhat.com/en/technologies/linux-platforms/enterprise-linux" target="_blank" style="color:var(--primary); font-weight:700;">redhat.com</a></p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-infinity" style="color:#0f5e9c;"></i><div class="text">Rocky Linux / AlmaLinux</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> RHEL gratis, estable para servidores, compatible al 100%.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Paquetes viejos, no ideal para desktop.</p>
+                        <p style="margin-top:10px;"><a href="https://rockylinux.org" target="_blank" style="color:var(--primary); font-weight:700;">rockylinux.org</a> · <a href="https://almalinux.org" target="_blank" style="color:var(--primary);">almalinux.org</a></p>
+                    </div>
+                </div>
+
+                <h3 style="font-size:15px; color:var(--purple); margin:30px 0 15px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-cube"></i> Otras populares</h3>
+                <div class="grid-container">
+                    <div class="card"><i class="fa-solid fa-gears" style="color:#73ba25;"></i><div class="text">openSUSE</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Herramienta YaST, rolling (Tumbleweed) o estable (Leap).</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Menos comunidad hispana, paquetes RPM.</p>
+                        <p style="margin-top:10px;"><a href="https://opensuse.org" target="_blank" style="color:var(--primary); font-weight:700;">opensuse.org</a></p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-recycle" style="color:#5277c3;"></i><div class="text">NixOS</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Configuración declarativa, imposible romperla, reproducible.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Curva de aprendizaje brutal.</p>
+                        <p style="margin-top:10px;"><a href="https://nixos.org" target="_blank" style="color:var(--primary); font-weight:700;">nixos.org</a></p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-bolt" style="color:#8a2be2;"></i><div class="text">Void Linux</div>
+                        <p><b style="color:var(--secondary);">Ventajas:</b> Ultraligera, sin systemd, súper rápida.</p>
+                        <p><b style="color:var(--danger);">Desventajas:</b> Comunidad pequeña, paquetes menos.</p>
+                        <p style="margin-top:10px;"><a href="https://voidlinux.org" target="_blank" style="color:var(--primary); font-weight:700;">voidlinux.org</a></p>
+                    </div>
+                </div>
+            </div>
+            <!-- ROBLOX PC -->
+            <div id="page-optiroblox" class="page">
+                <div class="page-title"><i class="fa-solid fa-desktop"></i> Roblox PC · Optimización y Ejecutores</div>
+                <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Flags de optimización, shaders y ejecutores keyless para Roblox PC.</p>
+
+                <h3 style="font-size:15px; color:var(--primary); margin-bottom:15px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-gauge-high"></i> Flags de Optimización (FPS)</h3>
+                <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Se ponen en <code style="background:rgba(0,0,0,0.5); padding:2px 6px; border-radius:4px;">ClientAppSettings.json</code> dentro de <code style="background:rgba(0,0,0,0.5); padding:2px 6px; border-radius:4px;">%LOCALAPPDATA%\Roblox\Versions</code>.</p>
+                <div class="grid-container">
+                    <div class="card"><i class="fa-solid fa-bolt" style="color:var(--gold);"></i><div class="text">Máximo FPS</div>
+                        <p style="font-size:11px; font-family:monospace; background:rgba(0,0,0,0.5); padding:8px; border-radius:6px; word-break:break-all;">"DFIntTaskSchedulerTargetFps": 360</p>
+                        <p style="font-size:11px;">Desbloquea el límite de FPS para pantallas de 144Hz/360Hz.</p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-microchip" style="color:var(--primary);"></i><div class="text">Menos CPU</div>
+                        <p style="font-size:11px; font-family:monospace; background:rgba(0,0,0,0.5); padding:8px; border-radius:6px; word-break:break-all;">"FFlagDebugDisableLuaApp": false<br>"DFIntCullMaxPrimitives": 500</p>
+                        <p style="font-size:11px;">Reduce trabajo de renderizado en escenas cargadas.</p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-memory" style="color:var(--secondary);"></i><div class="text">Menos RAM</div>
+                        <p style="font-size:11px; font-family:monospace; background:rgba(0,0,0,0.5); padding:8px; border-radius:6px; word-break:break-all;">"FFlagTextureQualityOverride": 1<br>"FFlagDebugDisableMipmapStreaming": true</p>
+                        <p style="font-size:11px;">Texturas en baja calidad y sin streaming de mipmaps.</p>
+                    </div>
+                </div>
+
+                <h3 style="font-size:15px; color:var(--secondary); margin:30px 0 15px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-palette"></i> Flags de Shaders y Gráficos</h3>
+                <div class="grid-container">
+                    <div class="card"><i class="fa-solid fa-lightbulb" style="color:var(--gold);"></i><div class="text">Shaders + Futuristic</div>
+                        <p style="font-size:11px; font-family:monospace; background:rgba(0,0,0,0.5); padding:8px; border-radius:6px; word-break:break-all;">"FFlagDebugGraphicsPreferVulkan": true</p>
+                        <p style="font-size:11px;">Fuerza Vulkan para mejor rendimiento con shaders externos (ReShade / Roblox+).</p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-layer-group" style="color:var(--purple);"></i><div class="text">Gráficos Altos</div>
+                        <p style="font-size:11px; font-family:monospace; background:rgba(0,0,0,0.5); padding:8px; border-radius:6px; word-break:break-all;">"FFlagRenderJobAllocateDelay": 0<br>"FFlagDFIntRenderJobMaxCores": 8</p>
+                        <p style="font-size:11px;">Usa todos los núcleos de la CPU para renderizar más rápido.</p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-eye" style="color:var(--danger);"></i><div class="text">Calidad Visual</div>
+                        <p style="font-size:11px; font-family:monospace; background:rgba(0,0,0,0.5); padding:8px; border-radius:6px; word-break:break-all;">"FFlagDisablePostFX": false<br>"FFlagEnableInGameMenu": true</p>
+                        <p style="font-size:11px;">Mantiene efectos post-proceso (blur, glow) si te sobran FPS.</p>
+                    </div>
+                </div>
+
+                <h3 style="font-size:15px; color:var(--danger); margin:30px 0 15px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-fish"></i> Ejecutores Keyless</h3>
+                <div class="grid-container">
+                    <div class="card"><i class="fa-solid fa-fish" style="color:var(--primary);"></i><div class="text">Fishtrap</div>
+                        <p>Ejecutor keyless gratuito, Byfron bypass, scripts de Blox Fruits y Rivals. Sin claves ni esperas.</p>
+                        <p style="margin-top:10px;"><a href="https://fishtrap.cc" target="_blank" style="color:var(--primary); font-weight:700;">fishtrap.cc</a></p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-fish-fins" style="color:var(--secondary);"></i><div class="text">Frostrap</div>
+                        <p>Ejecutor keyless con soporte para Windows y Android, auto-update y librería de scripts integrada.</p>
+                        <p style="margin-top:10px;"><a href="https://frostrap.com" target="_blank" style="color:var(--primary); font-weight:700;">frostrap.com</a></p>
+                    </div>
+                    <div class="card"><i class="fa-solid fa-bolt" style="color:var(--gold);"></i><div class="text">Volcano</div>
+                        <p>Open source, keyless, Byfron bypass y multi-instancia para farmear con varias cuentas a la vez.</p>
+                        <p style="margin-top:10px;"><a href="https://github.com/volcanchik/volcano" target="_blank" style="color:var(--primary); font-weight:700;">Descargar Volcano</a></p>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:25px; text-align:center;">
+                    <i class="fa-solid fa-circle-info" style="color:var(--primary); margin-bottom:8px;"></i>
+                    <p style="font-size:12px; color:var(--text-muted);">Los flags de FPS y shaders solo afectan a tu cuenta local. Si Roblox actualiza, algunos flags cambian de nombre — no pasa nada, solo se ignoran.</p>
+                </div>
+            </div>
+
+            <!-- PAGE ADMIN (PANEL DE CONTROL) -->
+            <div id="page-admin" class="page">
+                <div class="page-title"><i class="fa-solid fa-user-shield"></i> Admin Panel del Clan</div>
+
+                <!-- Gate de acceso -->
+                <div id="admin-gate" class="card" style="max-width:380px; margin:0 auto; text-align:center; display:flex; flex-direction:column; gap:12px;">
+                    <i class="fa-solid fa-lock" style="font-size:34px; color:var(--primary);"></i>
+                    <h3 style="font-size:16px;">Acceso Administrativo</h3>
+                    <p style="font-size:12px; color:var(--text-muted);">Este panel es solo para cuentas con rol admin en la base de datos del clan. Ingresá con tu cuenta admin (botón "Ingresar" arriba) y volvé a esta página.</p>
+                    <div id="admin-pass-error" style="color:var(--danger); font-size:11px; min-height:16px;"></div>
+                    <button class="btn-submit" onclick="showAuthOverlay()"><i class="fa-solid fa-right-to-bracket"></i> INGRESAR</button>
+                </div>
+
+                <!-- Cuerpo admin -->
+                <div id="admin-body" style="display:none;">
+<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
+                        <button class="admin-tab-btn active" onclick="adminTab(this,'stats')"><i class="fa-solid fa-chart-simple"></i> Estadísticas</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'anuncio')"><i class="fa-solid fa-bullhorn"></i> Anuncio</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'chat')"><i class="fa-solid fa-comments"></i> Chat</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'usuarios')"><i class="fa-solid fa-users"></i> Usuarios</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'miembros')"><i class="fa-solid fa-id-badge"></i> Miembros</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'nicks')"><i class="fa-solid fa-address-card"></i> Nicks</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'cumples')"><i class="fa-solid fa-cake-candles"></i> Cumpleaños</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'comida')"><i class="fa-solid fa-utensils"></i> Comida</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'personajes')"><i class="fa-solid fa-mask"></i> Personajes</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'ranking')"><i class="fa-solid fa-ranking-star"></i> Ranking</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'bot')"><i class="fa-solid fa-robot"></i> Bot Chat</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'excusas')"><i class="fa-solid fa-comment-dots"></i> Excusas</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'tema')"><i class="fa-solid fa-palette"></i> Tema</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'sonidos')"><i class="fa-solid fa-volume-high"></i> Sonidos</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'mantenimiento')"><i class="fa-solid fa-wrench"></i> Mantenimiento</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'logs')"><i class="fa-solid fa-file-lines"></i> Logs</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'backup')"><i class="fa-solid fa-database"></i> Backup</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'datos')"><i class="fa-solid fa-broom"></i> Datos</button>
+                        <button class="admin-tab-btn" onclick="adminTab(this,'seguridad')"><i class="fa-solid fa-key"></i> Seguridad</button>
+                        <button class="admin-tab-btn admin-danger" onclick="adminLogout()"><i class="fa-solid fa-power-off"></i> Salir</button>
+                    </div>
+
+                    <!-- TAB: ESTADÍSTICAS -->
+                    <div id="tab-stats" class="admin-tab-body active">
+                        <div class="grid-container">
+                            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:var(--primary);font-family:'Orbitron';">6</div><div style="font-size:12px;color:var(--text-muted);">Integrantes del Clan</div></div>
+                            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:var(--secondary);font-family:'Orbitron';" id="ad-users">0</div><div style="font-size:12px;color:var(--text-muted);">Cuentas Registradas</div></div>
+                            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:var(--gold);font-family:'Orbitron';" id="ad-chat">0</div><div style="font-size:12px;color:var(--text-muted);">Mensajes en el Chat</div></div>
+                            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:var(--danger);font-family:'Orbitron';" id="ad-votes">0</div><div style="font-size:12px;color:var(--text-muted);">Votos de Toxicidad</div></div>
+                            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:#ff6688;font-family:'Orbitron';" id="ad-deaths">0</div><div style="font-size:12px;color:var(--text-muted);">Muertes Registradas</div></div>
+                            <div class="card" style="text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--danger);font-family:'Orbitron';" id="ad-status">—</div><div style="font-size:12px;color:var(--text-muted);">Estado del Sistema</div></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: ANUNCIO -->
+                    <div id="tab-anuncio" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:15px; margin-bottom:10px;"><i class="fa-solid fa-bullhorn"></i> Anuncio Global</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Se mostrará como banner en la parte superior del sitio.</p>
+                            <input type="text" id="admin-ann-input" maxlength="120" placeholder="Escribe el anuncio (ej: Evento de Blox Fruits este sábado 🔥)" style="width:100%; background:rgba(3,9,20,0.8); border:1px solid var(--dark-border); color:#fff; padding:12px 16px; border-radius:8px; outline:none; font-size:13px; margin-bottom:10px;">
+                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                <button class="btn-submit" style="width:auto; padding:10px 20px;" onclick="saveAnnouncement()"><i class="fa-solid fa-floppy-disk"></i> Guardar Anuncio</button>
+                                <button class="admin-danger-btn" onclick="clearAnnouncement()"><i class="fa-solid fa-trash"></i> Quitar Anuncio</button>
+                            </div>
+                            <div id="admin-ann-ok" style="font-size:12px; color:var(--secondary); margin-top:8px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: CHAT -->
+                    <div id="tab-chat" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-comments"></i> Moderación del Chat</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Limpia todos los mensajes guardados del chat público.</p>
+                            <button class="btn-submit" style="width:auto; padding:10px 20px; background:linear-gradient(135deg, var(--danger), #ff3355);" onclick="clearChatAdmin()"><i class="fa-solid fa-eraser"></i> Borrar Todo el Chat</button>
+                            <div id="admin-chat-ok" style="font-size:12px; color:var(--secondary); margin-top:8px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: USUARIOS -->
+                    <div id="tab-usuarios" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-users"></i> Usuarios Registrados</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Cuentas creadas desde el login del sitio (se guardan en este dispositivo).</p>
+                            <div id="admin-users-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+                            <div id="admin-users-ok" style="font-size:12px; color:var(--secondary); margin-top:8px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: MIEMBROS -->
+                    <div id="tab-miembros" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-id-badge"></i> Editar Descripciones de Miembros</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Cambia la descripción de cada integrante del clan.</p>
+                            <div id="admin-miembros-editor"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: NICKS -->
+                    <div id="tab-nicks" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-address-card"></i> Editar Nicks de Roblox</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Actualiza los nicks oficiales de cada integrante.</p>
+                            <div id="admin-nicks-editor"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: CUMPLES -->
+                    <div id="tab-cumples" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-cake-candles"></i> Editar Cumpleaños</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Actualiza las fechas de cumpleaños del clan.</p>
+                            <div id="admin-cumples-editor"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: COMIDA -->
+                    <div id="tab-comida" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-utensils"></i> Editar Comida Favorita</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Actualiza la comida favorita de cada integrante.</p>
+                            <div id="admin-comida-editor"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: PERSONAJES -->
+                    <div id="tab-personajes" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-mask"></i> Editar Personajes Favoritos</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Actualiza los personajes favoritos de cada integrante.</p>
+                            <div id="admin-personajes-editor"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: RANKING -->
+                    <div id="tab-ranking" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-ranking-star"></i> Editar Títulos del Ranking</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Cambia los títulos/roles que se muestran en el ranking de toxicidad.</p>
+                            <div id="admin-ranking-editor"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: BOT CHAT -->
+                    <div id="tab-bot" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-robot"></i> Configurar Bot del Chat</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Las respuestas automáticas que el bot manda en el chat.</p>
+                            <div id="admin-bot-editor"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: EXCUSAS -->
+                    <div id="tab-excusas" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-comment-dots"></i> Excusas del Generador</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Agrega o quita excusas del generador.</p>
+                            <div id="admin-excusas-editor"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: TEMA -->
+                    <div id="tab-tema" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-palette"></i> Cambiar Tema de Color</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Elige el color principal del sitio.</p>
+                            <div id="admin-tema-picker"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: SONIDOS -->
+                    <div id="tab-sonidos" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-volume-high"></i> Sonidos del Sitio</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Activa o desactiva los sonidos (click, mensaje, muerte).</p>
+                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                <button class="btn-submit" style="width:auto; padding:10px 20px;" onclick="toggleSound('click')" id="sound-click-btn">Click: ON</button>
+                                <button class="btn-submit" style="width:auto; padding:10px 20px;" onclick="toggleSound('msg')" id="sound-msg-btn">Mensaje: ON</button>
+                                <button class="btn-submit" style="width:auto; padding:10px 20px;" onclick="toggleSound('death')" id="sound-death-btn">Muerte: ON</button>
+                            </div>
+                            <div id="admin-sound-ok" style="font-size:12px; color:var(--secondary); margin-top:8px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: MANTENIMIENTO -->
+                    <div id="tab-mantenimiento" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-wrench"></i> Modo Mantenimiento</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Muestra un aviso en toda la página (no bloquea, solo avisa).</p>
+                            <input type="text" id="admin-maint-input" maxlength="120" placeholder="Ej: Mantenimiento programado esta noche..." style="width:100%; background:rgba(3,9,20,0.8); border:1px solid var(--dark-border); color:#fff; padding:12px 16px; border-radius:8px; outline:none; font-size:13px; margin-bottom:10px;">
+                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                <button class="btn-submit" style="width:auto; padding:10px 20px;" onclick="setMaintenance()"><i class="fa-solid fa-play"></i> Activar Aviso</button>
+                                <button class="admin-danger-btn" onclick="clearMaintenance()"><i class="fa-solid fa-stop"></i> Quitar Aviso</button>
+                            </div>
+                            <div id="admin-maint-ok" style="font-size:12px; color:var(--secondary); margin-top:8px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: LOGS -->
+                    <div id="tab-logs" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-file-lines"></i> Registro de Acciones del Admin</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Historial de acciones realizadas en este panel.</p>
+                            <div id="admin-logs-list" style="display:flex; flex-direction:column; gap:6px; max-height:320px; overflow-y:auto;"></div>
+                            <button class="admin-danger-btn" style="margin-top:10px;" onclick="clearLogs()"><i class="fa-solid fa-trash"></i> Borrar Logs</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB: BACKUP -->
+                    <div id="tab-backup" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-database"></i> Backup de Datos</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Exporta todos los datos del sitio o restaura desde un backup.</p>
+                            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+                                <button class="btn-submit" style="width:auto; padding:10px 20px;" onclick="exportBackup()"><i class="fa-solid fa-download"></i> Exportar Backup</button>
+                                <button class="admin-danger-btn" onclick="importBackup()"><i class="fa-solid fa-upload"></i> Importar Backup</button>
+                            </div>
+                            <textarea id="admin-backup-text" placeholder='Pega aqui el backup JSON...' style="width:100%; height:90px; background:rgba(3,9,20,0.8); border:1px solid var(--dark-border); color:#fff; padding:12px; border-radius:8px; outline:none; font-size:11px; font-family:monospace;"></textarea>
+                            <div id="admin-backup-ok" style="font-size:12px; color:var(--secondary); margin-top:8px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: DATOS -->
+                    <div id="tab-datos" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-database"></i> Datos del Sitio</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Limpia los datos guardados del ranking de toxicidad y la bitácora de muertes.</p>
+                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                <button class="btn-submit" style="width:auto; padding:10px 20px; background:linear-gradient(135deg, var(--danger), #ff3355);" onclick="resetVotos()"><i class="fa-solid fa-rotate-left"></i> Resetear Votos</button>
+                                <button class="btn-submit" style="width:auto; padding:10px 20px; background:linear-gradient(135deg, #ff6688, var(--danger));" onclick="resetMuertes()"><i class="fa-solid fa-rotate-left"></i> Resetear Muertes</button>
+                            </div>
+                            <div id="admin-datos-ok" style="font-size:12px; color:var(--secondary); margin-top:8px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- TAB: SEGURIDAD -->
+                    <div id="tab-seguridad" class="admin-tab-body">
+                        <div class="card">
+                            <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-user-shield"></i> Roles de Administración</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">El acceso al panel se controla con el campo <b style="color:var(--primary);">admin: true</b> de tu cuenta en la base de datos del clan (misma cuenta que PapusBank). Sin contraseña local.</p>
+                            <button class="btn-submit" style="width:auto; padding:10px 20px;" onclick="adminLogout()"><i class="fa-solid fa-power-off"></i> Cerrar Panel Admin</button>
+                            <div id="admin-pass-ok" style="font-size:12px; color:var(--secondary); margin-top:8px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== ONBOARDING OVERLAY (primer login: completar perfil) ===== -->
+    <div id="onboarding-overlay" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(2,6,14,0.92); backdrop-filter:blur(6px); align-items:center; justify-content:center; padding:20px;">
+        <div class="card" style="max-width:560px; width:100%; max-height:90vh; overflow-y:auto; padding:30px;">
+            <div style="text-align:center; margin-bottom:20px;">
+                <i class="fa-solid fa-user-plus" style="font-size:38px; color:var(--secondary);"></i>
+                <h3 style="font-size:20px; margin-top:10px; font-family:'Orbitron',sans-serif;">Completa tu perfil</h3>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:6px;">Estos datos aparecerán automáticamente en la web del clan (Nosotros, Nicks, Cumpleaños, Comida, Personajes y Ranking).</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:14px;">
+                <div class="input-field">
+                    <label><i class="fa-solid fa-user"></i> Nombre del Clan</label>
+                    <input id="ob-nick" type="text" placeholder="Tu nick del clan...">
+                </div>
+                <div class="input-field">
+                    <label><i class="fa-solid fa-gamepad"></i> Nick de Roblox</label>
+                    <input id="ob-roblox" type="text" placeholder="Tu nick dentro de Roblox...">
+                </div>
+                <div class="input-field">
+                    <label><i class="fa-solid fa-cake-candles"></i> Cumpleaños</label>
+                    <input id="ob-cumple" type="text" placeholder="Ej: 1 de Octubre">
+                </div>
+                <div class="input-field">
+                    <label><i class="fa-solid fa-utensils"></i> Comida Favorita</label>
+                    <input id="ob-comida" type="text" placeholder="Ej: Pasta boloñesa">
+                </div>
+                <div class="input-field">
+                    <label><i class="fa-solid fa-mask"></i> Personajes Favoritos</label>
+                    <input id="ob-personajes" type="text" placeholder="Ej: Luffy, Gojo, Guts">
+                </div>
+                <div class="input-field">
+                    <label><i class="fa-solid fa-ranking-star"></i> Título en el Ranking</label>
+                    <input id="ob-titulo" type="text" placeholder="Ej: El Jefe, God of Combos, El Pacifista...">
+                </div>
+                <div class="input-field">
+                    <label><i class="fa-solid fa-align-left"></i> Descripción Corta</label>
+                    <textarea id="ob-desc" rows="3" style="width:100%; background:rgba(3,9,20,0.8); border:1px solid var(--dark-border); color:#fff; padding:10px 12px; border-radius:8px; outline:none; font-size:12px;" placeholder="Cuéntanos quién sos dentro del clan..."></textarea>
+                </div>
+                <div id="ob-error" style="color:var(--danger); font-size:11px; min-height:16px; text-align:center;"></div>
+                <button type="button" class="btn-submit" id="ob-btn" onclick="saveOnboarding()">
+                    <i class="fa-solid fa-check"></i> GUARDAR MI PERFIL
+                </button>
+                <button type="button" class="admin-danger-btn" id="ob-skip" onclick="skipOnboarding()" style="width:100%;"><i class="fa-solid fa-xmark"></i> Lo hago después</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== LOGIN OVERLAY (Glassmorphic Sliding Panels PapusBank exact style) ===== -->
+    <div id="auth-overlay">
+      <button class="auth-close-btn" onclick="closeAuthOverlay()" title="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+      <div class="auth-container" id="authContainer">
+        <div class="forms-container">
+          <div class="form-panel form-panel--login">
+            <div class="form-content">
+              <div class="form-logo">
+                <i class="fa-solid fa-building-columns" style="color: var(--primary);"></i>
+                <span style="font-family:'Orbitron',sans-serif;font-weight:900;">LOS PAPUS</span>
+              </div>
+              <h2>Iniciar Sesión</h2>
+              <p class="subtitle">Ingresa tus credenciales del clan para continuar.</p>
+              <div class="input-field">
+                <label><i class="fa-solid fa-user"></i> Nick del Clan</label>
+                <input id="login-nick" type="text" placeholder="Tu nick aquí..." autocomplete="username">
+              </div>
+              <div class="input-field">
+                <label><i class="fa-solid fa-lock"></i> Contraseña</label>
+                <div style="position:relative;">
+                  <input id="login-pass" type="password" placeholder="••••••••" autocomplete="current-password" style="width:100%; padding-right:40px;">
+                  <button class="btn-icon" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;" onclick="togglePassVis()">
+                    <i class="fa-solid fa-eye" id="pass-eye-icon"></i>
+                  </button>
+                </div>
+              </div>
+              <div id="login-error" style="color:var(--danger);font-size:11px;min-height:18px;margin-bottom:10px;text-align:center;"></div>
+              <button type="button" class="btn-submit" id="login-btn" onclick="doLogin()">
+                <i class="fa-solid fa-right-to-bracket"></i> INGRESAR AL CLAN
+              </button>
+            </div>
+          </div>
+          <div class="form-panel form-panel--register">
+            <div class="form-content">
+              <div class="form-logo">
+                <i class="fa-solid fa-building-columns" style="color: var(--secondary);"></i>
+                <span style="font-family:'Orbitron',sans-serif;font-weight:900;">LOS PAPUS</span>
+              </div>
+              <h2>Registrarse</h2>
+              <p class="subtitle">Crea tu cuenta oficial en la web del clan.</p>
+              <div class="input-field">
+                <label><i class="fa-solid fa-user"></i> Nick del Clan</label>
+                <input id="register-nick" type="text" placeholder="Ej: papu_pro">
+              </div>
+              <div class="input-field">
+                <label><i class="fa-solid fa-lock"></i> Contraseña</label>
+                <input id="register-pass" type="password" placeholder="••••••••">
+              </div>
+              <div class="input-field">
+                <label><i class="fa-solid fa-shield-halved"></i> Confirmar Contraseña</label>
+                <input id="register-confirm-pass" type="password" placeholder="••••••••">
+              </div>
+              <div id="register-error" style="color:var(--danger);font-size:11px;min-height:18px;margin-bottom:10px;text-align:center;"></div>
+<button type="button" class="btn-submit" id="register-btn" onclick="doRegister()" style="background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);">
+                  <i class="fa-solid fa-user-plus"></i> CREAR CUENTA
+                </button>
+            </div>
+          </div>
+        </div>
+        <div class="overlay-panel">
+          <div class="overlay-content overlay-content--right">
+            <h2>¿Eres nuevo?</h2>
+            <p>Regístrate en el sistema oficial del Clan Los Papus para abrir tu cuenta hoy.</p>
+            <button id="toggleBtnRight" class="btn-ghost">REGISTRARSE</button>
+          </div>
+          <div class="overlay-content overlay-content--left">
+            <h2>¡Bienvenido de vuelta!</h2>
+            <p>Si ya tienes una cuenta registrada en el clan, ingresa con tus credenciales.</p>
+            <button id="toggleBtnLeft" class="btn-ghost">INICIAR SESIÓN</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- JS LIBRARIES & SCRIPTS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="app.js"></script>
+
+    <!-- ════════════════════════════════════════════════════════════
+         API BRIDGE (PapusBank backend — replaces Firebase)
+    ════════════════════════════════════════════════════════════ -->
+    <script>
+    const API_BASE = 'https://pcs-willow-investigation-milton.trycloudflare.com/api';
+    window._apiToken = localStorage.getItem('papus_jwt') || null;
+
+    window._apiCache = {};
+    const CACHE_TTL = 60000;
+
+    async function apiFetch(method, path, body) {
+        const cacheKey = method + ':' + path;
+        if (method === 'GET' && !body) {
+            const cached = window._apiCache[cacheKey];
+            if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data;
+        }
+
+        const headers = { 'Content-Type': 'application/json' };
+        if (window._apiToken) headers['Authorization'] = 'Bearer ' + window._apiToken;
+        const opts = { method, headers };
+        if (body) opts.body = JSON.stringify(body);
+
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
+        opts.signal = controller.signal;
+
+        let res;
+        try {
+            res = await fetch(API_BASE + path, opts);
+        } catch(e) {
+            clearTimeout(timeout);
+            throw new Error('Sin conexión al servidor');
+        }
+        clearTimeout(timeout);
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'API error ' + res.status);
+
+        if (method === 'GET' && !body) {
+            window._apiCache[cacheKey] = { data, ts: Date.now() };
+        }
+        if (method !== 'GET') {
+            Object.keys(window._apiCache).forEach(k => delete window._apiCache[k]);
+        }
+        return data;
+    }
+    window.apiFetch = apiFetch;
+
+    window._db = 'api';
+
+    // Firestore-like bridge: translates _fb* calls to REST API
+    window._fbSetDoc = async function(ref, data) {
+        const [col, id] = ref.split('/');
+        await apiFetch('POST', '/' + col + '/' + id, data);
+    };
+    window._fbGetDoc = async function(ref) {
+        const [col, id] = ref.split('/');
+        try {
+            const data = await apiFetch('GET', '/' + col + '/' + id);
+            return { exists: () => !!data, data: () => data };
+        } catch(e) {
+            return { exists: () => false, data: () => null };
+        }
+    };
+    window._fbGetDocs = async function(ref) {
+        const col = ref.replace(/^\/+|\/+$/g, '');
+        try {
+            const arr = await apiFetch('GET', '/' + col);
+            const raw = Array.isArray(arr) ? arr : (arr.items || Object.entries(arr).map(([id, d]) => ({ id, ...d })));
+            const docs = raw.map(d => ({ ...d, id: d.id || d.nick || d.email || String(Math.random()) }));
+            return { forEach: (cb) => docs.forEach((d) => cb({ id: d.id, data: () => d, ref: d.id })), size: docs.length, docs };
+        } catch(e) { return { forEach: () => {}, size: 0, docs: [] }; }
+    };
+    window._fbUpdateDoc = async function(ref, data) {
+        const [col, id] = ref.split('/');
+        const hasOps = Object.values(data).some(v => v && typeof v === 'object' && v._op);
+
+        if (hasOps) {
+            let current = {};
+            try { current = await apiFetch('GET', '/' + col + '/' + id); } catch(e) {}
+            const resolved = {};
+            for (const [k, v] of Object.entries(data)) {
+                if (v && typeof v === 'object' && v._op === 'increment') {
+                    const cur = parseFloat(current[k]) || 0;
+                    resolved[k] = cur + v.value;
+                } else if (v && typeof v === 'object' && v._op === 'arrayUnion') {
+                    const cur = current[k] || [];
+                    resolved[k] = [...cur, ...v.items.filter(i => !cur.includes(i))];
+                } else if (v && typeof v === 'object' && v._op === 'arrayRemove') {
+                    const cur = current[k] || [];
+                    resolved[k] = cur.filter(i => !v.items.includes(i));
+                } else {
+                    resolved[k] = v;
+                }
+            }
+            await apiFetch('PUT', '/' + col + '/' + id, resolved);
+        } else {
+            await apiFetch('PUT', '/' + col + '/' + id, data);
+        }
+    };
+    window._fbAddDoc = async function(ref, data) {
+        const col = ref.replace(/^\/+|\/+$/g, '');
+        return await apiFetch('POST', '/' + col, data);
+    };
+    window._fbDeleteDoc = async function(ref) {
+        const [col, id] = ref.split('/');
+        await apiFetch('DELETE', '/' + col + '/' + id);
+    };
+    window._fbDoc = function(db, col, id) { return col + '/' + id; };
+    window._fbCollection = function(db, col, id, sub) { return sub ? col + '/' + id + '/' + sub : col; };
+    window._fbServerTimestamp = function() { return new Date().toISOString(); };
+    window._fbIncrement = function(n) { return { _op: 'increment', value: n }; };
+    window._fbArrayUnion = function() { return { _op: 'arrayUnion', items: Array.from(arguments) }; };
+    window._fbArrayRemove = function() { return { _op: 'arrayRemove', items: Array.from(arguments) }; };
+    window._fbWriteBatch = function(db) {
+        const ops = [];
+        return {
+            update: (ref, data) => ops.push({ op: 'update', ref, data }),
+            set: (ref, data) => ops.push({ op: 'set', ref, data }),
+            commit: async () => { for (const o of ops) { const [col, id] = o.ref.split('/'); await apiFetch('PUT', '/' + col + '/' + id, o.data); } }
+        };
+    };
+    window._fbOnSnapshot = function() {};
+    window._fbQuery = function() { return ''; };
+    window._fbWhere = function() { return ''; };
+    window._fbOrderBy = function() { return ''; };
+    window._fbLimit = function(n) { return ''; };
+
+    console.log('[lospapusxdd] API Bridge OK — ' + API_BASE);
+    </script>
+</body>
+</html>
