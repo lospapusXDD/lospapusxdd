@@ -165,7 +165,18 @@ async function doLogin() {
     if (err) err.innerText = 'Ingresando...';
 
     try {
-        const res = await apiFetch('POST', '/auth/login', { nick: nick.toLowerCase(), password: pass });
+        let res = null;
+        try {
+            res = await apiFetch('POST', '/auth/login', { nick: nick, password: pass });
+        } catch (e1) {
+            const low = nick.toLowerCase();
+            if (low !== nick) {
+                res = await apiFetch('POST', '/auth/login', { nick: low, password: pass });
+            } else {
+                throw e1;
+            }
+        }
+        const storedNick = (res && res.nick) || nick.toLowerCase();
         if (res.twofaRequired || res.twofa_required) {
             if (err) err.innerText = 'Tu cuenta tiene verificación de 2 pasos activada.';
             const code = prompt('Ingresá el código de 6 dígitos de tu app autenticadora:');
@@ -176,8 +187,8 @@ async function doLogin() {
                 if (!token) { if (err) err.innerText = 'Código incorrecto.'; return; }
                 window._apiToken = token;
                 localStorage.setItem('papus_jwt', token);
-                saveSession(nick.toLowerCase(), res.hash || hashPass(pass, nick.toLowerCase()));
-                checkOnboarding(nick.toLowerCase());
+                saveSession(storedNick, res.hash || hashPass(pass, nick.toLowerCase()));
+                checkOnboarding(storedNick);
             } catch (e2) {
                 if (err) err.innerText = 'Código 2FA incorrecto o expirado.';
             }
@@ -187,10 +198,15 @@ async function doLogin() {
         if (!token) { if (err) err.innerText = 'Credenciales incorrectas.'; return; }
         window._apiToken = token;
         localStorage.setItem('papus_jwt', token);
-        saveSession(nick.toLowerCase(), res.hash || hashPass(pass, nick.toLowerCase()));
-        checkOnboarding(nick.toLowerCase());
+        saveSession(storedNick, res.hash || hashPass(pass, nick.toLowerCase()));
+        checkOnboarding(storedNick);
     } catch (e) {
-        if (err) err.innerText = e.message || 'Error de conexión. ¿Está el backend activo?';
+        const msg = String(e.message || '');
+        if (/interno|interna|500/i.test(msg)) {
+            if (err) err.innerText = 'Usuario o contraseña incorrectos.';
+        } else {
+            if (err) err.innerText = msg || 'Error de conexión. ¿Está el backend activo?';
+        }
     }
 }
 
@@ -234,7 +250,7 @@ function getSessionNick() {
 async function checkOnboarding(nick) {
     if (!nick || !fbReady()) return;
     try {
-        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'users', nick.toLowerCase()));
+        const snap = await window._fbGetDoc(window._fbDoc(window._db, 'users', nick));
         if (snap.error && /token|unauthor|401|403/i.test(snap.error || '')) {
             localStorage.removeItem('papus_jwt');
             window._apiToken = null;
@@ -270,7 +286,7 @@ async function openOnboarding(editing, userData) {
             userData = m.data;
         } else {
             try {
-                const snap = await window._fbGetDoc(window._fbDoc(window._db, 'users', (nick || '').toLowerCase()));
+                const snap = await window._fbGetDoc(window._fbDoc(window._db, 'users', nick));
                 userData = snap.exists() ? snap.data() : null;
             } catch (e) { userData = null; }
         }
@@ -647,7 +663,7 @@ async function adminDeleteUser(nick) {
     if (!isCurrentUserAdmin()) return;
     if (!confirm('¿Eliminar al usuario ' + nick + '? No se puede deshacer.')) return;
     try {
-        await window._fbDeleteDoc(window._fbDoc(window._db, 'users', String(nick).toLowerCase()));
+        await window._fbDeleteDoc(window._fbDoc(window._db, 'users', String(nick)));
         await syncUsersFromFB();
         renderAdminStats();
         const ok = document.getElementById('admin-users-ok');
