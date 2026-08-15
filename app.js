@@ -187,10 +187,12 @@ async function doLogin() {
                 if (!token) { if (err) err.innerText = 'Código incorrecto.'; return; }
                 window._apiToken = token;
                 localStorage.setItem('papus_jwt', token);
-                saveSession(storedNick, res.hash || hashPass(pass, nick.toLowerCase()));
-                checkOnboarding(storedNick);
+                const finalNick = (conf && conf.nick) || storedNick;
+                saveSession(finalNick, (conf && conf.hash) || res.hash || hashPass(pass, nick.toLowerCase()));
+                checkOnboarding(finalNick);
             } catch (e2) {
-                if (err) err.innerText = 'Código 2FA incorrecto o expirado.';
+                const m2 = String(e2.message || '');
+                if (err) err.innerText = /interno|interna|500/i.test(m2) ? 'Error del servidor, volvé a intentar.' : 'Código 2FA incorrecto o expirado.';
             }
             return;
         }
