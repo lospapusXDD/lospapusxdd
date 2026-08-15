@@ -42,7 +42,10 @@ function toggleSidebar() {
 }
 
 // ===== AUTH / LOGIN =====
+let _authHideTimer = null;
+
 function showAuthOverlay() {
+    if (_authHideTimer) { clearTimeout(_authHideTimer); _authHideTimer = null; }
     const overlay = document.getElementById('auth-overlay');
     if (overlay) {
         overlay.style.display = 'flex';
@@ -54,7 +57,8 @@ function closeAuthOverlay() {
     const overlay = document.getElementById('auth-overlay');
     if (overlay) {
         overlay.style.opacity = '0';
-        setTimeout(() => overlay.style.display = 'none', 300);
+        if (_authHideTimer) clearTimeout(_authHideTimer);
+        _authHideTimer = setTimeout(() => overlay.style.display = 'none', 300);
     }
 }
 
@@ -123,6 +127,11 @@ function logout() {
     localStorage.removeItem('papus_session');
     localStorage.removeItem('papus_jwt');
     window._apiToken = null;
+    if (window._apiCache) window._apiCache = {};
+    if (window._apiCacheKeys) window._apiCacheKeys = {};
+    clanMembers = [];
+    _lastChatCount = -1;
+    if (_chatPollTimer) { clearInterval(_chatPollTimer); _chatPollTimer = null; }
     const userWidgetName = document.getElementById('nav-user-name');
     const logoutBtn = document.getElementById('logout-btn');
     const userWidget = document.getElementById('user-widget');
@@ -157,9 +166,10 @@ async function doLogin() {
 
     try {
         const res = await apiFetch('POST', '/auth/login', { nick: nick.toLowerCase(), password: pass });
-        if (!res || !res.token) { if (err) err.innerText = 'Credenciales incorrectas.'; return; }
-        window._apiToken = res.token;
-        localStorage.setItem('papus_jwt', res.token);
+        const token = res && (res.accessToken || res.token);
+        if (!token) { if (err) err.innerText = 'Credenciales incorrectas.'; return; }
+        window._apiToken = token;
+        localStorage.setItem('papus_jwt', token);
         saveSession(nick.toLowerCase(), res.hash || hashPass(pass, nick.toLowerCase()));
         checkOnboarding(nick.toLowerCase());
     } catch (e) {
@@ -181,9 +191,12 @@ async function doRegister() {
 
     try {
         const res = await apiFetch('POST', '/auth/register', { nick: key, password: pass, hash: hashPass(pass, key) });
-        if (res && res.token) {
-            window._apiToken = res.token;
-            localStorage.setItem('papus_jwt', res.token);
+        const token = res && (res.accessToken || res.token);
+        if (token) {
+            window._apiToken = token;
+            localStorage.setItem('papus_jwt', token);
+        } else {
+            if (err) err.innerText = 'La cuenta se creó, pero el servidor no dio sesión. Iniciá sesión.';
         }
         saveSession(key, hashPass(pass, key));
         if (err) err.innerText = '';
@@ -205,6 +218,12 @@ async function checkOnboarding(nick) {
     if (!nick || !fbReady()) return;
     try {
         const snap = await window._fbGetDoc(window._fbDoc(window._db, 'users', nick.toLowerCase()));
+        if (snap.error && /token|unauthor|401|403/i.test(snap.error || '')) {
+            localStorage.removeItem('papus_jwt');
+            window._apiToken = null;
+            showAuthOverlay();
+            return;
+        }
         const data = snap.exists() ? snap.data() : null;
         if (data && data.onboarded) {
             syncUsersFromFB();
@@ -216,10 +235,21 @@ async function checkOnboarding(nick) {
     }
 }
 
-function openOnboarding(editing, userData) {
+async function openOnboarding(editing, userData) {
     const overlay = document.getElementById('onboarding-overlay');
     if (!overlay) return;
     const nick = getSessionNick();
+    if (editing && !userData) {
+        const m = memberByNick(nick);
+        if (m) {
+            userData = m.data;
+        } else {
+            try {
+                const snap = await window._fbGetDoc(window._fbDoc(window._db, 'users', (nick || '').toLowerCase()));
+                userData = snap.exists() ? snap.data() : null;
+            } catch (e) { userData = null; }
+        }
+    }
     const nickEl = document.getElementById('ob-nick');
     if (nickEl) {
         nickEl.value = editing ? (userData && userData.nick) || nick || '' : nick || '';
@@ -231,6 +261,8 @@ function openOnboarding(editing, userData) {
     profileFields.forEach(id => { const el = document.getElementById(id); if (el) el.value = map[id] || ''; });
     const skipBtn = document.getElementById('ob-skip');
     if (skipBtn) skipBtn.style.display = editing ? 'none' : 'block';
+    const err = document.getElementById('ob-error');
+    if (err) err.innerText = '';
     const btn = document.getElementById('ob-btn');
     if (btn) btn.innerHTML = editing ? '<i class="fa-solid fa-floppy-disk"></i> GUARDAR CAMBIOS' : '<i class="fa-solid fa-check"></i> GUARDAR MI PERFIL';
     overlay.style.display = 'flex';
@@ -280,10 +312,10 @@ async function saveOnboarding() {
         renderAllContent();
     } catch (e) {
         const msg = (e.message || 'Error al guardar.');
-        if (msg.includes('401') || /unauthor|token|sesi/.test(msg)) {
-            if (err) err.innerText = 'Sesión expirada. Volvé a iniciar sesión y reintentá.';
+        if (/unauthor|token|sesi|401|403/i.test(msg)) {
+            if (err) err.innerText = 'Sesión expirada o sin permisos. Volvé a iniciar sesión y reintentá.';
         } else {
-            if (err) err.innerText = msg + ' ¿Antigravity ya agregó los campos de perfil?';
+            if (err) err.innerText = 'Error al guardar. Revisá tu conexión e intentá de nuevo.';
         }
     }
 }
@@ -324,7 +356,7 @@ function copyScriptText(btn) {
 
 // ===== CHAT EN VIVO (clan_chat — base de datos del clan) =====
 let _chatPollTimer = null;
-let _lastChatCount = 0;
+let _lastChatCount = -1;
 
 async function loadChat() {
     const container = document.getElementById('chat-messages-container');
@@ -340,7 +372,7 @@ async function loadChat() {
             const tb = b.data().created_at || b.data().timestamp || '';
             return new Date(ta).getTime() - new Date(tb).getTime();
         });
-        if (msgs.length === _lastChatCount) return;
+        if (msgs.length === _lastChatCount && container.innerHTML !== '') return;
         _lastChatCount = msgs.length;
         container.innerHTML = '';
         if (msgs.length === 0) {
@@ -372,6 +404,10 @@ function esc(txt) {
     const d = document.createElement('div');
     d.textContent = txt;
     return d.innerHTML;
+}
+
+function jsAttr(name) {
+    return esc(String(name || '')).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
 
 function appendChatMessage(nick, text, timeStr, skipSave) {
@@ -497,6 +533,7 @@ function renderAdminStats() {
 
         const setText = (id, txt) => { const el = document.getElementById(id); if (el) el.innerText = txt; };
 
+        setText('ad-members', getMembersWithInfo().length);
         setText('ad-users', clanMembers.length);
         setText('ad-chat', 'cargando...');
         setText('ad-votes', 'en polls');
@@ -575,7 +612,7 @@ function renderAdminUsers() {
                 <div style="font-size:13px;font-weight:700;color:#fff;word-break:break-all;">${esc(m.nick)} ${badge}${onboard}</div>
                 <div style="font-size:10px;color:var(--text-muted);">Creada: ${u.createdAt ? new Date(u.createdAt).toLocaleDateString('es') : '—'}</div>
             </div>
-            <button style="background:rgba(255,68,102,0.15); border:1px solid rgba(255,68,102,0.4); color:var(--danger); padding:6px 12px; border-radius:8px; cursor:pointer; font-size:11px;" onclick="adminDeleteUser('${esc(m.nick)}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
+            <button style="background:rgba(255,68,102,0.15); border:1px solid rgba(255,68,102,0.4); color:var(--danger); padding:6px 12px; border-radius:8px; cursor:pointer; font-size:11px;" onclick="adminDeleteUser('${jsAttr(m.nick)}')"><i class="fa-solid fa-trash"></i> Eliminar</button>
         `;
         list.appendChild(row);
     });
@@ -585,8 +622,8 @@ async function adminDeleteUser(nick) {
     if (!isCurrentUserAdmin()) return;
     if (!confirm('¿Eliminar al usuario ' + nick + '? No se puede deshacer.')) return;
     try {
-        await window._fbDeleteDoc(window._fbDoc(window._db, 'users', nick));
-        syncUsersFromFB();
+        await window._fbDeleteDoc(window._fbDoc(window._db, 'users', String(nick).toLowerCase()));
+        await syncUsersFromFB();
         renderAdminStats();
         const ok = document.getElementById('admin-users-ok');
         if (ok) { ok.innerText = '✓ Usuario eliminado'; setTimeout(() => ok.innerText = '', 2500); }
@@ -625,6 +662,8 @@ function applyGlobalAnnouncement() {
 }
 
 async function clearChatAdmin() {
+    if (!isCurrentUserAdmin()) return;
+    if (!confirm('¿Borrar TODOS los mensajes del chat del clan?')) return;
     const ok = document.getElementById('admin-chat-ok');
     try {
         const snap = await window._fbGetDocs(window._fbCollection(window._db, 'clan_chat'));
@@ -716,12 +755,12 @@ function generarExcusa() {
 }
 
 // ===== RANKING DE TOXICIDAD (VOTOS REALES EN POLLS DEL BACKEND) =====
-const rankIconos = { 'Emilio': '<i class="fa-solid fa-crown"></i>', 'Jero': '<i class="fa-solid fa-skull"></i>', 'Gabriel': '<i class="fa-solid fa-keyboard"></i>', 'Sami': '<i class="fa-solid fa-heart"></i>', 'Isabella': '<i class="fa-solid fa-shield-halved"></i>', 'Juan Alejandro': '<i class="fa-solid fa-bolt"></i>' };
+const rankIconos = {};
 const TOXIC_POLL_QUESTION = 'Quien es el mas toxico del clan?';
 
 function rankPapus() {
     const members = getMembersWithInfo();
-    return members.length > 0 ? members.map(m => m.nick) : ['Emilio', 'Gabriel', 'Jero', 'Sami', 'Isabella', 'Juan Alejandro'];
+    return members.length > 0 ? members.map(m => m.nick) : [];
 }
 
 async function getToxicPoll() {
@@ -733,11 +772,15 @@ async function getToxicPoll() {
     } catch (e) {}
     if (isCurrentUserAdmin()) {
         try {
-            return await apiFetch('POST', '/polls', {
+            const created = await apiFetch('POST', '/polls', {
                 question: TOXIC_POLL_QUESTION,
                 options: rankPapus(),
                 created_by: 'system'
             });
+            if (created && created.id) return created;
+            const list = await apiFetch('GET', '/polls');
+            const arr = Array.isArray(list) ? list : (list.items || Object.values(list));
+            return arr.find(p => p && p.question === TOXIC_POLL_QUESTION) || null;
         } catch (e) { return null; }
     }
     return null;
@@ -757,7 +800,8 @@ async function renderRanking() {
     grid.innerHTML = '<div class="card" style="grid-column:1/-1;text-align:center;padding:30px;"><i class="fa-solid fa-spinner fa-spin" style="color:var(--primary);"></i> Cargando votos...</div>';
     const poll = await getToxicPoll();
     if (!poll) {
-        grid.innerHTML = '<div class="card" style="grid-column:1/-1;text-align:center;padding:30px;"><p style="font-size:12px;color:var(--danger);">La encuesta de toxicidad aún no existe. Pedile a un admin del clan (jero o gabriel) que abra esta página para crearla automáticamente.</p></div>';
+        const logged = getSessionNick();
+        grid.innerHTML = '<div class="card" style="grid-column:1/-1;text-align:center;padding:30px;"><p style="font-size:12px;color:var(--danger);">' + (logged ? 'La encuesta de toxicidad aún no existe. El admin debe abrir esta página para crearla.' : 'Iniciá sesión para ver la encuesta de toxicidad.') + '</p></div>';
         return;
     }
     const voted = hasVotedPoll(poll);
@@ -788,7 +832,7 @@ async function renderRanking() {
             <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:6px;overflow:hidden;margin-bottom:14px;">
                 <div style="height:100%;width:${maxV > 0 ? (p.v / maxV * 100) : 0}%;background:linear-gradient(90deg,var(--danger),var(--secondary));border-radius:6px;"></div>
             </div>
-            <button class="btn-submit" style="width:100%;padding:10px;cursor:${voted ? 'not-allowed;opacity:0.5' : 'pointer'};" onclick="votarToxico('${p.name.replace(/'/g, "\\'")}')" ${voted ? 'disabled' : ''}>
+            <button class="btn-submit" style="width:100%;padding:10px;cursor:${voted ? 'not-allowed;opacity:0.5' : 'pointer'};" onclick="votarToxico('${jsAttr(p.name)}')" ${voted ? 'disabled' : ''}>
                 ${voted ? '<i class="fa-solid fa-check"></i> Ya votaste' : '<i class="fa-solid fa-skull-crossbones"></i> Votar tóxico'}
             </button>
         `;
@@ -814,6 +858,7 @@ async function votarToxico(name) {
 }
 
 function resetVotos() {
+    if (!isCurrentUserAdmin()) return;
     if (!confirm('¿Resetear todos los votos de toxicidad?')) return;
     alert('Los votos viven en la base de datos compartida. Si querés empezar de cero, pedile al backend que elimine la encuesta del clan (o resetee sus votos).');
 }
@@ -821,14 +866,18 @@ function resetVotos() {
 // ===== BITÃCORA DE MUERTES (CAMPO deaths EN USERS — SOLO ADMIN EDITA) =====
 function deathPapus() {
     const members = getMembersWithInfo();
-    return members.length > 0 ? members.map(m => m.nick) : ['Emilio', 'Gabriel', 'Jero', 'Sami', 'Isabella', 'Juan Alejandro'];
+    return members.length > 0 ? members.map(m => m.nick) : [];
 }
 
 function isCurrentUserAdmin() {
     const nick = getSessionNick();
     if (!nick) return false;
     const m = memberByNick(nick);
-    return !!(m && (m.data.admin === true || m.data.admin === 'true'));
+    if (!m) return false;
+    const d = m.data || {};
+    return d.is_admin === true || d.isAdmin === true || d.admin === true ||
+           d.is_admin === 'true' || d.isAdmin === 'true' || d.admin === 'true' ||
+           d.rank === 'admin' || d.rank === 'owner';
 }
 
 function renderMuertes() {
@@ -836,6 +885,10 @@ function renderMuertes() {
     if (!grid) return;
     const admin = isCurrentUserAdmin();
     const names = deathPapus();
+    if (names.length === 0) {
+        grid.innerHTML = '<div class="card" style="grid-column:1/-1;text-align:center;padding:30px;"><p style="font-size:12px;color:var(--text-muted);">Sin integrantes con perfil todavía.</p></div>';
+        return;
+    }
     const sorted = [...names].sort((a, b) => {
         const m1 = memberByNick(a), m2 = memberByNick(b);
         return ((m2 && (parseInt(m2.data.deaths) || 0)) - (m1 && (parseInt(m1.data.deaths) || 0)));
@@ -855,8 +908,8 @@ function renderMuertes() {
             <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;">muertes</div>
             ${admin ? `
             <div style="display:flex;gap:8px;">
-                <button style="flex:1;padding:8px;background:rgba(255,255,255,0.06);border:1px solid var(--dark-border);border-radius:8px;color:#fff;cursor:pointer;font-size:14px;" onclick="changeDeath('${name.replace(/'/g, "\\'")}',-1)"><i class="fa-solid fa-minus"></i></button>
-                <button style="flex:2;padding:8px;background:linear-gradient(135deg,var(--danger),#ff3355);border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:12px;font-weight:700;" onclick="changeDeath('${name.replace(/'/g, "\\'")}',+1)"><i class="fa-solid fa-plus"></i> +1</button>
+                <button style="flex:1;padding:8px;background:rgba(255,255,255,0.06);border:1px solid var(--dark-border);border-radius:8px;color:#fff;cursor:pointer;font-size:14px;" onclick="changeDeath('${jsAttr(name)}',-1)"><i class="fa-solid fa-minus"></i></button>
+                <button style="flex:2;padding:8px;background:linear-gradient(135deg,var(--danger),#ff3355);border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:12px;font-weight:700;" onclick="changeDeath('${jsAttr(name)}',+1)"><i class="fa-solid fa-plus"></i> +1</button>
             </div>` : `<div style="font-size:11px;color:var(--text-muted);">Solo el admin puede registrar muertes.</div>`}
         `;
         grid.appendChild(card);
@@ -871,7 +924,7 @@ async function changeDeath(name, delta) {
     const next = Math.max(0, cur + delta);
     try {
         await apiFetch('PUT', '/users/' + encodeURIComponent(name), { deaths: next });
-        syncUsersFromFB();
+        await syncUsersFromFB();
         if (delta > 0) {
             try {
                 const ac = new (window.AudioContext || window.webkitAudioContext)();
@@ -888,15 +941,14 @@ async function changeDeath(name, delta) {
     } catch (e) { console.warn('[changeDeath] Error:', e); }
 }
 
-function resetMuertes() {
+async function resetMuertes() {
     if (!isCurrentUserAdmin()) return;
     if (!confirm('¿Resetear todas las muertes del clan?')) return;
     const names = deathPapus();
-    names.forEach(async name => {
-        try { await apiFetch('PUT', '/users/' + encodeURIComponent(name), { deaths: 0 }); }
-        catch (e) {}
-    });
-    setTimeout(() => syncUsersFromFB(), 500);
+    await Promise.all(names.map(name =>
+        apiFetch('PUT', '/users/' + encodeURIComponent(name), { deaths: 0 }).catch(() => {})
+    ));
+    await syncUsersFromFB();
 }
 
 // ===== SISTEMA DE CONTENIDO DINÁMICO (desde la base de datos del clan) =====
@@ -1023,9 +1075,9 @@ function buildAdminEditor(containerId, section, placeholder) {
 
 function buildAdminEditorRows(box, section, placeholder, dbField) {
     box.innerHTML = '';
-    const members = getMembersWithInfo();
+    const members = clanMembers.length > 0 ? clanMembers : getMembersWithInfo();
     if (members.length === 0) {
-        box.innerHTML = '<p style="font-size:12px; color:var(--text-muted);">Sin integrantes todavía. Cuando completen sus perfiles aparecerán acá para editarlos.</p>';
+        box.innerHTML = '<p style="font-size:12px; color:var(--text-muted);">Sin cuentas todavía. Cuando alguien se registre aparecerá acá para editarlo.</p>';
         return;
     }
     members.forEach(m => {
@@ -1245,6 +1297,7 @@ function importBackup() {
         renderAllContent();
         applySavedTheme();
         applyMaintenance();
+        applyGlobalAnnouncement();
         renderAdminStats();
         loadChat();
         logAdminAction('ImportÃ³ backup');

@@ -565,11 +565,12 @@ escribe un comando (help para ver)</div>
                     <!-- TAB: ESTADÍSTICAS -->
                     <div id="tab-stats" class="admin-tab-body active">
                         <div class="grid-container">
-                            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:var(--primary);font-family:'Orbitron';">6</div><div style="font-size:12px;color:var(--text-muted);">Integrantes del Clan</div></div>
+                            <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:var(--primary);font-family:'Orbitron';" id="ad-members">0</div><div style="font-size:12px;color:var(--text-muted);">Integrantes del Clan</div></div>
                             <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:var(--secondary);font-family:'Orbitron';" id="ad-users">0</div><div style="font-size:12px;color:var(--text-muted);">Cuentas Registradas</div></div>
                             <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:var(--gold);font-family:'Orbitron';" id="ad-chat">0</div><div style="font-size:12px;color:var(--text-muted);">Mensajes en el Chat</div></div>
                             <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:var(--danger);font-family:'Orbitron';" id="ad-votes">0</div><div style="font-size:12px;color:var(--text-muted);">Votos de Toxicidad</div></div>
                             <div class="card" style="text-align:center;"><div style="font-size:26px;font-weight:900;color:#ff6688;font-family:'Orbitron';" id="ad-deaths">0</div><div style="font-size:12px;color:var(--text-muted);">Muertes Registradas</div></div>
+                            <div class="card" style="text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--gold);font-family:'Orbitron';" id="ad-ann">SIN ANUNCIO</div><div style="font-size:12px;color:var(--text-muted);">Anuncio</div></div>
                             <div class="card" style="text-align:center;"><div style="font-size:16px;font-weight:900;color:var(--danger);font-family:'Orbitron';" id="ad-status">—</div><div style="font-size:12px;color:var(--text-muted);">Estado del Sistema</div></div>
                         </div>
                     </div>
@@ -677,6 +678,7 @@ escribe un comando (help para ver)</div>
                             <h3 style="font-size:16px; margin-bottom:10px;"><i class="fa-solid fa-comment-dots"></i> Excusas del Generador</h3>
                             <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Agrega o quita excusas del generador.</p>
                             <div id="admin-excusas-editor"></div>
+                            <div id="admin-excusas-ok" style="font-size:12px; color:var(--secondary); margin-top:8px;"></div>
                         </div>
                     </div>
 
@@ -902,11 +904,13 @@ escribe un comando (help para ver)</div>
     window._apiToken = localStorage.getItem('papus_jwt') || null;
 
     window._apiCache = {};
-    const CACHE_TTL = 60000;
+    const CACHE_TTL = 30000;
+    const NO_CACHE = ['/clan_chat', '/polls'];
 
     async function apiFetch(method, path, body) {
         const cacheKey = method + ':' + path;
-        if (method === 'GET' && !body) {
+        const skipCache = NO_CACHE.some(p => path === p || path.indexOf(p + '/') === 0);
+        if (method === 'GET' && !body && !skipCache) {
             const cached = window._apiCache[cacheKey];
             if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data;
         }
@@ -918,7 +922,7 @@ escribe un comando (help para ver)</div>
         if (body) opts.body = JSON.stringify(body);
 
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 10000);
+        const timeout = setTimeout(() => controller.abort(), 15000);
         opts.signal = controller.signal;
 
         let res;
@@ -930,14 +934,23 @@ escribe un comando (help para ver)</div>
         }
         clearTimeout(timeout);
 
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'API error ' + res.status);
-
-        if (method === 'GET' && !body) {
-            window._apiCache[cacheKey] = { data, ts: Date.now() };
-        }
         if (method !== 'GET') {
             Object.keys(window._apiCache).forEach(k => delete window._apiCache[k]);
+        }
+
+        let data = null;
+        const raw = await res.text();
+        if (raw) {
+            try { data = JSON.parse(raw); }
+            catch(e) { data = { raw: raw.slice(0, 200) }; }
+        }
+        if (!res.ok) {
+            const msg = (data && data.error) || (data && data.message) || ('API error ' + res.status);
+            throw new Error(msg);
+        }
+
+        if (method === 'GET' && !body && !skipCache) {
+            window._apiCache[cacheKey] = { data, ts: Date.now() };
         }
         return data;
     }
@@ -954,9 +967,10 @@ escribe un comando (help para ver)</div>
         const [col, id] = ref.split('/');
         try {
             const data = await apiFetch('GET', '/' + col + '/' + id);
-            return { exists: () => !!data, data: () => data };
+            return { exists: () => !!data && data !== null, data: () => data, error: null, status: 200 };
         } catch(e) {
-            return { exists: () => false, data: () => null };
+            const status = parseInt(String(e.message).match(/\d{3}/) || '0');
+            return { exists: () => false, data: () => null, error: e.message || 'Error', status: status || 0 };
         }
     };
     window._fbGetDocs = async function(ref) {
