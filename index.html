@@ -238,56 +238,11 @@
             <!-- PAGE ANIME (CATÁLOGO MASIVO) -->
             <div id="page-anime" class="page">
                 <div class="page-title"><i class="fa-solid fa-tv"></i> Catálogo Completo de Anime</div>
-                <div class="grid-container">
-                    <div class="card">
-                        <i class="fa-solid fa-hat-wizard" style="color:var(--purple);"></i>
-                        <div class="text">Mushoku Tensei</div>
-                        <span style="background:rgba(0,212,255,0.1); color:var(--primary); font-size:10px; padding:2px 8px; border-radius:10px;">ISEKAI</span>
-                        <p style="margin-top:8px;">Un hikikomori reencarna en un mundo de fantasía con sus memorias intactas.</p>
-                    </div>
-                    <div class="card">
-                        <i class="fa-solid fa-wand-magic-sparkles" style="color:var(--gold);"></i>
-                        <div class="text">Frieren: Beyond Journey</div>
-                        <span style="background:rgba(255,215,0,0.1); color:var(--gold); font-size:10px; padding:2px 8px; border-radius:10px;">OBRA MAESTRA</span>
-                        <p style="margin-top:8px;">Una elfa maga reflexiona sobre el tiempo y las conexiones humanas.</p>
-                    </div>
-                    <div class="card">
-                        <i class="fa-solid fa-fire" style="color:var(--danger);"></i>
-                        <div class="text">Jujutsu Kaisen</div>
-                        <span style="background:rgba(255,68,102,0.1); color:var(--danger); font-size:10px; padding:2px 8px; border-radius:10px;">DARK ACTION</span>
-                        <p style="margin-top:8px;">Estudiantes de hechicería luchan contra maldiciones en un mundo brutal.</p>
-                    </div>
-                    <div class="card">
-                        <i class="fa-solid fa-arrow-up-right-dots" style="color:var(--secondary);"></i>
-                        <div class="text">Solo Leveling</div>
-                        <span style="background:rgba(0,255,170,0.1); color:var(--secondary); font-size:10px; padding:2px 8px; border-radius:10px;">POWER FANTASY</span>
-                        <p style="margin-top:8px;">El cazador más débil recibe un sistema único para subir de nivel.</p>
-                    </div>
-                    <div class="card">
-                        <i class="fa-solid fa-shield" style="color:#aaa;"></i>
-                        <div class="text">Berserk</div>
-                        <span style="background:rgba(255,255,255,0.1); color:#aaa; font-size:10px; padding:2px 8px; border-radius:10px;">DARK FANTASY</span>
-                        <p style="margin-top:8px;">Guts sobrevive en un mundo medieval oscuro lleno de demonios.</p>
-                    </div>
-                    <div class="card">
-                        <i class="fa-solid fa-rotate" style="color:var(--primary);"></i>
-                        <div class="text">Re:Zero</div>
-                        <span style="background:rgba(0,212,255,0.1); color:var(--primary); font-size:10px; padding:2px 8px; border-radius:10px;">ISEKAI</span>
-                        <p style="margin-top:8px;">Subaru vuelve a un punto de guardado al morir en otro mundo.</p>
-                    </div>
-                    <div class="card">
-                        <i class="fa-solid fa-skull" style="color:var(--danger);"></i>
-                        <div class="text">Overlord</div>
-                        <span style="background:rgba(255,68,102,0.1); color:var(--danger); font-size:10px; padding:2px 8px; border-radius:10px;">ANTAGONIST</span>
-                        <p style="margin-top:8px;">Un jugador domina el mundo como un esqueleto todopoderoso.</p>
-                    </div>
-                    <div class="card">
-                        <i class="fa-solid fa-gears" style="color:var(--gold);"></i>
-                        <div class="text">Chainsaw Man</div>
-                        <span style="background:rgba(255,215,0,0.1); color:var(--gold); font-size:10px; padding:2px 8px; border-radius:10px;">ACTION</span>
-                        <p style="margin-top:8px;">Denji se fusiona con su demonio motosierra para cazar monstruos.</p>
-                    </div>
+                <p style="color:var(--text-muted); margin-bottom:25px;">100 animes recomendados por el clan. <b style="color:var(--gold);">Sin los básicos</b> (no Naruto, no Dragon Ball, no One Piece — ya los conocés). <b id="anime-count" style="color:var(--primary);">100 / 100 animes</b></p>
+                <div style="max-width:420px; margin-bottom:20px;">
+                    <input id="anime-search" type="text" placeholder="🔍 Buscar anime o género..." oninput="renderAnimes(this.value)" style="width:100%; background:rgba(3,9,20,0.8); border:1px solid var(--dark-border); color:#fff; padding:12px 16px; border-radius:8px; outline:none; font-size:13px;">
                 </div>
+                <div class="grid-container" id="anime-grid"></div>
             </div>
 
             <!-- PAGE SUGERENCIAS (CON MURO Y VOTOS INTERACTIVOS) -->
@@ -385,84 +340,12 @@ escribe un comando (help para ver)</div>
             </div>
             <!-- LINUX -->
             <div id="page-linux" class="page">
-                <div class="page-title"><i class="fa-brands fa-linux"></i> Linux OS · Distros y Familias</div>
-                <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Catálogo de distribuciones oficiales con sus ventajas y desventajas, ordenadas por familia.</p>
-
-                <h3 style="font-size:15px; color:var(--primary); margin-bottom:15px; display:flex; align-items:center; gap:8px;"><i class="fa-brands fa-archlinux"></i> Familia Arch (rolling release)</h3>
-                <div class="grid-container">
-                    <div class="card"><i class="fa-brands fa-archlinux" style="color:#1793d1;"></i><div class="text">Arch Linux</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Siempre actualizado, total control, la wiki más completa (Arch Wiki).</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Instalación manual, fácil de romper si no sabés qué hacés.</p>
-                        <p style="margin-top:10px;"><a href="https://archlinux.org" target="_blank" style="color:var(--primary); font-weight:700;">archlinux.org</a></p>
-                    </div>
-                    <div class="card"><i class="fa-solid fa-shield-halved" style="color:#1793d1;"></i><div class="text">Manjaro</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Estable, fácil de instalar, trae todo listo para usar.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Estable pero se demora mucho en actualizar los paquetes.</p>
-                        <p style="margin-top:10px;"><a href="https://manjaro.org" target="_blank" style="color:var(--primary); font-weight:700;">manjaro.org</a></p>
-                    </div>
-                    <div class="card"><i class="fa-solid fa-rocket" style="color:#1793d1;"></i><div class="text">EndeavourOS</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Arch sin instalación difícil, comunidad amigable.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Sigue siendo rolling, podés romperla actualizando.</p>
-                        <p style="margin-top:10px;"><a href="https://endeavouros.com" target="_blank" style="color:var(--primary); font-weight:700;">endeavouros.com</a></p>
-                    </div>
+                <div class="page-title"><i class="fa-brands fa-linux"></i> Linux OS · 100 Distros</div>
+                <p style="color:var(--text-muted); font-size:13px; margin-bottom:25px;">Catálogo de distribuciones con sus ventajas y desventajas. <b id="linux-count" style="color:var(--primary);">100 / 100 distros</b></p>
+                <div style="max-width:420px; margin-bottom:20px;">
+                    <input id="linux-search" type="text" placeholder="🔍 Buscar distro o familia..." oninput="renderDistros(this.value)" style="width:100%; background:rgba(3,9,20,0.8); border:1px solid var(--dark-border); color:#fff; padding:12px 16px; border-radius:8px; outline:none; font-size:13px;">
                 </div>
-
-                <h3 style="font-size:15px; color:var(--secondary); margin:30px 0 15px; display:flex; align-items:center; gap:8px;"><i class="fa-brands fa-debian"></i> Familia Debian (estable)</h3>
-                <div class="grid-container">
-                    <div class="card"><i class="fa-brands fa-debian" style="color:#a81d33;"></i><div class="text">Debian</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Ultra estable, base de casi todo, funciona en cualquier máquina.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Paquetes viejos, software poco actualizado.</p>
-                        <p style="margin-top:10px;"><a href="https://debian.org" target="_blank" style="color:var(--primary); font-weight:700;">debian.org</a></p>
-                    </div>
-                    <div class="card"><i class="fa-brands fa-ubuntu" style="color:#e95420;"></i><div class="text">Ubuntu</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> La más popular, soporte largo (LTS), millones de tutoriales.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Snap obligado, más pesada que otras distros.</p>
-                        <p style="margin-top:10px;"><a href="https://ubuntu.com" target="_blank" style="color:var(--primary); font-weight:700;">ubuntu.com</a></p>
-                    </div>
-                    <div class="card"><i class="fa-solid fa-leaf" style="color:#67c23a;"></i><div class="text">Linux Mint</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Perfecta para empezar, interfaz tipo Windows, ligera.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Menos personalizable que otras, basada en Ubuntu.</p>
-                        <p style="margin-top:10px;"><a href="https://linuxmint.com" target="_blank" style="color:var(--primary); font-weight:700;">linuxmint.com</a></p>
-                    </div>
-                </div>
-
-                <h3 style="font-size:15px; color:var(--gold); margin:30px 0 15px; display:flex; align-items:center; gap:8px;"><i class="fa-brands fa-redhat"></i> Familia Red Hat (empresarial)</h3>
-                <div class="grid-container">
-                    <div class="card"><i class="fa-brands fa-fedora" style="color:#51a2da;"></i><div class="text">Fedora</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Tecnología nueva siempre, la usa Red Hat, muy estable.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Ciclos cortos, hay que actualizar cada 6 meses.</p>
-                        <p style="margin-top:10px;"><a href="https://getfedora.org" target="_blank" style="color:var(--primary); font-weight:700;">getfedora.org</a></p>
-                    </div>
-                    <div class="card"><i class="fa-solid fa-building-shield" style="color:#ee0000;"></i><div class="text">Red Hat Enterprise (RHEL)</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Estándar empresarial, soporte oficial, súper estable.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Pago/licencia, pensada para empresas grandes.</p>
-                        <p style="margin-top:10px;"><a href="https://redhat.com/en/technologies/linux-platforms/enterprise-linux" target="_blank" style="color:var(--primary); font-weight:700;">redhat.com</a></p>
-                    </div>
-                    <div class="card"><i class="fa-solid fa-infinity" style="color:#0f5e9c;"></i><div class="text">Rocky Linux / AlmaLinux</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> RHEL gratis, estable para servidores, compatible al 100%.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Paquetes viejos, no ideal para desktop.</p>
-                        <p style="margin-top:10px;"><a href="https://rockylinux.org" target="_blank" style="color:var(--primary); font-weight:700;">rockylinux.org</a> · <a href="https://almalinux.org" target="_blank" style="color:var(--primary);">almalinux.org</a></p>
-                    </div>
-                </div>
-
-                <h3 style="font-size:15px; color:var(--purple); margin:30px 0 15px; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-cube"></i> Otras populares</h3>
-                <div class="grid-container">
-                    <div class="card"><i class="fa-solid fa-gears" style="color:#73ba25;"></i><div class="text">openSUSE</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Herramienta YaST, rolling (Tumbleweed) o estable (Leap).</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Menos comunidad hispana, paquetes RPM.</p>
-                        <p style="margin-top:10px;"><a href="https://opensuse.org" target="_blank" style="color:var(--primary); font-weight:700;">opensuse.org</a></p>
-                    </div>
-                    <div class="card"><i class="fa-solid fa-recycle" style="color:#5277c3;"></i><div class="text">NixOS</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Configuración declarativa, imposible romperla, reproducible.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Curva de aprendizaje brutal.</p>
-                        <p style="margin-top:10px;"><a href="https://nixos.org" target="_blank" style="color:var(--primary); font-weight:700;">nixos.org</a></p>
-                    </div>
-                    <div class="card"><i class="fa-solid fa-bolt" style="color:#8a2be2;"></i><div class="text">Void Linux</div>
-                        <p><b style="color:var(--secondary);">Ventajas:</b> Ultraligera, sin systemd, súper rápida.</p>
-                        <p><b style="color:var(--danger);">Desventajas:</b> Comunidad pequeña, paquetes menos.</p>
-                        <p style="margin-top:10px;"><a href="https://voidlinux.org" target="_blank" style="color:var(--primary); font-weight:700;">voidlinux.org</a></p>
-                    </div>
-                </div>
+                <div class="grid-container" id="linux-grid"></div>
             </div>
             <!-- ROBLOX PC -->
             <div id="page-optiroblox" class="page">
@@ -894,6 +777,7 @@ escribe un comando (help para ver)</div>
 <!-- JS LIBRARIES & SCRIPTS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="catalogo.js"></script>
     <script src="app.js"></script>
 
     <!-- ════════════════════════════════════════════════════════════

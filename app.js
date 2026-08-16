@@ -1248,6 +1248,8 @@ function renderAllContent() {
     renderRanking();
     renderMuertes();
     if (typeof renderAdminStats === 'function') renderAdminStats();
+    if (typeof renderDistros === 'function') renderDistros(document.getElementById('linux-search')?.value || '');
+    if (typeof renderAnimes === 'function') renderAnimes(document.getElementById('anime-search')?.value || '');
 }
 
 // ===== EDITORES DE EXCUSAS =====
