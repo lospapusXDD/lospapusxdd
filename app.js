@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     applyMaintenance();
     if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
     forceLogin();
+    refreshRobloxPresence();
+    setInterval(() => { if (document.getElementById('page-nicks')?.classList.contains('active')) refreshRobloxPresence(); }, 60000);
 });
 
 // ===== NAVEGACIÃ“N ENTRE PÃGINAS =====
@@ -33,6 +35,8 @@ function switchPage(pageId, el) {
     const match = document.querySelector(`.sidebar-link[data-page="${pageId}"]`);
     if (el && el.classList.contains('sidebar-link')) el.classList.add('active');
     else if (match) match.classList.add('active');
+
+    if (pageId === 'nicks') refreshRobloxPresence();
 }
 
 // ===== TOGGLE SIDEBAR =====
@@ -1004,6 +1008,77 @@ function memberByNick(nick) {
     return clanMembers.find(m => (m.nick || '').toLowerCase() === nickKey) || null;
 }
 
+// ===== ESTADO EN VIVO DE ROBLOX (multi-cuenta) =====
+let _robloxPresence = {};      // lowercase nick -> { id, online, place, lastLocation }
+let _robloxLoading = false;
+let _robloxFetched = false;
+
+function splitRobloxNicks(member) {
+    const raw = (member && (member.data.nickRoblox || member.data.nick_roblox)) || '';
+    return raw.split(/[,;|]+/).map(s => s.trim()).filter(Boolean);
+}
+
+async function refreshRobloxPresence() {
+    if (_robloxLoading) return;
+    const members = getMembersWithInfo();
+    const wanted = {};
+    members.forEach(m => {
+        splitRobloxNicks(m).forEach(u => {
+            const k = u.toLowerCase();
+            if (!wanted[k]) wanted[k] = { user: u, id: null };
+        });
+    });
+    if (Object.keys(wanted).length === 0) return;
+    _robloxLoading = true;
+    try {
+        const usernames = Object.keys(wanted);
+        const idRes = await fetch('https://users.roblox.com/v1/usernames/users', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ usernames: usernames.slice(0, 100), excludeBannedUsers: false })
+        }).then(r => r.json()).catch(() => ({}));
+        const idList = idRes.data || [];
+        idList.forEach(u => {
+            const k = (u.name || '').toLowerCase();
+            if (wanted[k]) wanted[k].id = u.id;
+        });
+        const ids = Object.keys(wanted).map(k => wanted[k].id).filter(Boolean).slice(0, 100);
+        let presenceMap = {};
+        if (ids.length > 0) {
+            const pRes = await fetch('https://presence.roblox.com/v1/presence/users', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userIds: ids })
+            }).then(r => r.json()).catch(() => ({}));
+            (pRes.userPresences || []).forEach(p => {
+                presenceMap[p.userId] = {
+                    type: p.userPresenceType || 0,
+                    place: p.lastLocation || '',
+                    online: (p.userPresenceType || 0) > 0
+                };
+            });
+        }
+        const next = {};
+        Object.keys(wanted).forEach(k => {
+            const id = wanted[k].id;
+            next[k] = { id, user: wanted[k].user, ...(id && presenceMap[id] ? presenceMap[id] : { type: 0, online: false, place: '' }) };
+        });
+        _robloxPresence = next;
+        _robloxFetched = true;
+        renderNicks();
+    } catch (e) {
+        _robloxFetched = false;
+    } finally {
+        _robloxLoading = false;
+    }
+}
+
+function robloxBadge(nick) {
+    const info = _robloxPresence[(nick || '').toLowerCase()];
+    if (!_robloxFetched) return '<span style="font-size:9px;color:#556677;font-family:monospace;">…</span>';
+    if (!info || !info.online) return '<span style="font-size:9px;color:#ff4466;font-family:monospace;">● off</span>';
+    const game = info.place ? ' ' + info.place : '';
+    return '<span style="font-size:9px;color:#00ff9d;font-family:monospace;">● on' + esc(game) + '</span>';
+}
+
 function contentIcon(name) {
     const icons = ['fa-crown', 'fa-skull', 'fa-keyboard', 'fa-heart', 'fa-shield-halved', 'fa-bolt'];
     const colors = ['var(--gold)', 'var(--danger)', 'var(--primary)', 'var(--secondary)', 'var(--purple)', '#ffd700'];
@@ -1038,12 +1113,15 @@ function renderNicks() {
     }
     members.forEach(m => {
         const ic = contentIcon(m.nick);
-        const roblox = m.data.nickRoblox || m.data.nick_roblox || 'Pendiente...';
+        const accounts = splitRobloxNicks(m);
+        const robloxHtml = accounts.length > 0
+            ? accounts.map(a => `<div style="font-family:'Courier New',monospace;font-size:11px;color:var(--primary);background:rgba(0,212,255,0.08);padding:3px 10px;border-radius:4px;margin-bottom:3px;display:flex;align-items:center;justify-content:space-between;gap:8px;">${esc(a)}${robloxBadge(a)}</div>`).join('')
+            : `<div style="font-family:'Courier New',monospace;font-size:11px;color:#ff6688;background:rgba(255,68,102,0.08);padding:4px 10px;border-radius:4px;">Pendiente...</div>`;
         grid.innerHTML += `
             <div class="card" style="text-align:center;">
                 <div style="font-size:28px;margin-bottom:8px;color:${ic.c};"><i class="fa-solid ${ic.i}"></i></div>
                 <div style="font-family:'Orbitron',sans-serif;font-size:13px;color:#fff;font-weight:700;margin-bottom:4px;">${esc(m.nick)}</div>
-                <div style="font-family:'Courier New',monospace;font-size:11px;color:var(--primary);background:rgba(0,212,255,0.08);padding:4px 10px;border-radius:4px;">${esc(roblox)}</div>
+                ${robloxHtml}
             </div>`;
     });
 }
