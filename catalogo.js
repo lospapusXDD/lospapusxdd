@@ -230,6 +230,18 @@ window.ANIMES = [
     { n: 'Run with the Wind', g: 'Deporte', t: 'TRAILER', d: 'Un equipo de cross-country que no sabe correr. Emoción pura.' },
     { n: 'Initial D', g: 'Deporte', t: 'DRIFT', d: 'Tofu, Takumi y el AE86. Eurobeat en las venas.' },
     { n: 'Chihayafuru', g: 'Deporte', t: 'KARUTA', d: 'Un deporte de cartas japonesas y te atrapa. No jodas.' },
+
+    // ── Nuevos 2026 ──
+    { n: 'One Piece', g: 'Shonen', t: 'EPOCA', d: 'Luffy y su tripulación buscan el One Piece. 1000+ caps de aventura pura.' },
+    { n: 'Blue Lock', g: 'Deporte', t: 'FUTBOL', d: '300 delanteros encerrados para crear al egoísta definitivo. Frenesí puro.' },
+    { n: 'Marvel (MCU)', g: 'Superhéroe', t: 'UNIVERSO', d: 'Iron Man a Endgame. La saga que cambió el cine. CivWar > todo.' },
+    { n: 'Naruto Shippuden', g: 'Shonen', t: 'NINJA', d: 'Naruto vs Sasuke, la guerra ninja. El clásico que definió una generación.' },
+    { n: 'Dragon Ball Z', g: 'Shonen', t: 'CLASICO', d: 'Freezer, Cell, Majin Buu. La obra que inventó el shonen moderno.' },
+    { n: 'Attack on Titan', g: 'Dark', t: 'EPOCA', d: 'Titanes devorando humanos. El plot twist más brutal del anime.' },
+    { n: 'Demon Slayer', g: 'Acción', t: 'TOHO', d: 'Tanjiro y Nezuko contra los demonios. Animación de Ufotable que te deja sin aliento.' },
+    { n: 'Hunter x Hunter', g: 'Aventura', t: 'ESTRATEGIA', d: 'Gon, Killua, la Arena y la Raider de la Araña. Togashi en su pico.' },
+    { n: 'Jujutsu Kaisen', g: 'Acción', t: 'DARK', d: 'Gojo es el más fuerte. Yuji y los maldiciones. MAPPA en estado puro.' },
+    { n: 'My Hero Academia', g: 'Shonen', t: 'SUPERHEROES', d: 'Deku sin poder nace con uno. All Might, la mentoría definitiva.' },
 ];
 
 // ===== RENDERIZADO =====
