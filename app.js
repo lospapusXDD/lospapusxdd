@@ -208,11 +208,16 @@ async function doLogin() {
         checkOnboarding(storedNick);
     } catch (e) {
         const msg = String(e.message || '');
-        const reason = e.reason || (e.message && e.message.includes('Anticheat') ? e.message : '') || '';
-        // Detecta baneo 403
-        if (e.status === 403 || /baneado|Acceso denegado|Anticheat/i.test(msg) || reason) {
-            const banReason = reason || msg.replace('Acceso denegado','').replace(':','').trim() || 'Anticheats detected';
-            showBanModal(nick, banReason, 'Permanente', 'mensaje automatico deteccion anticheat');
+        const data = e.data || {};
+        const reason = e.reason || data.reason || '';
+        // Detecta baneo 403 - nueva estructura backend: {banned:true, title, reason, expiresAt, isPermanent}
+        if (e.status === 403 || data.banned === true || /baneado|Acceso denegado|Anticheat/i.test(msg) || reason) {
+            const title = data.title || null;
+            const banReason = reason || data.reason || msg.replace('Acceso denegado','').replace(':','').trim() || 'Anticheats detected';
+            const isPermanent = data.isPermanent === true || !data.expiresAt;
+            const duration = isPermanent ? 'Permanente' : 'Hasta ' + new Date(data.expiresAt).toLocaleString();
+            const miniInfo = isPermanent ? 'mensaje automatico deteccion anticheat' : 'Expira: ' + new Date(data.expiresAt).toLocaleString();
+            showBanModal(nick, banReason, duration, miniInfo, title);
             if (err) err.innerText = '🚫 Cuenta sancionada';
             return;
         }
@@ -224,7 +229,7 @@ async function doLogin() {
     }
 }
 
-function showBanModal(nick, reason, duration, miniInfo) {
+function showBanModal(nick, reason, duration, miniInfo, title) {
     const modal = document.getElementById('ban-modal');
     if (!modal) return;
     const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
@@ -233,6 +238,10 @@ function showBanModal(nick, reason, duration, miniInfo) {
     set('ban-modal-duration', duration || 'Permanente');
     set('ban-modal-appeal', 'NO');
     set('ban-modal-info', miniInfo || 'mensaje automatico deteccion anticheat');
+    if (title) {
+        const titleEl = modal.querySelector('[style*="SANCIONADO"]');
+        if (titleEl) titleEl.textContent = '✦ ' + title.toUpperCase() + ' ✦';
+    }
     modal.style.display='flex';
 }
 
