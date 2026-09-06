@@ -208,12 +208,32 @@ async function doLogin() {
         checkOnboarding(storedNick);
     } catch (e) {
         const msg = String(e.message || '');
+        const reason = e.reason || (e.message && e.message.includes('Anticheat') ? e.message : '') || '';
+        // Detecta baneo 403
+        if (e.status === 403 || /baneado|Acceso denegado|Anticheat/i.test(msg) || reason) {
+            const banReason = reason || msg.replace('Acceso denegado','').replace(':','').trim() || 'Anticheats detected';
+            showBanModal(nick, banReason, 'Permanente', 'mensaje automatico deteccion anticheat');
+            if (err) err.innerText = '🚫 Cuenta sancionada';
+            return;
+        }
         if (/interno|interna|500/i.test(msg)) {
             if (err) err.innerText = 'Usuario o contraseña incorrectos.';
         } else {
             if (err) err.innerText = msg || 'Error de conexión. ¿Está el backend activo?';
         }
     }
+}
+
+function showBanModal(nick, reason, duration, miniInfo) {
+    const modal = document.getElementById('ban-modal');
+    if (!modal) return;
+    const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
+    set('ban-modal-user', nick || 'Desconocido');
+    set('ban-modal-reason', reason || 'Anticheats detected');
+    set('ban-modal-duration', duration || 'Permanente');
+    set('ban-modal-appeal', 'NO');
+    set('ban-modal-info', miniInfo || 'mensaje automatico deteccion anticheat');
+    modal.style.display='flex';
 }
 
 async function doRegister() {
