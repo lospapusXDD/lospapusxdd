@@ -210,14 +210,14 @@ async function doLogin() {
         const msg = String(e.message || '');
         const data = e.data || {};
         const reason = e.reason || data.reason || '';
-        // Detecta baneo 403 - nueva estructura backend: {banned:true, title, reason, expiresAt, isPermanent}
+        // Detecta baneo 403 - nueva estructura backend: {banned:true, title, reason, expiresAt, isPermanent} - RAZON 100% DE LA DB
         const isBan = e.status === 403 || data.banned === true || /baneado|Acceso denegado|Anticheat|Cuenta Suspendida/i.test(msg) || /baneado|Acceso denegado|Anticheat/i.test(reason);
         if (isBan) {
             const title = data.title || null;
-            const banReason = reason || data.reason || msg.replace('Acceso denegado','').replace(':','').trim() || 'Anticheats detected';
+            const banReason = (data.reason || reason || '').trim() || (data.error || msg).trim();
             const isPermanent = data.isPermanent === true || !data.expiresAt;
             const duration = isPermanent ? 'Permanente' : 'Hasta ' + new Date(data.expiresAt).toLocaleString();
-            const miniInfo = isPermanent ? 'mensaje automatico deteccion anticheat' : 'Expira: ' + new Date(data.expiresAt).toLocaleString();
+            const miniInfo = (data.info || data.miniInfo || data.details || banReason || '').trim();
             showBanModal(nick, banReason, duration, miniInfo, title);
             if (err) err.innerText = '🚫 Cuenta sancionada';
             return;
@@ -235,10 +235,10 @@ function showBanModal(nick, reason, duration, miniInfo, title) {
     if (!modal) return;
     const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
     set('ban-modal-user', nick || 'Desconocido');
-    set('ban-modal-reason', reason || 'Anticheats detected');
+    set('ban-modal-reason', reason || '—');
     set('ban-modal-duration', duration || 'Permanente');
     set('ban-modal-appeal', 'NO DISPONIBLE');
-    set('ban-modal-info', miniInfo || 'mensaje automatico deteccion anticheat');
+    set('ban-modal-info', miniInfo || reason || '—');
     if (title) {
         const titleEl = document.getElementById('ban-modal-title');
         if (titleEl) titleEl.textContent = title;
