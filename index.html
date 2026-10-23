@@ -879,7 +879,10 @@ escribe un comando (help para ver)</div>
     window._fbGetDoc = async function(ref) {
         const [col, id] = ref.split('/');
         try {
-            const data = await apiFetch('GET', '/' + col + '/' + id);
+            let data = await apiFetch('GET', '/' + col + '/' + id);
+            if (data && col === 'users' && data.extra_data && typeof data.extra_data === 'object') {
+                data = { ...data, ...data.extra_data };
+            }
             return { exists: () => !!data && data !== null, data: () => data, error: null, status: 200 };
         } catch(e) {
             const status = parseInt(String(e.message).match(/\d{3}/) || '0');
@@ -890,8 +893,14 @@ escribe un comando (help para ver)</div>
         const col = ref.replace(/^\/+|\/+$/g, '');
         try {
             const arr = await apiFetch('GET', '/' + col);
-            const raw = Array.isArray(arr) ? arr : (arr.items || Object.entries(arr).map(([id, d]) => ({ id, ...d })));
-            const docs = raw.map(d => ({ ...d, id: d.id || d.nick || d.email || String(Math.random()) }));
+            const raw = Array.isArray(arr) ? arr : (arr.users || arr.items || Object.entries(arr).map(([id, d]) => ({ id, ...d })));
+            const docs = raw.map(d => {
+                let flattened = { ...d };
+                if (col === 'users' && d.extra_data && typeof d.extra_data === 'object') {
+                    flattened = { ...d, ...d.extra_data };
+                }
+                return { ...flattened, id: d.id || d.nick || d.email || String(Math.random()) };
+            });
             return { forEach: (cb) => docs.forEach((d) => cb({ id: d.id, data: () => d, ref: d.id })), size: docs.length, docs };
         } catch(e) { return { forEach: () => {}, size: 0, docs: [] }; }
     };

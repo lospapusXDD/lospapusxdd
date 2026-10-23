@@ -379,9 +379,13 @@ async function saveOnboarding() {
     }
 
     try {
-        await apiFetch('PUT', '/users/' + encodeURIComponent(nick), {
+        const clanData = {
             nickRoblox: roblox, cumple: cumple, comida: comida, personajes: personajes,
             titulo: titulo, desc: desc, onboarded: true
+        };
+        await apiFetch('PUT', '/users/' + encodeURIComponent(nick), {
+            ...clanData,
+            extra_data: clanData
         });
         closeOnboarding();
         if (err) err.innerText = '';
@@ -1006,7 +1010,8 @@ async function changeDeath(name, delta) {
     const cur = parseInt(m.data.deaths) || 0;
     const next = Math.max(0, cur + delta);
     try {
-        await apiFetch('PUT', '/users/' + encodeURIComponent(name), { deaths: next });
+        const extra = { ...((m && m.data && m.data.extra_data) || (m && m.data) || {}), deaths: next };
+        await apiFetch('PUT', '/users/' + encodeURIComponent(name), { deaths: next, extra_data: extra });
         await syncUsersFromFB();
         if (delta > 0) {
             try {
@@ -1256,7 +1261,9 @@ async function saveContentField(btn) {
     const field = input.dataset.field;
     const value = input.value.trim();
     try {
-        await apiFetch('PUT', '/users/' + encodeURIComponent(nick), { [field]: value, onboarded: true });
+        const m = memberByNick(nick);
+        const extra = { ...((m && m.data && m.data.extra_data) || (m && m.data) || {}), [field]: value, onboarded: true };
+        await apiFetch('PUT', '/users/' + encodeURIComponent(nick), { [field]: value, onboarded: true, extra_data: extra });
         syncUsersFromFB();
         logAdminAction('Editó ' + field + ' de ' + nick);
         const ok = document.createElement('div');
