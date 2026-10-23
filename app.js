@@ -1,4 +1,4 @@
-﻿// ===== LOS PAPUS GUI SYSTEM (PAPUSBANK LAYOUT LOGIC) =====
+// ===== LOS PAPUS GUI SYSTEM (PAPUSBANK LAYOUT LOGIC) =====
 
 window.addEventListener('error', (e) => {
     const box = document.getElementById('debug-error');
@@ -389,10 +389,16 @@ async function saveOnboarding() {
         renderAllContent();
     } catch (e) {
         const msg = (e.message || 'Error al guardar.');
-        if (/unauthor|token|sesi|401|403/i.test(msg)) {
+        const status = e.status || 0;
+        console.error('[saveOnboarding] Error:', msg, 'Status:', status, e);
+        if (status === 401 || status === 403 || /unauthor|token|sesi|requerido|expired|invalid/i.test(msg)) {
             if (err) err.innerText = 'Sesión expirada o sin permisos. Volvé a iniciar sesión y reintentá.';
+            // Auto-limpiar sesión expirada y mostrar login
+            localStorage.removeItem('papus_jwt');
+            window._apiToken = null;
+            setTimeout(() => { showAuthOverlay(); }, 1500);
         } else {
-            if (err) err.innerText = 'Error al guardar. Revisá tu conexión e intentá de nuevo.';
+            if (err) err.innerText = 'Error al guardar: ' + msg;
         }
     }
 }
